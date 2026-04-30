@@ -272,8 +272,8 @@ function initCounters() {
 
 const API_BASE_URL = window.WORKFORCE_API_BASE || "";
 const ALLOW_INSECURE_BROWSER_KEYS = true;
-const GEMINI_DIRECT_KEY = window.WORKFORCE_GEMINI_KEY || "AIzaSyBbNpw6tbpmdgRflWxCE4V-uJPmtPSa00k";
-const GROQ_DIRECT_KEY = window.WORKFORCE_GROQ_KEY || "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";
+const GEMINI_DIRECT_KEY = window.WORKFORCE_GEMINI_KEY || "YOUR_GEMINI_KEY_HERE";
+const GROQ_DIRECT_KEY = window.WORKFORCE_GROQ_KEY || "YOUR_GROQ_KEY_HERE";
 const DEFAULT_JOBS = [
   { title: "Registered Nurses", risk_score: "0", risk_label: "Low Risk", job_zone: "3" },
   { title: "Web Developers", risk_score: "1", risk_label: "Low Risk", job_zone: "3" },
