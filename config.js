@@ -1,0 +1,3 @@
+window.WORKFORCE_API_BASE = "";
+window.WORKFORCE_GEMINI_KEY = "";
+window.WORKFORCE_GROQ_KEY = "";

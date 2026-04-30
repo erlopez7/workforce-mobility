@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Paths | WorkForce</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a class="active" href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <main class="container">
+    <section class="section"><h1>Is Your Career AI-Safe?</h1><p class="muted">Search any job and see its automation risk score — based on O*NET-aligned roles.</p></section>
+    <section class="section card">
+      <div class="grid-2">
+        <div>
+          <input id="jobSearch" placeholder="Search a job title..." />
+          <p id="jobsStatus" class="muted" style="margin:.6rem 0 0;"></p>
+          <div id="jobList" class="pill-group"></div>
+          <div id="riskResults"></div>
+        </div>
+        <aside class="card" style="max-height:560px; overflow:auto;">
+          <h3>Common Jobs (Click to Try)</h3>
+          <div id="commonJobsList" class="pill-group"></div>
+        </aside>
+      </div>
+      <details><summary>Risk Model Explainer</summary><p>Our model scores each occupation based on routine work, decision complexity, human interaction, and training level.</p></details>
+      <p class="muted">Of 1,016 occupations analyzed: 446 Low Risk | 314 Moderate Risk | 256 High Risk</p>
+    </section>
+    <section class="section"><h2>Personalized Career Recommendations</h2><p class="muted">Input your ZIP code and background — get career pathways matched to your situation.</p></section>
+    <section class="section card">
+      <form id="pathForm" class="grid-2">
+        <div>
+          <label>ZIP code</label>
+          <div class="chat-input-row">
+            <input id="zipInput" required placeholder="e.g. 60619" />
+            <button class="btn primary" type="submit">Find My Path →</button>
+          </div>
+        </div>
+        <div><label>Neighborhood</label><select id="bgGroup"><option>Very Disadvantaged</option><option>Disadvantaged</option><option>Moderate Opportunity</option><option>Higher Opportunity</option><option>I'm not sure</option></select></div>
+        <div style="grid-column:1/-1"><label>Interests</label><div class="pill-group"><button type="button" class="pill interest-pill" data-interest="Healthcare">Healthcare</button><button type="button" class="pill interest-pill" data-interest="Technology">Technology</button><button type="button" class="pill interest-pill" data-interest="Trades">Trades</button><button type="button" class="pill interest-pill" data-interest="Education">Education</button><button type="button" class="pill interest-pill" data-interest="Business">Business</button><button type="button" class="pill interest-pill" data-interest="Creative">Creative</button><button type="button" class="pill interest-pill" data-interest="Social Services">Social Services</button><button type="button" class="pill interest-pill" data-interest="Science">Science</button></div></div>
+      </form>
+    </section>
+    <section id="recCards" class="section grid-3"></section>
+    <section id="roiContext" class="section"></section>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p>
+      <div class="footer-links"><a href="index.html">Home</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="chatbot.html">AI Advisor</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1306 @@
+table_name,column_name,data_type,is_nullable
+abilities_to_work_activities,abilities_element_id,VARCHAR,NO
+abilities_to_work_activities,work_activities_element_id,VARCHAR,NO
+alternate_titles,alternate_title,VARCHAR,NO
+alternate_titles,onetsoc_code,VARCHAR,NO
+alternate_titles,short_title,VARCHAR,YES
+alternate_titles,sources,VARCHAR,NO
+census_2010_race_nation,American Indian Tribal Subdivision (FIPS),DOUBLE,YES
+census_2010_race_nation,American Indian and Alaska Native alone,BIGINT,YES
+census_2010_race_nation,Area (Land),BIGINT,YES
+census_2010_race_nation,Area (Water),BIGINT,YES
+census_2010_race_nation,Area Name-Legal/Statistical Area Description (LSAD) Term-Part Indicator,VARCHAR,YES
+census_2010_race_nation,Asian alone,BIGINT,YES
+census_2010_race_nation,Black or African American alone,BIGINT,YES
+census_2010_race_nation,Data File Year,BIGINT,YES
+census_2010_race_nation,FIPS American Indian Area/Alaska Native Area/Hawaiian Home Land Class Code,DOUBLE,YES
+census_2010_race_nation,FIPS County Subdivision Class Code,DOUBLE,YES
+census_2010_race_nation,FIPS Place Class Code,DOUBLE,YES
+census_2010_race_nation,Female,BIGINT,YES
+census_2010_race_nation,Female: 10 to 14 years,BIGINT,YES
+census_2010_race_nation,Female: 15 to 17 years,BIGINT,YES
+census_2010_race_nation,Female: 18 and 19 years,BIGINT,YES
+census_2010_race_nation,Female: 20 years,BIGINT,YES
+census_2010_race_nation,Female: 21 years,BIGINT,YES
+census_2010_race_nation,Female: 22 to 24 years,BIGINT,YES
+census_2010_race_nation,Female: 25 to 29 years,BIGINT,YES
+census_2010_race_nation,Female: 30 to 34 years,BIGINT,YES
+census_2010_race_nation,Female: 35 to 39 years,BIGINT,YES
+census_2010_race_nation,Female: 40 to 44 years,BIGINT,YES
+census_2010_race_nation,Female: 45 to 49 years,BIGINT,YES
+census_2010_race_nation,Female: 5 to 9 years,BIGINT,YES
+census_2010_race_nation,Female: 50 to 54 years,BIGINT,YES
+census_2010_race_nation,Female: 55 to 59 years,BIGINT,YES
+census_2010_race_nation,Female: 60 and 61 years,BIGINT,YES
+census_2010_race_nation,Female: 62 to 64 years,BIGINT,YES
+census_2010_race_nation,Female: 65 and 66 years,BIGINT,YES
+census_2010_race_nation,Female: 67 to 69 years,BIGINT,YES
+census_2010_race_nation,Female: 70 to 74 years,BIGINT,YES
+census_2010_race_nation,Female: 75 to 79 years,BIGINT,YES
+census_2010_race_nation,Female: 80 to 84 years,BIGINT,YES
+census_2010_race_nation,Female: 85 years and over,BIGINT,YES
+census_2010_race_nation,Female: Under 5 years,BIGINT,YES
+census_2010_race_nation,Functional Status Code,VARCHAR,YES
+census_2010_race_nation,GIS Join Match Code,VARCHAR,YES
+census_2010_race_nation,Internal Point (Latitude),DOUBLE,YES
+census_2010_race_nation,Internal Point (Longitude),DOUBLE,YES
+census_2010_race_nation,Legal/Statistical Area Description Code,BIGINT,YES
+census_2010_race_nation,Male,BIGINT,YES
+census_2010_race_nation,Male: 10 to 14 years,BIGINT,YES
+census_2010_race_nation,Male: 15 to 17 years,BIGINT,YES
+census_2010_race_nation,Male: 18 and 19 years,BIGINT,YES
+census_2010_race_nation,Male: 20 years,BIGINT,YES
+census_2010_race_nation,Male: 21 years,BIGINT,YES
+census_2010_race_nation,Male: 22 to 24 years,BIGINT,YES
+census_2010_race_nation,Male: 25 to 29 years,BIGINT,YES
+census_2010_race_nation,Male: 30 to 34 years,BIGINT,YES
+census_2010_race_nation,Male: 35 to 39 years,BIGINT,YES
+census_2010_race_nation,Male: 40 to 44 years,BIGINT,YES
+census_2010_race_nation,Male: 45 to 49 years,BIGINT,YES
+census_2010_race_nation,Male: 5 to 9 years,BIGINT,YES
+census_2010_race_nation,Male: 50 to 54 years,BIGINT,YES
+census_2010_race_nation,Male: 55 to 59 years,BIGINT,YES
+census_2010_race_nation,Male: 60 and 61 years,BIGINT,YES
+census_2010_race_nation,Male: 62 to 64 years,BIGINT,YES
+census_2010_race_nation,Male: 65 and 66 years,BIGINT,YES
+census_2010_race_nation,Male: 67 to 69 years,BIGINT,YES
+census_2010_race_nation,Male: 70 to 74 years,BIGINT,YES
+census_2010_race_nation,Male: 75 to 79 years,BIGINT,YES
+census_2010_race_nation,Male: 80 to 84 years,BIGINT,YES
+census_2010_race_nation,Male: 85 years and over,BIGINT,YES
+census_2010_race_nation,Male: Under 5 years,BIGINT,YES
+census_2010_race_nation,Metropolitan Micropolitan Indicator,DOUBLE,YES
+census_2010_race_nation,Metropolitan Statistical Area/Micropolitan Statistical Area Principal City Indicator,DOUBLE,YES
+census_2010_race_nation,NECTA Metropolitan Micropolitan Indicator,DOUBLE,YES
+census_2010_race_nation,Nation Code,BIGINT,YES
+census_2010_race_nation,Nation Name,VARCHAR,YES
+census_2010_race_nation,Native Hawaiian and Other Pacific Islander alone,BIGINT,YES
+census_2010_race_nation,New England City and Town Area Principal City Indicator,DOUBLE,YES
+census_2010_race_nation,Public Use Microdata Area,DOUBLE,YES
+census_2010_race_nation,Some Other Race alone,BIGINT,YES
+census_2010_race_nation,State/US-Abbreviation (USPS),VARCHAR,YES
+census_2010_race_nation,Total,BIGINT,YES
+census_2010_race_nation,Total.1,BIGINT,YES
+census_2010_race_nation,Total.2,BIGINT,YES
+census_2010_race_nation,Two or More Races,BIGINT,YES
+census_2010_race_nation,Urban Area Type,DOUBLE,YES
+census_2010_race_nation,Voting District,DOUBLE,YES
+census_2010_race_nation,Voting District Indicator,DOUBLE,YES
+census_2010_race_nation,White alone,BIGINT,YES
+census_2010_race_state,5-Digit ZIP Code Tabulation Area Code,DOUBLE,YES
+census_2010_race_state,Alaska Native Regional Corporation Code,DOUBLE,YES
+census_2010_race_state,American Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land Code,DOUBLE,YES
+census_2010_race_state,American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code,DOUBLE,YES
+census_2010_race_state,American Indian Area/Alaska Native Area/Hawaiian Home Land Code,DOUBLE,YES
+census_2010_race_state,American Indian Tribal Subdivision (FIPS),DOUBLE,YES
+census_2010_race_state,American Indian and Alaska Native alone,BIGINT,YES
+census_2010_race_state,Area (Land),BIGINT,YES
+census_2010_race_state,Area (Water),BIGINT,YES
+census_2010_race_state,Area Name-Legal/Statistical Area Description (LSAD) Term-Part Indicator,VARCHAR,YES
+census_2010_race_state,Asian alone,BIGINT,YES
+census_2010_race_state,Black or African American alone,BIGINT,YES
+census_2010_race_state,Block Code,DOUBLE,YES
+census_2010_race_state,Block Group Code,DOUBLE,YES
+census_2010_race_state,Census Tract Code,DOUBLE,YES
+census_2010_race_state,Combined New England City and Town Area Code,DOUBLE,YES
+census_2010_race_state,Combined Statistical Area Code,DOUBLE,YES
+census_2010_race_state,Congressional District (111th Congress) Code,DOUBLE,YES
+census_2010_race_state,Consolidated City Code,DOUBLE,YES
+census_2010_race_state,County Code,DOUBLE,YES
+census_2010_race_state,County Subdivision Code,DOUBLE,YES
+census_2010_race_state,Data File Year,BIGINT,YES
+census_2010_race_state,Division Code,BIGINT,YES
+census_2010_race_state,FIPS American Indian Area/Alaska Native Area/Hawaiian Home Land Class Code,DOUBLE,YES
+census_2010_race_state,FIPS County Subdivision Class Code,DOUBLE,YES
+census_2010_race_state,FIPS Place Class Code,DOUBLE,YES
+census_2010_race_state,Female,BIGINT,YES
+census_2010_race_state,Female: 10 to 14 years,BIGINT,YES
+census_2010_race_state,Female: 15 to 17 years,BIGINT,YES
+census_2010_race_state,Female: 18 and 19 years,BIGINT,YES
+census_2010_race_state,Female: 20 years,BIGINT,YES
+census_2010_race_state,Female: 21 years,BIGINT,YES
+census_2010_race_state,Female: 22 to 24 years,BIGINT,YES
+census_2010_race_state,Female: 25 to 29 years,BIGINT,YES
+census_2010_race_state,Female: 30 to 34 years,BIGINT,YES
+census_2010_race_state,Female: 35 to 39 years,BIGINT,YES
+census_2010_race_state,Female: 40 to 44 years,BIGINT,YES
+census_2010_race_state,Female: 45 to 49 years,BIGINT,YES
+census_2010_race_state,Female: 5 to 9 years,BIGINT,YES
+census_2010_race_state,Female: 50 to 54 years,BIGINT,YES
+census_2010_race_state,Female: 55 to 59 years,BIGINT,YES
+census_2010_race_state,Female: 60 and 61 years,BIGINT,YES
+census_2010_race_state,Female: 62 to 64 years,BIGINT,YES
+census_2010_race_state,Female: 65 and 66 years,BIGINT,YES
+census_2010_race_state,Female: 67 to 69 years,BIGINT,YES
+census_2010_race_state,Female: 70 to 74 years,BIGINT,YES
+census_2010_race_state,Female: 75 to 79 years,BIGINT,YES
+census_2010_race_state,Female: 80 to 84 years,BIGINT,YES
+census_2010_race_state,Female: 85 years and over,BIGINT,YES
+census_2010_race_state,Female: Under 5 years,BIGINT,YES
+census_2010_race_state,Functional Status Code,VARCHAR,YES
+census_2010_race_state,GIS Join Match Code,VARCHAR,YES
+census_2010_race_state,Internal Point (Latitude),DOUBLE,YES
+census_2010_race_state,Internal Point (Longitude),DOUBLE,YES
+census_2010_race_state,Legal/Statistical Area Description Code,BIGINT,YES
+census_2010_race_state,Male,BIGINT,YES
+census_2010_race_state,Male: 10 to 14 years,BIGINT,YES
+census_2010_race_state,Male: 15 to 17 years,BIGINT,YES
+census_2010_race_state,Male: 18 and 19 years,BIGINT,YES
+census_2010_race_state,Male: 20 years,BIGINT,YES
+census_2010_race_state,Male: 21 years,BIGINT,YES
+census_2010_race_state,Male: 22 to 24 years,BIGINT,YES
+census_2010_race_state,Male: 25 to 29 years,BIGINT,YES
+census_2010_race_state,Male: 30 to 34 years,BIGINT,YES
+census_2010_race_state,Male: 35 to 39 years,BIGINT,YES
+census_2010_race_state,Male: 40 to 44 years,BIGINT,YES
+census_2010_race_state,Male: 45 to 49 years,BIGINT,YES
+census_2010_race_state,Male: 5 to 9 years,BIGINT,YES
+census_2010_race_state,Male: 50 to 54 years,BIGINT,YES
+census_2010_race_state,Male: 55 to 59 years,BIGINT,YES
+census_2010_race_state,Male: 60 and 61 years,BIGINT,YES
+census_2010_race_state,Male: 62 to 64 years,BIGINT,YES
+census_2010_race_state,Male: 65 and 66 years,BIGINT,YES
+census_2010_race_state,Male: 67 to 69 years,BIGINT,YES
+census_2010_race_state,Male: 70 to 74 years,BIGINT,YES
+census_2010_race_state,Male: 75 to 79 years,BIGINT,YES
+census_2010_race_state,Male: 80 to 84 years,BIGINT,YES
+census_2010_race_state,Male: 85 years and over,BIGINT,YES
+census_2010_race_state,Male: Under 5 years,BIGINT,YES
+census_2010_race_state,Metropolitan Division Code,DOUBLE,YES
+census_2010_race_state,Metropolitan Micropolitan Indicator,DOUBLE,YES
+census_2010_race_state,Metropolitan Statistical Area/Micropolitan Statistical Area Code,DOUBLE,YES
+census_2010_race_state,Metropolitan Statistical Area/Micropolitan Statistical Area Principal City Indicator,DOUBLE,YES
+census_2010_race_state,NECTA Metropolitan Micropolitan Indicator,DOUBLE,YES
+census_2010_race_state,Native Hawaiian and Other Pacific Islander alone,BIGINT,YES
+census_2010_race_state,New England City and Town Area Code,DOUBLE,YES
+census_2010_race_state,New England City and Town Area Division Code,DOUBLE,YES
+census_2010_race_state,New England City and Town Area Principal City Indicator,DOUBLE,YES
+census_2010_race_state,Place Code,DOUBLE,YES
+census_2010_race_state,Public Use Microdata Area,DOUBLE,YES
+census_2010_race_state,Region Code,BIGINT,YES
+census_2010_race_state,School Attendance Area Code,DOUBLE,YES
+census_2010_race_state,School District (Elementary)/Remainder Code,DOUBLE,YES
+census_2010_race_state,School District (Secondary)/Remainder Code,DOUBLE,YES
+census_2010_race_state,School District (Unified)/Remainder Code,DOUBLE,YES
+census_2010_race_state,Some Other Race alone,BIGINT,YES
+census_2010_race_state,State Code,BIGINT,YES
+census_2010_race_state,State Legislative District (Lower Chamber) Code,DOUBLE,YES
+census_2010_race_state,State Legislative District (Upper Chamber) Code,DOUBLE,YES
+census_2010_race_state,State Name,VARCHAR,YES
+census_2010_race_state,State/US-Abbreviation (USPS),VARCHAR,YES
+census_2010_race_state,Subminor Civil Division Code,DOUBLE,YES
+census_2010_race_state,Total,BIGINT,YES
+census_2010_race_state,Total.1,BIGINT,YES
+census_2010_race_state,Total.2,BIGINT,YES
+census_2010_race_state,Tribal Block Group Code,DOUBLE,YES
+census_2010_race_state,Tribal Census Tract Code,DOUBLE,YES
+census_2010_race_state,Tribal Subdivision/Remainder Code,DOUBLE,YES
+census_2010_race_state,Two or More Races,BIGINT,YES
+census_2010_race_state,Urban Area Code,DOUBLE,YES
+census_2010_race_state,Urban Area Type,DOUBLE,YES
+census_2010_race_state,Urban/Rural Code,DOUBLE,YES
+census_2010_race_state,Voting District,DOUBLE,YES
+census_2010_race_state,Voting District Indicator,DOUBLE,YES
+census_2010_race_state,White alone,BIGINT,YES
+census_2010_race_tract,5-Digit ZIP Code Tabulation Area Code,DOUBLE,YES
+census_2010_race_tract,Alaska Native Regional Corporation Code,DOUBLE,YES
+census_2010_race_tract,American Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land Code,DOUBLE,YES
+census_2010_race_tract,American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code,DOUBLE,YES
+census_2010_race_tract,American Indian Area/Alaska Native Area/Hawaiian Home Land Code,DOUBLE,YES
+census_2010_race_tract,American Indian Tribal Subdivision (FIPS),DOUBLE,YES
+census_2010_race_tract,American Indian and Alaska Native alone,BIGINT,YES
+census_2010_race_tract,Area (Land),BIGINT,YES
+census_2010_race_tract,Area (Water),BIGINT,YES
+census_2010_race_tract,Area Name-Legal/Statistical Area Description (LSAD) Term-Part Indicator,VARCHAR,YES
+census_2010_race_tract,Asian alone,BIGINT,YES
+census_2010_race_tract,Black or African American alone,BIGINT,YES
+census_2010_race_tract,Block Code,DOUBLE,YES
+census_2010_race_tract,Block Group Code,DOUBLE,YES
+census_2010_race_tract,Census Tract Code,BIGINT,YES
+census_2010_race_tract,Combined New England City and Town Area Code,DOUBLE,YES
+census_2010_race_tract,Combined Statistical Area Code,BIGINT,YES
+census_2010_race_tract,Congressional District (111th Congress) Code,DOUBLE,YES
+census_2010_race_tract,Consolidated City Code,DOUBLE,YES
+census_2010_race_tract,County Code,BIGINT,YES
+census_2010_race_tract,County Name,VARCHAR,YES
+census_2010_race_tract,County Subdivision Code,DOUBLE,YES
+census_2010_race_tract,Data File Year,BIGINT,YES
+census_2010_race_tract,Division Code,BIGINT,YES
+census_2010_race_tract,FIPS American Indian Area/Alaska Native Area/Hawaiian Home Land Class Code,DOUBLE,YES
+census_2010_race_tract,FIPS County Subdivision Class Code,DOUBLE,YES
+census_2010_race_tract,FIPS Place Class Code,DOUBLE,YES
+census_2010_race_tract,Female,BIGINT,YES
+census_2010_race_tract,Female: 10 to 14 years,BIGINT,YES
+census_2010_race_tract,Female: 15 to 17 years,BIGINT,YES
+census_2010_race_tract,Female: 18 and 19 years,BIGINT,YES
+census_2010_race_tract,Female: 20 years,BIGINT,YES
+census_2010_race_tract,Female: 21 years,BIGINT,YES
+census_2010_race_tract,Female: 22 to 24 years,BIGINT,YES
+census_2010_race_tract,Female: 25 to 29 years,BIGINT,YES
+census_2010_race_tract,Female: 30 to 34 years,BIGINT,YES
+census_2010_race_tract,Female: 35 to 39 years,BIGINT,YES
+census_2010_race_tract,Female: 40 to 44 years,BIGINT,YES
+census_2010_race_tract,Female: 45 to 49 years,BIGINT,YES
+census_2010_race_tract,Female: 5 to 9 years,BIGINT,YES
+census_2010_race_tract,Female: 50 to 54 years,BIGINT,YES
+census_2010_race_tract,Female: 55 to 59 years,BIGINT,YES
+census_2010_race_tract,Female: 60 and 61 years,BIGINT,YES
+census_2010_race_tract,Female: 62 to 64 years,BIGINT,YES
+census_2010_race_tract,Female: 65 and 66 years,BIGINT,YES
+census_2010_race_tract,Female: 67 to 69 years,BIGINT,YES
+census_2010_race_tract,Female: 70 to 74 years,BIGINT,YES
+census_2010_race_tract,Female: 75 to 79 years,BIGINT,YES
+census_2010_race_tract,Female: 80 to 84 years,BIGINT,YES
+census_2010_race_tract,Female: 85 years and over,BIGINT,YES
+census_2010_race_tract,Female: Under 5 years,BIGINT,YES
+census_2010_race_tract,Functional Status Code,VARCHAR,YES
+census_2010_race_tract,GIS Join Match Code,VARCHAR,YES
+census_2010_race_tract,Internal Point (Latitude),DOUBLE,YES
+census_2010_race_tract,Internal Point (Longitude),DOUBLE,YES
+census_2010_race_tract,Legal/Statistical Area Description Code,VARCHAR,YES
+census_2010_race_tract,Male,BIGINT,YES
+census_2010_race_tract,Male: 10 to 14 years,BIGINT,YES
+census_2010_race_tract,Male: 15 to 17 years,BIGINT,YES
+census_2010_race_tract,Male: 18 and 19 years,BIGINT,YES
+census_2010_race_tract,Male: 20 years,BIGINT,YES
+census_2010_race_tract,Male: 21 years,BIGINT,YES
+census_2010_race_tract,Male: 22 to 24 years,BIGINT,YES
+census_2010_race_tract,Male: 25 to 29 years,BIGINT,YES
+census_2010_race_tract,Male: 30 to 34 years,BIGINT,YES
+census_2010_race_tract,Male: 35 to 39 years,BIGINT,YES
+census_2010_race_tract,Male: 40 to 44 years,BIGINT,YES
+census_2010_race_tract,Male: 45 to 49 years,BIGINT,YES
+census_2010_race_tract,Male: 5 to 9 years,BIGINT,YES
+census_2010_race_tract,Male: 50 to 54 years,BIGINT,YES
+census_2010_race_tract,Male: 55 to 59 years,BIGINT,YES
+census_2010_race_tract,Male: 60 and 61 years,BIGINT,YES
+census_2010_race_tract,Male: 62 to 64 years,BIGINT,YES
+census_2010_race_tract,Male: 65 and 66 years,BIGINT,YES
+census_2010_race_tract,Male: 67 to 69 years,BIGINT,YES
+census_2010_race_tract,Male: 70 to 74 years,BIGINT,YES
+census_2010_race_tract,Male: 75 to 79 years,BIGINT,YES
+census_2010_race_tract,Male: 80 to 84 years,BIGINT,YES
+census_2010_race_tract,Male: 85 years and over,BIGINT,YES
+census_2010_race_tract,Male: Under 5 years,BIGINT,YES
+census_2010_race_tract,Metropolitan Division Code,BIGINT,YES
+census_2010_race_tract,Metropolitan Micropolitan Indicator,BIGINT,YES
+census_2010_race_tract,Metropolitan Statistical Area/Micropolitan Statistical Area Code,BIGINT,YES
+census_2010_race_tract,Metropolitan Statistical Area/Micropolitan Statistical Area Principal City Indicator,DOUBLE,YES
+census_2010_race_tract,NECTA Metropolitan Micropolitan Indicator,DOUBLE,YES
+census_2010_race_tract,Native Hawaiian and Other Pacific Islander alone,BIGINT,YES
+census_2010_race_tract,New England City and Town Area Code,DOUBLE,YES
+census_2010_race_tract,New England City and Town Area Division Code,DOUBLE,YES
+census_2010_race_tract,New England City and Town Area Principal City Indicator,DOUBLE,YES
+census_2010_race_tract,Place Code,DOUBLE,YES
+census_2010_race_tract,Public Use Microdata Area,DOUBLE,YES
+census_2010_race_tract,Region Code,BIGINT,YES
+census_2010_race_tract,School Attendance Area Code,DOUBLE,YES
+census_2010_race_tract,School District (Elementary)/Remainder Code,DOUBLE,YES
+census_2010_race_tract,School District (Secondary)/Remainder Code,DOUBLE,YES
+census_2010_race_tract,School District (Unified)/Remainder Code,DOUBLE,YES
+census_2010_race_tract,Some Other Race alone,BIGINT,YES
+census_2010_race_tract,State Code,BIGINT,YES
+census_2010_race_tract,State Legislative District (Lower Chamber) Code,DOUBLE,YES
+census_2010_race_tract,State Legislative District (Upper Chamber) Code,DOUBLE,YES
+census_2010_race_tract,State Name,VARCHAR,YES
+census_2010_race_tract,State/US-Abbreviation (USPS),VARCHAR,YES
+census_2010_race_tract,Subminor Civil Division Code,DOUBLE,YES
+census_2010_race_tract,Total,BIGINT,YES
+census_2010_race_tract,Total.1,BIGINT,YES
+census_2010_race_tract,Total.2,BIGINT,YES
+census_2010_race_tract,Tribal Block Group Code,DOUBLE,YES
+census_2010_race_tract,Tribal Census Tract Code,DOUBLE,YES
+census_2010_race_tract,Tribal Subdivision/Remainder Code,DOUBLE,YES
+census_2010_race_tract,Two or More Races,BIGINT,YES
+census_2010_race_tract,Urban Area Code,DOUBLE,YES
+census_2010_race_tract,Urban Area Type,DOUBLE,YES
+census_2010_race_tract,Urban/Rural Code,DOUBLE,YES
+census_2010_race_tract,Voting District,DOUBLE,YES
+census_2010_race_tract,Voting District Indicator,DOUBLE,YES
+census_2010_race_tract,White alone,BIGINT,YES
+census_2010_race_tract2,5-Digit ZIP Code Tabulation Area Code,DOUBLE,YES
+census_2010_race_tract2,Alaska Native Regional Corporation Code,DOUBLE,YES
+census_2010_race_tract2,American Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land Code,DOUBLE,YES
+census_2010_race_tract2,American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code,DOUBLE,YES
+census_2010_race_tract2,American Indian Area/Alaska Native Area/Hawaiian Home Land Code,DOUBLE,YES
+census_2010_race_tract2,American Indian Tribal Subdivision (FIPS),DOUBLE,YES
+census_2010_race_tract2,American Indian and Alaska Native alone,BIGINT,YES
+census_2010_race_tract2,Area (Land),BIGINT,YES
+census_2010_race_tract2,Area (Water),BIGINT,YES
+census_2010_race_tract2,Area Name-Legal/Statistical Area Description (LSAD) Term-Part Indicator,VARCHAR,YES
+census_2010_race_tract2,Asian alone,BIGINT,YES
+census_2010_race_tract2,Black or African American alone,BIGINT,YES
+census_2010_race_tract2,Block Code,DOUBLE,YES
+census_2010_race_tract2,Block Group Code,DOUBLE,YES
+census_2010_race_tract2,Census Tract Code,BIGINT,YES
+census_2010_race_tract2,Combined New England City and Town Area Code,DOUBLE,YES
+census_2010_race_tract2,Combined Statistical Area Code,BIGINT,YES
+census_2010_race_tract2,Congressional District (111th Congress) Code,DOUBLE,YES
+census_2010_race_tract2,Consolidated City Code,DOUBLE,YES
+census_2010_race_tract2,County Code,BIGINT,YES
+census_2010_race_tract2,County Name,VARCHAR,YES
+census_2010_race_tract2,County Subdivision Code,DOUBLE,YES
+census_2010_race_tract2,Data File Year,BIGINT,YES
+census_2010_race_tract2,Division Code,BIGINT,YES
+census_2010_race_tract2,FIPS American Indian Area/Alaska Native Area/Hawaiian Home Land Class Code,DOUBLE,YES
+census_2010_race_tract2,FIPS County Subdivision Class Code,DOUBLE,YES
+census_2010_race_tract2,FIPS Place Class Code,DOUBLE,YES
+census_2010_race_tract2,Female,BIGINT,YES
+census_2010_race_tract2,Female: 10 to 14 years,BIGINT,YES
+census_2010_race_tract2,Female: 15 to 17 years,BIGINT,YES
+census_2010_race_tract2,Female: 18 and 19 years,BIGINT,YES
+census_2010_race_tract2,Female: 20 years,BIGINT,YES
+census_2010_race_tract2,Female: 21 years,BIGINT,YES
+census_2010_race_tract2,Female: 22 to 24 years,BIGINT,YES
+census_2010_race_tract2,Female: 25 to 29 years,BIGINT,YES
+census_2010_race_tract2,Female: 30 to 34 years,BIGINT,YES
+census_2010_race_tract2,Female: 35 to 39 years,BIGINT,YES
+census_2010_race_tract2,Female: 40 to 44 years,BIGINT,YES
+census_2010_race_tract2,Female: 45 to 49 years,BIGINT,YES
+census_2010_race_tract2,Female: 5 to 9 years,BIGINT,YES
+census_2010_race_tract2,Female: 50 to 54 years,BIGINT,YES
+census_2010_race_tract2,Female: 55 to 59 years,BIGINT,YES
+census_2010_race_tract2,Female: 60 and 61 years,BIGINT,YES
+census_2010_race_tract2,Female: 62 to 64 years,BIGINT,YES
+census_2010_race_tract2,Female: 65 and 66 years,BIGINT,YES
+census_2010_race_tract2,Female: 67 to 69 years,BIGINT,YES
+census_2010_race_tract2,Female: 70 to 74 years,BIGINT,YES
+census_2010_race_tract2,Female: 75 to 79 years,BIGINT,YES
+census_2010_race_tract2,Female: 80 to 84 years,BIGINT,YES
+census_2010_race_tract2,Female: 85 years and over,BIGINT,YES
+census_2010_race_tract2,Female: Under 5 years,BIGINT,YES
+census_2010_race_tract2,Functional Status Code,VARCHAR,YES
+census_2010_race_tract2,GIS Join Match Code,VARCHAR,YES
+census_2010_race_tract2,Internal Point (Latitude),DOUBLE,YES
+census_2010_race_tract2,Internal Point (Longitude),DOUBLE,YES
+census_2010_race_tract2,Legal/Statistical Area Description Code,VARCHAR,YES
+census_2010_race_tract2,Male,BIGINT,YES
+census_2010_race_tract2,Male: 10 to 14 years,BIGINT,YES
+census_2010_race_tract2,Male: 15 to 17 years,BIGINT,YES
+census_2010_race_tract2,Male: 18 and 19 years,BIGINT,YES
+census_2010_race_tract2,Male: 20 years,BIGINT,YES
+census_2010_race_tract2,Male: 21 years,BIGINT,YES
+census_2010_race_tract2,Male: 22 to 24 years,BIGINT,YES
+census_2010_race_tract2,Male: 25 to 29 years,BIGINT,YES
+census_2010_race_tract2,Male: 30 to 34 years,BIGINT,YES
+census_2010_race_tract2,Male: 35 to 39 years,BIGINT,YES
+census_2010_race_tract2,Male: 40 to 44 years,BIGINT,YES
+census_2010_race_tract2,Male: 45 to 49 years,BIGINT,YES
+census_2010_race_tract2,Male: 5 to 9 years,BIGINT,YES
+census_2010_race_tract2,Male: 50 to 54 years,BIGINT,YES
+census_2010_race_tract2,Male: 55 to 59 years,BIGINT,YES
+census_2010_race_tract2,Male: 60 and 61 years,BIGINT,YES
+census_2010_race_tract2,Male: 62 to 64 years,BIGINT,YES
+census_2010_race_tract2,Male: 65 and 66 years,BIGINT,YES
+census_2010_race_tract2,Male: 67 to 69 years,BIGINT,YES
+census_2010_race_tract2,Male: 70 to 74 years,BIGINT,YES
+census_2010_race_tract2,Male: 75 to 79 years,BIGINT,YES
+census_2010_race_tract2,Male: 80 to 84 years,BIGINT,YES
+census_2010_race_tract2,Male: 85 years and over,BIGINT,YES
+census_2010_race_tract2,Male: Under 5 years,BIGINT,YES
+census_2010_race_tract2,Metropolitan Division Code,BIGINT,YES
+census_2010_race_tract2,Metropolitan Micropolitan Indicator,BIGINT,YES
+census_2010_race_tract2,Metropolitan Statistical Area/Micropolitan Statistical Area Code,BIGINT,YES
+census_2010_race_tract2,Metropolitan Statistical Area/Micropolitan Statistical Area Principal City Indicator,DOUBLE,YES
+census_2010_race_tract2,NECTA Metropolitan Micropolitan Indicator,DOUBLE,YES
+census_2010_race_tract2,Native Hawaiian and Other Pacific Islander alone,BIGINT,YES
+census_2010_race_tract2,New England City and Town Area Code,DOUBLE,YES
+census_2010_race_tract2,New England City and Town Area Division Code,DOUBLE,YES
+census_2010_race_tract2,New England City and Town Area Principal City Indicator,DOUBLE,YES
+census_2010_race_tract2,Place Code,DOUBLE,YES
+census_2010_race_tract2,Public Use Microdata Area,DOUBLE,YES
+census_2010_race_tract2,Region Code,BIGINT,YES
+census_2010_race_tract2,School Attendance Area Code,DOUBLE,YES
+census_2010_race_tract2,School District (Elementary)/Remainder Code,DOUBLE,YES
+census_2010_race_tract2,School District (Secondary)/Remainder Code,DOUBLE,YES
+census_2010_race_tract2,School District (Unified)/Remainder Code,DOUBLE,YES
+census_2010_race_tract2,Some Other Race alone,BIGINT,YES
+census_2010_race_tract2,State Code,BIGINT,YES
+census_2010_race_tract2,State Legislative District (Lower Chamber) Code,DOUBLE,YES
+census_2010_race_tract2,State Legislative District (Upper Chamber) Code,DOUBLE,YES
+census_2010_race_tract2,State Name,VARCHAR,YES
+census_2010_race_tract2,State/US-Abbreviation (USPS),VARCHAR,YES
+census_2010_race_tract2,Subminor Civil Division Code,DOUBLE,YES
+census_2010_race_tract2,Total,BIGINT,YES
+census_2010_race_tract2,Total.1,BIGINT,YES
+census_2010_race_tract2,Total.2,BIGINT,YES
+census_2010_race_tract2,Tribal Block Group Code,DOUBLE,YES
+census_2010_race_tract2,Tribal Census Tract Code,DOUBLE,YES
+census_2010_race_tract2,Tribal Subdivision/Remainder Code,DOUBLE,YES
+census_2010_race_tract2,Two or More Races,BIGINT,YES
+census_2010_race_tract2,Urban Area Code,DOUBLE,YES
+census_2010_race_tract2,Urban Area Type,DOUBLE,YES
+census_2010_race_tract2,Urban/Rural Code,DOUBLE,YES
+census_2010_race_tract2,Voting District,DOUBLE,YES
+census_2010_race_tract2,Voting District Indicator,DOUBLE,YES
+census_2010_race_tract2,White alone,BIGINT,YES
+census_2020_edu_state_estimates,5-Digit ZIP Code Tabulation Area Code,DOUBLE,YES
+census_2020_edu_state_estimates,Alaska Native Regional Corporation Code,DOUBLE,YES
+census_2020_edu_state_estimates,American Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land Code,DOUBLE,YES
+census_2020_edu_state_estimates,American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code,DOUBLE,YES
+census_2020_edu_state_estimates,American Indian Area/Alaska Native Area/Hawaiian Home Land Code,DOUBLE,YES
+census_2020_edu_state_estimates,American Indian Trust Land/ Hawaiian Home Land Indicator,DOUBLE,YES
+census_2020_edu_state_estimates,Area Name,VARCHAR,YES
+census_2020_edu_state_estimates,Census Geographic Identifier,VARCHAR,YES
+census_2020_edu_state_estimates,Census Tract Code,DOUBLE,YES
+census_2020_edu_state_estimates,Combined New England City and Town Area Code,DOUBLE,YES
+census_2020_edu_state_estimates,Combined Statistical Area Code,DOUBLE,YES
+census_2020_edu_state_estimates,"Congressional District (2019-2021, 116th Congress) Code",DOUBLE,YES
+census_2020_edu_state_estimates,Consolidated City Code,DOUBLE,YES
+census_2020_edu_state_estimates,County Code,DOUBLE,YES
+census_2020_edu_state_estimates,County Subdivision Code,DOUBLE,YES
+census_2020_edu_state_estimates,Data File Year,VARCHAR,YES
+census_2020_edu_state_estimates,Division Code,DOUBLE,YES
+census_2020_edu_state_estimates,Enrolled in school,BIGINT,YES
+census_2020_edu_state_estimates,"Enrolled in school: Enrolled in college, undergraduate years",BIGINT,YES
+census_2020_edu_state_estimates,Enrolled in school: Enrolled in grade 1 to grade 4,BIGINT,YES
+census_2020_edu_state_estimates,Enrolled in school: Enrolled in grade 5 to grade 8,BIGINT,YES
+census_2020_edu_state_estimates,Enrolled in school: Enrolled in grade 9 to grade 12,BIGINT,YES
+census_2020_edu_state_estimates,Enrolled in school: Enrolled in kindergarten,BIGINT,YES
+census_2020_edu_state_estimates,"Enrolled in school: Enrolled in nursery school, preschool",BIGINT,YES
+census_2020_edu_state_estimates,Enrolled in school: Graduate or professional school,BIGINT,YES
+census_2020_edu_state_estimates,Female,BIGINT,YES
+census_2020_edu_state_estimates,Female: 18 to 24 years,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 18 to 24 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Female: 18 to 24 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 18 to 24 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 18 to 24 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 18 to 24 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Female: 18 to 24 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 18 to 24 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,Female: 25 to 34 years,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 25 to 34 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Female: 25 to 34 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 25 to 34 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 25 to 34 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 25 to 34 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Female: 25 to 34 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 25 to 34 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,Female: 35 to 44 years,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 35 to 44 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Female: 35 to 44 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 35 to 44 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 35 to 44 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 35 to 44 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Female: 35 to 44 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 35 to 44 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,Female: 45 to 64 years,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 45 to 64 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Female: 45 to 64 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 45 to 64 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 45 to 64 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 45 to 64 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Female: 45 to 64 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 45 to 64 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,Female: 65 years and over,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 65 years and over: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Female: 65 years and over: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 65 years and over: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 65 years and over: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Female: 65 years and over: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Female: 65 years and over: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Female: 65 years and over: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,GIS Join Match Code,VARCHAR,YES
+census_2020_edu_state_estimates,Male,BIGINT,YES
+census_2020_edu_state_estimates,Male: 18 to 24 years,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 18 to 24 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Male: 18 to 24 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 18 to 24 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 18 to 24 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 18 to 24 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Male: 18 to 24 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 18 to 24 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,Male: 25 to 34 years,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 25 to 34 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Male: 25 to 34 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 25 to 34 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 25 to 34 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 25 to 34 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Male: 25 to 34 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 25 to 34 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,Male: 35 to 44 years,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 35 to 44 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Male: 35 to 44 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 35 to 44 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 35 to 44 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 35 to 44 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Male: 35 to 44 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 35 to 44 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,Male: 45 to 64 years,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 45 to 64 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Male: 45 to 64 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 45 to 64 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 45 to 64 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 45 to 64 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Male: 45 to 64 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 45 to 64 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,Male: 65 years and over,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 65 years and over: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_estimates,Male: 65 years and over: Associate's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 65 years and over: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 65 years and over: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_estimates,Male: 65 years and over: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_estimates,Male: 65 years and over: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_estimates,"Male: 65 years and over: Some college, no degree",BIGINT,YES
+census_2020_edu_state_estimates,Metropolitan Division Code,DOUBLE,YES
+census_2020_edu_state_estimates,Metropolitan Statistical Area/Micropolitan Statistical Area Code,DOUBLE,YES
+census_2020_edu_state_estimates,New England City and Town Area Code,DOUBLE,YES
+census_2020_edu_state_estimates,New England City and Town Area Division Code,DOUBLE,YES
+census_2020_edu_state_estimates,Not enrolled in school,BIGINT,YES
+census_2020_edu_state_estimates,Place Code,DOUBLE,YES
+census_2020_edu_state_estimates,Principal City Indicator,DOUBLE,YES
+census_2020_edu_state_estimates,Public Use Microdata Area Code,DOUBLE,YES
+census_2020_edu_state_estimates,Region Code,DOUBLE,YES
+census_2020_edu_state_estimates,School District (Elementary)/Remainder Code,DOUBLE,YES
+census_2020_edu_state_estimates,School District (Secondary)/Remainder Code,DOUBLE,YES
+census_2020_edu_state_estimates,School District (Unified)/Remainder Code,DOUBLE,YES
+census_2020_edu_state_estimates,State Code,BIGINT,YES
+census_2020_edu_state_estimates,State Legislative District (Lower Chamber) Code,DOUBLE,YES
+census_2020_edu_state_estimates,State Legislative District (Upper Chamber) Code,DOUBLE,YES
+census_2020_edu_state_estimates,State Name,VARCHAR,YES
+census_2020_edu_state_estimates,State Postal Abbreviation,VARCHAR,YES
+census_2020_edu_state_estimates,Subminor Civil Division Code,DOUBLE,YES
+census_2020_edu_state_estimates,Total,BIGINT,YES
+census_2020_edu_state_estimates,Total.1,BIGINT,YES
+census_2020_edu_state_estimates,Tribal Census Tract Code,DOUBLE,YES
+census_2020_edu_state_estimates,Tribal Subdivision/Remainder Code,DOUBLE,YES
+census_2020_edu_state_estimates,Urban Area Code,DOUBLE,YES
+census_2020_edu_state_margins,5-Digit ZIP Code Tabulation Area Code,DOUBLE,YES
+census_2020_edu_state_margins,Alaska Native Regional Corporation Code,DOUBLE,YES
+census_2020_edu_state_margins,American Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land Code,DOUBLE,YES
+census_2020_edu_state_margins,American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code,DOUBLE,YES
+census_2020_edu_state_margins,American Indian Area/Alaska Native Area/Hawaiian Home Land Code,DOUBLE,YES
+census_2020_edu_state_margins,American Indian Trust Land/ Hawaiian Home Land Indicator,DOUBLE,YES
+census_2020_edu_state_margins,Area Name,VARCHAR,YES
+census_2020_edu_state_margins,Census Geographic Identifier,VARCHAR,YES
+census_2020_edu_state_margins,Census Tract Code,DOUBLE,YES
+census_2020_edu_state_margins,Combined New England City and Town Area Code,DOUBLE,YES
+census_2020_edu_state_margins,Combined Statistical Area Code,DOUBLE,YES
+census_2020_edu_state_margins,"Congressional District (2019-2021, 116th Congress) Code",DOUBLE,YES
+census_2020_edu_state_margins,Consolidated City Code,DOUBLE,YES
+census_2020_edu_state_margins,County Code,DOUBLE,YES
+census_2020_edu_state_margins,County Subdivision Code,DOUBLE,YES
+census_2020_edu_state_margins,Data File Year,VARCHAR,YES
+census_2020_edu_state_margins,Division Code,DOUBLE,YES
+census_2020_edu_state_margins,Enrolled in school,BIGINT,YES
+census_2020_edu_state_margins,"Enrolled in school: Enrolled in college, undergraduate years",BIGINT,YES
+census_2020_edu_state_margins,Enrolled in school: Enrolled in grade 1 to grade 4,BIGINT,YES
+census_2020_edu_state_margins,Enrolled in school: Enrolled in grade 5 to grade 8,BIGINT,YES
+census_2020_edu_state_margins,Enrolled in school: Enrolled in grade 9 to grade 12,BIGINT,YES
+census_2020_edu_state_margins,Enrolled in school: Enrolled in kindergarten,BIGINT,YES
+census_2020_edu_state_margins,"Enrolled in school: Enrolled in nursery school, preschool",BIGINT,YES
+census_2020_edu_state_margins,Enrolled in school: Graduate or professional school,BIGINT,YES
+census_2020_edu_state_margins,Female,DOUBLE,YES
+census_2020_edu_state_margins,Female: 18 to 24 years,BIGINT,YES
+census_2020_edu_state_margins,"Female: 18 to 24 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Female: 18 to 24 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 18 to 24 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 18 to 24 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 18 to 24 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Female: 18 to 24 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Female: 18 to 24 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,Female: 25 to 34 years,BIGINT,YES
+census_2020_edu_state_margins,"Female: 25 to 34 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Female: 25 to 34 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 25 to 34 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 25 to 34 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 25 to 34 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Female: 25 to 34 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Female: 25 to 34 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,Female: 35 to 44 years,BIGINT,YES
+census_2020_edu_state_margins,"Female: 35 to 44 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Female: 35 to 44 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 35 to 44 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 35 to 44 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 35 to 44 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Female: 35 to 44 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Female: 35 to 44 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,Female: 45 to 64 years,BIGINT,YES
+census_2020_edu_state_margins,"Female: 45 to 64 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Female: 45 to 64 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 45 to 64 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 45 to 64 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 45 to 64 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Female: 45 to 64 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Female: 45 to 64 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,Female: 65 years and over,DOUBLE,YES
+census_2020_edu_state_margins,"Female: 65 years and over: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Female: 65 years and over: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 65 years and over: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 65 years and over: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Female: 65 years and over: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Female: 65 years and over: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Female: 65 years and over: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,GIS Join Match Code,VARCHAR,YES
+census_2020_edu_state_margins,Male,DOUBLE,YES
+census_2020_edu_state_margins,Male: 18 to 24 years,BIGINT,YES
+census_2020_edu_state_margins,"Male: 18 to 24 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Male: 18 to 24 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 18 to 24 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 18 to 24 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 18 to 24 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Male: 18 to 24 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Male: 18 to 24 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,Male: 25 to 34 years,BIGINT,YES
+census_2020_edu_state_margins,"Male: 25 to 34 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Male: 25 to 34 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 25 to 34 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 25 to 34 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 25 to 34 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Male: 25 to 34 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Male: 25 to 34 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,Male: 35 to 44 years,BIGINT,YES
+census_2020_edu_state_margins,"Male: 35 to 44 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Male: 35 to 44 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 35 to 44 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 35 to 44 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 35 to 44 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Male: 35 to 44 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Male: 35 to 44 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,Male: 45 to 64 years,BIGINT,YES
+census_2020_edu_state_margins,"Male: 45 to 64 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Male: 45 to 64 years: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 45 to 64 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 45 to 64 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 45 to 64 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Male: 45 to 64 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Male: 45 to 64 years: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,Male: 65 years and over,DOUBLE,YES
+census_2020_edu_state_margins,"Male: 65 years and over: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_state_margins,Male: 65 years and over: Associate's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 65 years and over: Bachelor's degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 65 years and over: Graduate or professional degree,BIGINT,YES
+census_2020_edu_state_margins,Male: 65 years and over: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_state_margins,Male: 65 years and over: Less than 9th grade,BIGINT,YES
+census_2020_edu_state_margins,"Male: 65 years and over: Some college, no degree",BIGINT,YES
+census_2020_edu_state_margins,Metropolitan Division Code,DOUBLE,YES
+census_2020_edu_state_margins,Metropolitan Statistical Area/Micropolitan Statistical Area Code,DOUBLE,YES
+census_2020_edu_state_margins,New England City and Town Area Code,DOUBLE,YES
+census_2020_edu_state_margins,New England City and Town Area Division Code,DOUBLE,YES
+census_2020_edu_state_margins,Not enrolled in school,BIGINT,YES
+census_2020_edu_state_margins,Place Code,DOUBLE,YES
+census_2020_edu_state_margins,Principal City Indicator,DOUBLE,YES
+census_2020_edu_state_margins,Public Use Microdata Area Code,DOUBLE,YES
+census_2020_edu_state_margins,Region Code,DOUBLE,YES
+census_2020_edu_state_margins,School District (Elementary)/Remainder Code,DOUBLE,YES
+census_2020_edu_state_margins,School District (Secondary)/Remainder Code,DOUBLE,YES
+census_2020_edu_state_margins,School District (Unified)/Remainder Code,DOUBLE,YES
+census_2020_edu_state_margins,State Code,BIGINT,YES
+census_2020_edu_state_margins,State Legislative District (Lower Chamber) Code,DOUBLE,YES
+census_2020_edu_state_margins,State Legislative District (Upper Chamber) Code,DOUBLE,YES
+census_2020_edu_state_margins,State Name,VARCHAR,YES
+census_2020_edu_state_margins,State Postal Abbreviation,VARCHAR,YES
+census_2020_edu_state_margins,Subminor Civil Division Code,DOUBLE,YES
+census_2020_edu_state_margins,Total,BIGINT,YES
+census_2020_edu_state_margins,Total.1,DOUBLE,YES
+census_2020_edu_state_margins,Tribal Census Tract Code,DOUBLE,YES
+census_2020_edu_state_margins,Tribal Subdivision/Remainder Code,DOUBLE,YES
+census_2020_edu_state_margins,Urban Area Code,DOUBLE,YES
+census_2020_edu_tract,5-Digit ZIP Code Tabulation Area Code,DOUBLE,YES
+census_2020_edu_tract,Alaska Native Regional Corporation Code,DOUBLE,YES
+census_2020_edu_tract,American Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land Code,DOUBLE,YES
+census_2020_edu_tract,American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code,DOUBLE,YES
+census_2020_edu_tract,American Indian Area/Alaska Native Area/Hawaiian Home Land Code,DOUBLE,YES
+census_2020_edu_tract,American Indian Trust Land/ Hawaiian Home Land Indicator,DOUBLE,YES
+census_2020_edu_tract,Area Name,VARCHAR,YES
+census_2020_edu_tract,Census Geographic Identifier,VARCHAR,YES
+census_2020_edu_tract,Census Tract Code,BIGINT,YES
+census_2020_edu_tract,Combined New England City and Town Area Code,DOUBLE,YES
+census_2020_edu_tract,Combined Statistical Area Code,DOUBLE,YES
+census_2020_edu_tract,"Congressional District (2019-2021, 116th Congress) Code",DOUBLE,YES
+census_2020_edu_tract,Consolidated City Code,DOUBLE,YES
+census_2020_edu_tract,County Code,BIGINT,YES
+census_2020_edu_tract,County Name,VARCHAR,YES
+census_2020_edu_tract,County Subdivision Code,DOUBLE,YES
+census_2020_edu_tract,Data File Year,VARCHAR,YES
+census_2020_edu_tract,Division Code,DOUBLE,YES
+census_2020_edu_tract,Enrolled in school,BIGINT,YES
+census_2020_edu_tract,"Enrolled in school: Enrolled in college, undergraduate years",BIGINT,YES
+census_2020_edu_tract,Enrolled in school: Enrolled in grade 1 to grade 4,BIGINT,YES
+census_2020_edu_tract,Enrolled in school: Enrolled in grade 5 to grade 8,BIGINT,YES
+census_2020_edu_tract,Enrolled in school: Enrolled in grade 9 to grade 12,BIGINT,YES
+census_2020_edu_tract,Enrolled in school: Enrolled in kindergarten,BIGINT,YES
+census_2020_edu_tract,"Enrolled in school: Enrolled in nursery school, preschool",BIGINT,YES
+census_2020_edu_tract,Enrolled in school: Graduate or professional school,BIGINT,YES
+census_2020_edu_tract,Female,BIGINT,YES
+census_2020_edu_tract,Female: 18 to 24 years,BIGINT,YES
+census_2020_edu_tract,"Female: 18 to 24 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Female: 18 to 24 years: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Female: 18 to 24 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Female: 18 to 24 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Female: 18 to 24 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Female: 18 to 24 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Female: 18 to 24 years: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,Female: 25 to 34 years,BIGINT,YES
+census_2020_edu_tract,"Female: 25 to 34 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Female: 25 to 34 years: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Female: 25 to 34 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Female: 25 to 34 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Female: 25 to 34 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Female: 25 to 34 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Female: 25 to 34 years: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,Female: 35 to 44 years,BIGINT,YES
+census_2020_edu_tract,"Female: 35 to 44 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Female: 35 to 44 years: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Female: 35 to 44 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Female: 35 to 44 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Female: 35 to 44 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Female: 35 to 44 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Female: 35 to 44 years: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,Female: 45 to 64 years,BIGINT,YES
+census_2020_edu_tract,"Female: 45 to 64 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Female: 45 to 64 years: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Female: 45 to 64 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Female: 45 to 64 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Female: 45 to 64 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Female: 45 to 64 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Female: 45 to 64 years: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,Female: 65 years and over,BIGINT,YES
+census_2020_edu_tract,"Female: 65 years and over: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Female: 65 years and over: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Female: 65 years and over: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Female: 65 years and over: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Female: 65 years and over: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Female: 65 years and over: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Female: 65 years and over: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,GIS Join Match Code,VARCHAR,YES
+census_2020_edu_tract,Male,BIGINT,YES
+census_2020_edu_tract,Male: 18 to 24 years,BIGINT,YES
+census_2020_edu_tract,"Male: 18 to 24 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Male: 18 to 24 years: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Male: 18 to 24 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Male: 18 to 24 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Male: 18 to 24 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Male: 18 to 24 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Male: 18 to 24 years: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,Male: 25 to 34 years,BIGINT,YES
+census_2020_edu_tract,"Male: 25 to 34 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Male: 25 to 34 years: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Male: 25 to 34 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Male: 25 to 34 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Male: 25 to 34 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Male: 25 to 34 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Male: 25 to 34 years: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,Male: 35 to 44 years,BIGINT,YES
+census_2020_edu_tract,"Male: 35 to 44 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Male: 35 to 44 years: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Male: 35 to 44 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Male: 35 to 44 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Male: 35 to 44 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Male: 35 to 44 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Male: 35 to 44 years: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,Male: 45 to 64 years,BIGINT,YES
+census_2020_edu_tract,"Male: 45 to 64 years: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Male: 45 to 64 years: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Male: 45 to 64 years: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Male: 45 to 64 years: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Male: 45 to 64 years: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Male: 45 to 64 years: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Male: 45 to 64 years: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,Male: 65 years and over,BIGINT,YES
+census_2020_edu_tract,"Male: 65 years and over: 9th to 12th grade, no diploma",BIGINT,YES
+census_2020_edu_tract,Male: 65 years and over: Associate's degree,BIGINT,YES
+census_2020_edu_tract,Male: 65 years and over: Bachelor's degree,BIGINT,YES
+census_2020_edu_tract,Male: 65 years and over: Graduate or professional degree,BIGINT,YES
+census_2020_edu_tract,Male: 65 years and over: High school graduate (includes equivalency),BIGINT,YES
+census_2020_edu_tract,Male: 65 years and over: Less than 9th grade,BIGINT,YES
+census_2020_edu_tract,"Male: 65 years and over: Some college, no degree",BIGINT,YES
+census_2020_edu_tract,Metropolitan Division Code,DOUBLE,YES
+census_2020_edu_tract,Metropolitan Statistical Area/Micropolitan Statistical Area Code,DOUBLE,YES
+census_2020_edu_tract,New England City and Town Area Code,DOUBLE,YES
+census_2020_edu_tract,New England City and Town Area Division Code,DOUBLE,YES
+census_2020_edu_tract,Not enrolled in school,BIGINT,YES
+census_2020_edu_tract,Place Code,DOUBLE,YES
+census_2020_edu_tract,Principal City Indicator,DOUBLE,YES
+census_2020_edu_tract,Public Use Microdata Area Code,DOUBLE,YES
+census_2020_edu_tract,Region Code,DOUBLE,YES
+census_2020_edu_tract,School District (Elementary)/Remainder Code,DOUBLE,YES
+census_2020_edu_tract,School District (Secondary)/Remainder Code,DOUBLE,YES
+census_2020_edu_tract,School District (Unified)/Remainder Code,DOUBLE,YES
+census_2020_edu_tract,State Code,BIGINT,YES
+census_2020_edu_tract,State Legislative District (Lower Chamber) Code,DOUBLE,YES
+census_2020_edu_tract,State Legislative District (Upper Chamber) Code,DOUBLE,YES
+census_2020_edu_tract,State Name,VARCHAR,YES
+census_2020_edu_tract,State Postal Abbreviation,VARCHAR,YES
+census_2020_edu_tract,Subminor Civil Division Code,DOUBLE,YES
+census_2020_edu_tract,Total,BIGINT,YES
+census_2020_edu_tract,Total.1,BIGINT,YES
+census_2020_edu_tract,Tribal Census Tract Code,DOUBLE,YES
+census_2020_edu_tract,Tribal Subdivision/Remainder Code,DOUBLE,YES
+census_2020_edu_tract,Urban Area Code,DOUBLE,YES
+census_2020_race_state,Alaska Native Regional Corporation (FIPS) Code,DOUBLE,YES
+census_2020_race_state,American Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land Code,DOUBLE,YES
+census_2020_race_state,American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code,DOUBLE,YES
+census_2020_race_state,American Indian Area/Alaska Native Area/Hawaiian Home Land (Census) Code,DOUBLE,YES
+census_2020_race_state,American Indian Tribal Subdivision (Census) Code,DOUBLE,YES
+census_2020_race_state,American Indian and Alaska Native alone,BIGINT,YES
+census_2020_race_state,Area (Land),BIGINT,YES
+census_2020_race_state,Area (Water),BIGINT,YES
+census_2020_race_state,Area Base Name,VARCHAR,YES
+census_2020_race_state,Area Name-Legal/Statistical Area Description (LSAD) Term-Part Indicator,VARCHAR,YES
+census_2020_race_state,Asian alone,BIGINT,YES
+census_2020_race_state,Black or African American alone,BIGINT,YES
+census_2020_race_state,Block Code,DOUBLE,YES
+census_2020_race_state,Block Group Code,DOUBLE,YES
+census_2020_race_state,Census Tract Code,DOUBLE,YES
+census_2020_race_state,Combined New England City and Town Area Code,DOUBLE,YES
+census_2020_race_state,Combined Statistical Area Code,DOUBLE,YES
+census_2020_race_state,Congressional District (116th) Code,DOUBLE,YES
+census_2020_race_state,Consolidated City (FIPS) Code,DOUBLE,YES
+census_2020_race_state,County (FIPS) Code,DOUBLE,YES
+census_2020_race_state,County Subdivision (FIPS) Code,DOUBLE,YES
+census_2020_race_state,Data File Year,BIGINT,YES
+census_2020_race_state,Division Code,BIGINT,YES
+census_2020_race_state,FIPS American Indian Area/Alaska Native Area/Hawaiian Home Land Class Code,DOUBLE,YES
+census_2020_race_state,FIPS County Subdivision Class Code,DOUBLE,YES
+census_2020_race_state,FIPS Place Class Code,DOUBLE,YES
+census_2020_race_state,Female,BIGINT,YES
+census_2020_race_state,Female: 10 to 14 years,BIGINT,YES
+census_2020_race_state,Female: 15 to 17 years,BIGINT,YES
+census_2020_race_state,Female: 18 and 19 years,BIGINT,YES
+census_2020_race_state,Female: 20 years,BIGINT,YES
+census_2020_race_state,Female: 21 years,BIGINT,YES
+census_2020_race_state,Female: 22 to 24 years,BIGINT,YES
+census_2020_race_state,Female: 25 to 29 years,BIGINT,YES
+census_2020_race_state,Female: 30 to 34 years,BIGINT,YES
+census_2020_race_state,Female: 35 to 39 years,BIGINT,YES
+census_2020_race_state,Female: 40 to 44 years,BIGINT,YES
+census_2020_race_state,Female: 45 to 49 years,BIGINT,YES
+census_2020_race_state,Female: 5 to 9 years,BIGINT,YES
+census_2020_race_state,Female: 50 to 54 years,BIGINT,YES
+census_2020_race_state,Female: 55 to 59 years,BIGINT,YES
+census_2020_race_state,Female: 60 and 61 years,BIGINT,YES
+census_2020_race_state,Female: 62 to 64 years,BIGINT,YES
+census_2020_race_state,Female: 65 and 66 years,BIGINT,YES
+census_2020_race_state,Female: 67 to 69 years,BIGINT,YES
+census_2020_race_state,Female: 70 to 74 years,BIGINT,YES
+census_2020_race_state,Female: 75 to 79 years,BIGINT,YES
+census_2020_race_state,Female: 80 to 84 years,BIGINT,YES
+census_2020_race_state,Female: 85 years and over,BIGINT,YES
+census_2020_race_state,Female: Under 5 years,BIGINT,YES
+census_2020_race_state,Functional Status Code,VARCHAR,YES
+census_2020_race_state,GIS Join Match Code,VARCHAR,YES
+census_2020_race_state,Geographic Code Identifier,BIGINT,YES
+census_2020_race_state,Geographic Record Identifier,VARCHAR,YES
+census_2020_race_state,Internal Point (Latitude),DOUBLE,YES
+census_2020_race_state,Internal Point (Longitude),DOUBLE,YES
+census_2020_race_state,Legal/Statistical Area Description Code,BIGINT,YES
+census_2020_race_state,Male,BIGINT,YES
+census_2020_race_state,Male: 10 to 14 years,BIGINT,YES
+census_2020_race_state,Male: 15 to 17 years,BIGINT,YES
+census_2020_race_state,Male: 18 and 19 years,BIGINT,YES
+census_2020_race_state,Male: 20 years,BIGINT,YES
+census_2020_race_state,Male: 21 years,BIGINT,YES
+census_2020_race_state,Male: 22 to 24 years,BIGINT,YES
+census_2020_race_state,Male: 25 to 29 years,BIGINT,YES
+census_2020_race_state,Male: 30 to 34 years,BIGINT,YES
+census_2020_race_state,Male: 35 to 39 years,BIGINT,YES
+census_2020_race_state,Male: 40 to 44 years,BIGINT,YES
+census_2020_race_state,Male: 45 to 49 years,BIGINT,YES
+census_2020_race_state,Male: 5 to 9 years,BIGINT,YES
+census_2020_race_state,Male: 50 to 54 years,BIGINT,YES
+census_2020_race_state,Male: 55 to 59 years,BIGINT,YES
+census_2020_race_state,Male: 60 and 61 years,BIGINT,YES
+census_2020_race_state,Male: 62 to 64 years,BIGINT,YES
+census_2020_race_state,Male: 65 and 66 years,BIGINT,YES
+census_2020_race_state,Male: 67 to 69 years,BIGINT,YES
+census_2020_race_state,Male: 70 to 74 years,BIGINT,YES
+census_2020_race_state,Male: 75 to 79 years,BIGINT,YES
+census_2020_race_state,Male: 80 to 84 years,BIGINT,YES
+census_2020_race_state,Male: 85 years and over,BIGINT,YES
+census_2020_race_state,Male: Under 5 years,BIGINT,YES
+census_2020_race_state,Metropolitan Division Code,DOUBLE,YES
+census_2020_race_state,Metropolitan Statistical Area/Micropolitan Statistical Area Code,DOUBLE,YES
+census_2020_race_state,Metropolitan Statistical Area/Micropolitan Statistical Area Principal City Indicator,DOUBLE,YES
+census_2020_race_state,Metropolitan/Micropolitan Indicator,DOUBLE,YES
+census_2020_race_state,NECTA Metropolitan/Micropolitan Indicator,DOUBLE,YES
+census_2020_race_state,Native Hawaiian and Other Pacific Islander alone,BIGINT,YES
+census_2020_race_state,New England City and Town Area Code,DOUBLE,YES
+census_2020_race_state,New England City and Town Area Division Code,DOUBLE,YES
+census_2020_race_state,New England City and Town Area Principal City Indicator,DOUBLE,YES
+census_2020_race_state,Place (FIPS) Code,DOUBLE,YES
+census_2020_race_state,Public Use Microdata Area,DOUBLE,YES
+census_2020_race_state,Region Code,BIGINT,YES
+census_2020_race_state,School District (Elementary) Code,DOUBLE,YES
+census_2020_race_state,School District (Secondary) Code,DOUBLE,YES
+census_2020_race_state,School District (Unified) Code,DOUBLE,YES
+census_2020_race_state,Some Other Race alone,BIGINT,YES
+census_2020_race_state,State (FIPS) Code,BIGINT,YES
+census_2020_race_state,State (FIPS) Name,VARCHAR,YES
+census_2020_race_state,State Legislative District (Lower Chamber) (2018) Code,DOUBLE,YES
+census_2020_race_state,State Legislative District (Upper Chamber) (2018) Code,DOUBLE,YES
+census_2020_race_state,State/US-Abbreviation (USPS),VARCHAR,YES
+census_2020_race_state,Subminor Civil Division (FIPS) Code,DOUBLE,YES
+census_2020_race_state,Total,BIGINT,YES
+census_2020_race_state,Total.1,BIGINT,YES
+census_2020_race_state,Total.2,BIGINT,YES
+census_2020_race_state,Tribal Block Group Code,DOUBLE,YES
+census_2020_race_state,Tribal Census Tract Code,DOUBLE,YES
+census_2020_race_state,Two or More Races,BIGINT,YES
+census_2020_race_state,Urban Area Code,DOUBLE,YES
+census_2020_race_state,Urban Growth Area,DOUBLE,YES
+census_2020_race_state,Urban/Rural Code,DOUBLE,YES
+census_2020_race_state,Voting District,DOUBLE,YES
+census_2020_race_state,Voting District Indicator,DOUBLE,YES
+census_2020_race_state,White alone,BIGINT,YES
+census_2020_race_state,ZIP Code Tabulation Area (5-Digit) Code,DOUBLE,YES
+census_2020_race_tract,Alaska Native Regional Corporation (FIPS) Code,DOUBLE,YES
+census_2020_race_tract,American Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land Code,DOUBLE,YES
+census_2020_race_tract,American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code,DOUBLE,YES
+census_2020_race_tract,American Indian Area/Alaska Native Area/Hawaiian Home Land (Census) Code,DOUBLE,YES
+census_2020_race_tract,American Indian Tribal Subdivision (Census) Code,DOUBLE,YES
+census_2020_race_tract,American Indian and Alaska Native alone,BIGINT,YES
+census_2020_race_tract,Area (Land),BIGINT,YES
+census_2020_race_tract,Area (Water),BIGINT,YES
+census_2020_race_tract,Area Base Name,DOUBLE,YES
+census_2020_race_tract,Area Name-Legal/Statistical Area Description (LSAD) Term-Part Indicator,VARCHAR,YES
+census_2020_race_tract,Asian alone,BIGINT,YES
+census_2020_race_tract,Black or African American alone,BIGINT,YES
+census_2020_race_tract,Block Code,DOUBLE,YES
+census_2020_race_tract,Block Group Code,DOUBLE,YES
+census_2020_race_tract,Census Tract Code,BIGINT,YES
+census_2020_race_tract,Combined New England City and Town Area Code,DOUBLE,YES
+census_2020_race_tract,Combined Statistical Area Code,BIGINT,YES
+census_2020_race_tract,Congressional District (116th) Code,DOUBLE,YES
+census_2020_race_tract,Consolidated City (FIPS) Code,DOUBLE,YES
+census_2020_race_tract,County (FIPS) Code,BIGINT,YES
+census_2020_race_tract,County (FIPS) Name,VARCHAR,YES
+census_2020_race_tract,County Subdivision (FIPS) Code,DOUBLE,YES
+census_2020_race_tract,Data File Year,BIGINT,YES
+census_2020_race_tract,Division Code,BIGINT,YES
+census_2020_race_tract,FIPS American Indian Area/Alaska Native Area/Hawaiian Home Land Class Code,DOUBLE,YES
+census_2020_race_tract,FIPS County Subdivision Class Code,DOUBLE,YES
+census_2020_race_tract,FIPS Place Class Code,DOUBLE,YES
+census_2020_race_tract,Female,BIGINT,YES
+census_2020_race_tract,Female: 10 to 14 years,BIGINT,YES
+census_2020_race_tract,Female: 15 to 17 years,BIGINT,YES
+census_2020_race_tract,Female: 18 and 19 years,BIGINT,YES
+census_2020_race_tract,Female: 20 years,BIGINT,YES
+census_2020_race_tract,Female: 21 years,BIGINT,YES
+census_2020_race_tract,Female: 22 to 24 years,BIGINT,YES
+census_2020_race_tract,Female: 25 to 29 years,BIGINT,YES
+census_2020_race_tract,Female: 30 to 34 years,BIGINT,YES
+census_2020_race_tract,Female: 35 to 39 years,BIGINT,YES
+census_2020_race_tract,Female: 40 to 44 years,BIGINT,YES
+census_2020_race_tract,Female: 45 to 49 years,BIGINT,YES
+census_2020_race_tract,Female: 5 to 9 years,BIGINT,YES
+census_2020_race_tract,Female: 50 to 54 years,BIGINT,YES
+census_2020_race_tract,Female: 55 to 59 years,BIGINT,YES
+census_2020_race_tract,Female: 60 and 61 years,BIGINT,YES
+census_2020_race_tract,Female: 62 to 64 years,BIGINT,YES
+census_2020_race_tract,Female: 65 and 66 years,BIGINT,YES
+census_2020_race_tract,Female: 67 to 69 years,BIGINT,YES
+census_2020_race_tract,Female: 70 to 74 years,BIGINT,YES
+census_2020_race_tract,Female: 75 to 79 years,BIGINT,YES
+census_2020_race_tract,Female: 80 to 84 years,BIGINT,YES
+census_2020_race_tract,Female: 85 years and over,BIGINT,YES
+census_2020_race_tract,Female: Under 5 years,BIGINT,YES
+census_2020_race_tract,Functional Status Code,VARCHAR,YES
+census_2020_race_tract,GIS Join Match Code,VARCHAR,YES
+census_2020_race_tract,Geographic Code Identifier,BIGINT,YES
+census_2020_race_tract,Geographic Record Identifier,VARCHAR,YES
+census_2020_race_tract,Internal Point (Latitude),DOUBLE,YES
+census_2020_race_tract,Internal Point (Longitude),DOUBLE,YES
+census_2020_race_tract,Legal/Statistical Area Description Code,VARCHAR,YES
+census_2020_race_tract,Male,BIGINT,YES
+census_2020_race_tract,Male: 10 to 14 years,BIGINT,YES
+census_2020_race_tract,Male: 15 to 17 years,BIGINT,YES
+census_2020_race_tract,Male: 18 and 19 years,BIGINT,YES
+census_2020_race_tract,Male: 20 years,BIGINT,YES
+census_2020_race_tract,Male: 21 years,BIGINT,YES
+census_2020_race_tract,Male: 22 to 24 years,BIGINT,YES
+census_2020_race_tract,Male: 25 to 29 years,BIGINT,YES
+census_2020_race_tract,Male: 30 to 34 years,BIGINT,YES
+census_2020_race_tract,Male: 35 to 39 years,BIGINT,YES
+census_2020_race_tract,Male: 40 to 44 years,BIGINT,YES
+census_2020_race_tract,Male: 45 to 49 years,BIGINT,YES
+census_2020_race_tract,Male: 5 to 9 years,BIGINT,YES
+census_2020_race_tract,Male: 50 to 54 years,BIGINT,YES
+census_2020_race_tract,Male: 55 to 59 years,BIGINT,YES
+census_2020_race_tract,Male: 60 and 61 years,BIGINT,YES
+census_2020_race_tract,Male: 62 to 64 years,BIGINT,YES
+census_2020_race_tract,Male: 65 and 66 years,BIGINT,YES
+census_2020_race_tract,Male: 67 to 69 years,BIGINT,YES
+census_2020_race_tract,Male: 70 to 74 years,BIGINT,YES
+census_2020_race_tract,Male: 75 to 79 years,BIGINT,YES
+census_2020_race_tract,Male: 80 to 84 years,BIGINT,YES
+census_2020_race_tract,Male: 85 years and over,BIGINT,YES
+census_2020_race_tract,Male: Under 5 years,BIGINT,YES
+census_2020_race_tract,Metropolitan Division Code,BIGINT,YES
+census_2020_race_tract,Metropolitan Statistical Area/Micropolitan Statistical Area Code,BIGINT,YES
+census_2020_race_tract,Metropolitan Statistical Area/Micropolitan Statistical Area Principal City Indicator,DOUBLE,YES
+census_2020_race_tract,Metropolitan/Micropolitan Indicator,BIGINT,YES
+census_2020_race_tract,NECTA Metropolitan/Micropolitan Indicator,DOUBLE,YES
+census_2020_race_tract,Native Hawaiian and Other Pacific Islander alone,BIGINT,YES
+census_2020_race_tract,New England City and Town Area Code,DOUBLE,YES
+census_2020_race_tract,New England City and Town Area Division Code,DOUBLE,YES
+census_2020_race_tract,New England City and Town Area Principal City Indicator,DOUBLE,YES
+census_2020_race_tract,Place (FIPS) Code,DOUBLE,YES
+census_2020_race_tract,Public Use Microdata Area,BIGINT,YES
+census_2020_race_tract,Region Code,BIGINT,YES
+census_2020_race_tract,School District (Elementary) Code,DOUBLE,YES
+census_2020_race_tract,School District (Secondary) Code,DOUBLE,YES
+census_2020_race_tract,School District (Unified) Code,DOUBLE,YES
+census_2020_race_tract,Some Other Race alone,BIGINT,YES
+census_2020_race_tract,State (FIPS) Code,BIGINT,YES
+census_2020_race_tract,State (FIPS) Name,VARCHAR,YES
+census_2020_race_tract,State Legislative District (Lower Chamber) (2018) Code,DOUBLE,YES
+census_2020_race_tract,State Legislative District (Upper Chamber) (2018) Code,DOUBLE,YES
+census_2020_race_tract,State/US-Abbreviation (USPS),VARCHAR,YES
+census_2020_race_tract,Subminor Civil Division (FIPS) Code,DOUBLE,YES
+census_2020_race_tract,Total,BIGINT,YES
+census_2020_race_tract,Total.1,BIGINT,YES
+census_2020_race_tract,Total.2,BIGINT,YES
+census_2020_race_tract,Tribal Block Group Code,DOUBLE,YES
+census_2020_race_tract,Tribal Census Tract Code,DOUBLE,YES
+census_2020_race_tract,Two or More Races,BIGINT,YES
+census_2020_race_tract,Urban Area Code,DOUBLE,YES
+census_2020_race_tract,Urban Growth Area,DOUBLE,YES
+census_2020_race_tract,Urban/Rural Code,DOUBLE,YES
+census_2020_race_tract,Voting District,DOUBLE,YES
+census_2020_race_tract,Voting District Indicator,DOUBLE,YES
+census_2020_race_tract,White alone,BIGINT,YES
+census_2020_race_tract,ZIP Code Tabulation Area (5-Digit) Code,DOUBLE,YES
+content_model_reference,description,VARCHAR,NO
+content_model_reference,element_id,VARCHAR,NO
+content_model_reference,element_name,VARCHAR,NO
+job_zone_reference,education,VARCHAR,NO
+job_zone_reference,examples,VARCHAR,NO
+job_zone_reference,experience,VARCHAR,NO
+job_zone_reference,job_training,VARCHAR,NO
+job_zone_reference,job_zone,"DECIMAL(1,0)",NO
+job_zone_reference,name,VARCHAR,NO
+job_zone_reference,svp_range,VARCHAR,NO
+job_zones,date_updated,DATE,NO
+job_zones,domain_source,VARCHAR,NO
+job_zones,job_zone,"DECIMAL(1,0)",NO
+job_zones,onetsoc_code,VARCHAR,NO
+occupation_data,description,VARCHAR,NO
+occupation_data,onetsoc_code,VARCHAR,NO
+occupation_data,title,VARCHAR,NO
+scales_reference,maximum,"DECIMAL(3,0)",NO
+scales_reference,minimum,"DECIMAL(1,0)",NO
+scales_reference,scale_id,VARCHAR,NO
+scales_reference,scale_name,VARCHAR,NO
+skills_to_work_activities,skills_element_id,VARCHAR,NO
+skills_to_work_activities,work_activities_element_id,VARCHAR,NO
+skills_to_work_context,skills_element_id,VARCHAR,NO
+skills_to_work_context,work_context_element_id,VARCHAR,NO
+task_statements,date_updated,DATE,NO
+task_statements,domain_source,VARCHAR,NO
+task_statements,incumbents_responding,"DECIMAL(4,0)",YES
+task_statements,onetsoc_code,VARCHAR,NO
+task_statements,task,VARCHAR,NO
+task_statements,task_id,"DECIMAL(8,0)",NO
+task_statements,task_type,VARCHAR,YES
+technology_skills,commodity_code,"DECIMAL(8,0)",NO
+technology_skills,example,VARCHAR,NO
+technology_skills,hot_technology,VARCHAR,NO
+technology_skills,in_demand,VARCHAR,NO
+technology_skills,onetsoc_code,VARCHAR,NO
+tract_master,adult_inc10,DOUBLE,YES
+tract_master,black_chg,VARCHAR,YES
+tract_master,black_sh10,VARCHAR,YES
+tract_master,black_sh20,VARCHAR,YES
+tract_master,city,VARCHAR,YES
+tract_master,county_fips,VARCHAR,YES
+tract_master,cty_kfr25_78,DOUBLE,YES
+tract_master,cty_kfr25_92,DOUBLE,YES
+tract_master,cty_kfr25_chg,DOUBLE,YES
+tract_master,cty_kfr25_rel,DOUBLE,YES
+tract_master,cty_kfr25_se,DOUBLE,YES
+tract_master,cty_kfr50_78,DOUBLE,YES
+tract_master,cty_kfr50_92,DOUBLE,YES
+tract_master,cty_kfr50_chg,DOUBLE,YES
+tract_master,cty_kfr50_rel,DOUBLE,YES
+tract_master,cty_kfr50_se,DOUBLE,YES
+tract_master,cty_kfr75_78,DOUBLE,YES
+tract_master,cty_kfr75_92,DOUBLE,YES
+tract_master,cty_kfr75_chg,DOUBLE,YES
+tract_master,cty_kfr75_rel,DOUBLE,YES
+tract_master,cty_kfr75_se,DOUBLE,YES
+tract_master,flag_disadv,BIGINT,YES
+tract_master,flag_sel,BIGINT,YES
+tract_master,flag_top100msa,BIGINT,YES
+tract_master,flag_top50,BIGINT,YES
+tract_master,inc10,BIGINT,YES
+tract_master,inc20,BIGINT,YES
+tract_master,inc_chg,BIGINT,YES
+tract_master,kids20,BIGINT,YES
+tract_master,kids_chg,VARCHAR,YES
+tract_master,kids_sh10,VARCHAR,YES
+tract_master,kids_sh20,VARCHAR,YES
+tract_master,land_area_m2,DOUBLE,YES
+tract_master,lat,DOUBLE,YES
+tract_master,lon,DOUBLE,YES
+tract_master,mob_up,DOUBLE,YES
+tract_master,msa,VARCHAR,YES
+tract_master,nbrhd,VARCHAR,YES
+tract_master,odq1_dst_n,BIGINT,YES
+tract_master,odq1_n_self,BIGINT,YES
+tract_master,odq1_n_sum,BIGINT,YES
+tract_master,odq1_self_sh,DOUBLE,YES
+tract_master,oes13_aw_mean,BIGINT,YES
+tract_master,oes13_aw_med,BIGINT,YES
+tract_master,oes13_emp,BIGINT,YES
+tract_master,oes13_hw_mean,DOUBLE,YES
+tract_master,oes13_hw_med,DOUBLE,YES
+tract_master,oes24_aw_mean,BIGINT,YES
+tract_master,oes24_aw_med,BIGINT,YES
+tract_master,oes24_emp,BIGINT,YES
+tract_master,oes24_hw_mean,DOUBLE,YES
+tract_master,oes24_hw_med,DOUBLE,YES
+tract_master,oes_aw_chg,BIGINT,YES
+tract_master,oes_emp_chg,BIGINT,YES
+tract_master,opp_gap,DOUBLE,YES
+tract_master,pop10,BIGINT,YES
+tract_master,pop20,BIGINT,YES
+tract_master,pop_chg,BIGINT,YES
+tract_master,popden20,DOUBLE,YES
+tract_master,pov10,DOUBLE,YES
+tract_master,pov20,DOUBLE,YES
+tract_master,pov_chg,DOUBLE,YES
+tract_master,rent10,BIGINT,YES
+tract_master,rent20,BIGINT,YES
+tract_master,rent_chg,BIGINT,YES
+tract_master,sc_cost_mean,DOUBLE,YES
+tract_master,sc_earn10_mean,DOUBLE,YES
+tract_master,sc_earn6_mean,DOUBLE,YES
+tract_master,sc_inst_n,BIGINT,YES
+tract_master,sc_np_priv_mean,DOUBLE,YES
+tract_master,sc_np_pub_mean,DOUBLE,YES
+tract_master,sc_tuin_mean,DOUBLE,YES
+tract_master,sc_tuout_mean,DOUBLE,YES
+tract_master,sc_ugds_mean,DOUBLE,YES
+tract_master,sc_ugds_sum,BIGINT,YES
+tract_master,state_abbr,VARCHAR,YES
+tract_master,stud_sh20,VARCHAR,YES
+tract_master,tract10,VARCHAR,YES
+tract_master,tract20,VARCHAR,YES
+tract_master,white_chg,VARCHAR,YES
+tract_master,white_sh10,VARCHAR,YES
+tract_master,white_sh20,VARCHAR,YES
+tract_master_enriched,adult_inc10,DOUBLE,YES
+tract_master_enriched,asian_alone_2020,BIGINT,YES
+tract_master_enriched,black_alone_2020,BIGINT,YES
+tract_master_enriched,black_sh20_1,DOUBLE,YES
+tract_master_enriched,city,VARCHAR,YES
+tract_master_enriched,college_enrolled_2020,BIGINT,YES
+tract_master_enriched,county_fips,VARCHAR,YES
+tract_master_enriched,cty_kfr25_78,DOUBLE,YES
+tract_master_enriched,cty_kfr25_92,DOUBLE,YES
+tract_master_enriched,cty_kfr25_chg,DOUBLE,YES
+tract_master_enriched,cty_kfr25_rel,DOUBLE,YES
+tract_master_enriched,cty_kfr25_se,DOUBLE,YES
+tract_master_enriched,cty_kfr50_78,DOUBLE,YES
+tract_master_enriched,cty_kfr50_92,DOUBLE,YES
+tract_master_enriched,cty_kfr50_chg,DOUBLE,YES
+tract_master_enriched,cty_kfr50_rel,DOUBLE,YES
+tract_master_enriched,cty_kfr50_se,DOUBLE,YES
+tract_master_enriched,cty_kfr75_78,DOUBLE,YES
+tract_master_enriched,cty_kfr75_92,DOUBLE,YES
+tract_master_enriched,cty_kfr75_chg,DOUBLE,YES
+tract_master_enriched,cty_kfr75_rel,DOUBLE,YES
+tract_master_enriched,cty_kfr75_se,DOUBLE,YES
+tract_master_enriched,female_total_2020,BIGINT,YES
+tract_master_enriched,flag_disadv,BIGINT,YES
+tract_master_enriched,flag_sel,BIGINT,YES
+tract_master_enriched,flag_top100msa,BIGINT,YES
+tract_master_enriched,flag_top50,BIGINT,YES
+tract_master_enriched,grad_enrolled_2020,BIGINT,YES
+tract_master_enriched,inc10,BIGINT,YES
+tract_master_enriched,inc20,BIGINT,YES
+tract_master_enriched,inc_chg,BIGINT,YES
+tract_master_enriched,kids20,BIGINT,YES
+tract_master_enriched,kids_sh20_1,DOUBLE,YES
+tract_master_enriched,land_area_m2,DOUBLE,YES
+tract_master_enriched,lat,DOUBLE,YES
+tract_master_enriched,lon,DOUBLE,YES
+tract_master_enriched,male_total_2020,BIGINT,YES
+tract_master_enriched,mob_up,DOUBLE,YES
+tract_master_enriched,msa,VARCHAR,YES
+tract_master_enriched,nbrhd,VARCHAR,YES
+tract_master_enriched,not_enrolled_2020,BIGINT,YES
+tract_master_enriched,odq1_dst_n,BIGINT,YES
+tract_master_enriched,odq1_n_self,BIGINT,YES
+tract_master_enriched,odq1_n_sum,BIGINT,YES
+tract_master_enriched,odq1_self_sh,DOUBLE,YES
+tract_master_enriched,oes13_aw_mean,BIGINT,YES
+tract_master_enriched,oes13_aw_med,BIGINT,YES
+tract_master_enriched,oes13_emp,BIGINT,YES
+tract_master_enriched,oes13_hw_mean,DOUBLE,YES
+tract_master_enriched,oes13_hw_med,DOUBLE,YES
+tract_master_enriched,oes24_aw_mean,BIGINT,YES
+tract_master_enriched,oes24_aw_med,BIGINT,YES
+tract_master_enriched,oes24_emp,BIGINT,YES
+tract_master_enriched,oes24_hw_mean,DOUBLE,YES
+tract_master_enriched,oes24_hw_med,DOUBLE,YES
+tract_master_enriched,oes_aw_chg,BIGINT,YES
+tract_master_enriched,oes_emp_chg,BIGINT,YES
+tract_master_enriched,opp_gap,DOUBLE,YES
+tract_master_enriched,other_race_2020,BIGINT,YES
+tract_master_enriched,pop10,BIGINT,YES
+tract_master_enriched,pop20,BIGINT,YES
+tract_master_enriched,pop_chg,BIGINT,YES
+tract_master_enriched,popden20,DOUBLE,YES
+tract_master_enriched,pov10,DOUBLE,YES
+tract_master_enriched,pov20,DOUBLE,YES
+tract_master_enriched,pov_chg,DOUBLE,YES
+tract_master_enriched,rent10,BIGINT,YES
+tract_master_enriched,rent20,BIGINT,YES
+tract_master_enriched,rent_chg,BIGINT,YES
+tract_master_enriched,sc_cost_mean,DOUBLE,YES
+tract_master_enriched,sc_earn10_mean,DOUBLE,YES
+tract_master_enriched,sc_earn6_mean,DOUBLE,YES
+tract_master_enriched,sc_inst_n,BIGINT,YES
+tract_master_enriched,sc_np_priv_mean,DOUBLE,YES
+tract_master_enriched,sc_np_pub_mean,DOUBLE,YES
+tract_master_enriched,sc_tuin_mean,DOUBLE,YES
+tract_master_enriched,sc_tuout_mean,DOUBLE,YES
+tract_master_enriched,sc_ugds_mean,DOUBLE,YES
+tract_master_enriched,sc_ugds_sum,BIGINT,YES
+tract_master_enriched,state_abbr,VARCHAR,YES
+tract_master_enriched,stud_sh20_1,DOUBLE,YES
+tract_master_enriched,total_pop_2020,BIGINT,YES
+tract_master_enriched,tract10,VARCHAR,YES
+tract_master_enriched,tract20,VARCHAR,YES
+tract_master_enriched,two_or_more_2020,BIGINT,YES
+tract_master_enriched,white_alone_2020,BIGINT,YES
+tract_master_enriched,white_sh20_1,DOUBLE,YES
+unspsc_reference,class_code,"DECIMAL(8,0)",NO
+unspsc_reference,class_title,VARCHAR,NO
+unspsc_reference,commodity_code,"DECIMAL(8,0)",NO
+unspsc_reference,commodity_title,VARCHAR,NO
+unspsc_reference,family_code,"DECIMAL(8,0)",NO
+unspsc_reference,family_title,VARCHAR,NO
+unspsc_reference,segment_code,"DECIMAL(8,0)",NO
+unspsc_reference,segment_title,VARCHAR,NO
+work_activities,data_value,"DECIMAL(5,2)",NO
+work_activities,date_updated,DATE,NO
+work_activities,domain_source,VARCHAR,NO
+work_activities,element_id,VARCHAR,NO
+work_activities,lower_ci_bound,"DECIMAL(7,4)",YES
+work_activities,n,"DECIMAL(4,0)",YES
+work_activities,not_relevant,VARCHAR,YES
+work_activities,onetsoc_code,VARCHAR,NO
+work_activities,recommend_suppress,VARCHAR,YES
+work_activities,scale_id,VARCHAR,NO
+work_activities,standard_error,"DECIMAL(7,4)",YES
+work_activities,upper_ci_bound,"DECIMAL(7,4)",YES
+work_context,category,"DECIMAL(3,0)",YES
+work_context,data_value,"DECIMAL(5,2)",NO
+work_context,date_updated,DATE,NO
+work_context,domain_source,VARCHAR,NO
+work_context,element_id,VARCHAR,NO
+work_context,lower_ci_bound,"DECIMAL(7,4)",YES
+work_context,n,"DECIMAL(4,0)",YES
+work_context,not_relevant,VARCHAR,YES
+work_context,onetsoc_code,VARCHAR,NO
+work_context,recommend_suppress,VARCHAR,YES
+work_context,scale_id,VARCHAR,NO
+work_context,standard_error,"DECIMAL(7,4)",YES
+work_context,upper_ci_bound,"DECIMAL(7,4)",YES
+work_context_categories,category,"DECIMAL(3,0)",NO
+work_context_categories,category_description,VARCHAR,NO
+work_context_categories,element_id,VARCHAR,NO
+work_context_categories,scale_id,VARCHAR,NO

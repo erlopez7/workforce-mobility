@@ -1,0 +1,6 @@
+kb_id,topic,entity_key,entity_name,fact_text,numeric_value,unit,source_table
+KB001,mobility,state:CA,California,California appears in the highest-coverage state group in the export and has strong average mobility in sampled tracts,,index,geo_context_state_summary.csv
+KB002,career_risk,risk:high,High Risk Occupations,High-risk occupations represent a significant share of the total evaluated occupation list,256,count,occupation_risk_distribution.csv
+KB003,recommendations,group:Very Disadvantaged,Very Disadvantaged Group,Career recommendations prioritize safer and more accessible pathways for lower-opportunity groups,,rule,matching_weights_round2.csv
+KB004,fairness,principle:context_support,Context Not Limitation,The platform uses neighborhood context to improve support recommendations rather than restrict options,,policy,round1_vs_round2_instructor_notes.json
+KB005,cost,metric:earnings10,Median Earnings 10 Years,Certain states in the analysis show stronger long-term earnings potential after education pathways,59508.53,USD,data_claims.json
