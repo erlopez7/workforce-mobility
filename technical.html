@@ -3,111 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upward Mobility - Technical Appendix</title>
+  <title>Legacy Technical Appendix | WorkForce</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page-technical">
-  <nav class="top-nav" aria-label="Primary">
-    <div class="container top-nav-inner">
-      <a class="nav-overview" href="index.html">Overview</a>
-      <a class="nav-problem" href="problem.html">Map Context</a>
-      <a class="nav-dashboard" href="dashboard.html">Dashboard</a>
-      <a class="nav-careers" href="careers.html">Careers</a>
-      <a class="nav-resources" href="resources.html">Resources</a>
-      <a class="nav-solution" href="solution.html">Solution Logic</a>
-      <a class="nav-technical" href="technical.html">Technical Appendix</a>
-    </div>
-  </nav>
-  <main class="container page-main">
-    <section class="section page-intro alt-bg" id="technical-appendix">
-      <h1>Technical Appendix</h1>
-      <p class="section-note">Transparent model rules, data inventory, and round-to-round evidence.</p>
-      <div id="technical-evidence" class="metrics"></div>
-      <div class="metrics">
-        <strong>Round 2 implementation focus</strong><br />
-        1) Full O*NET-based job risk model<br />
-        2) KNN-based mobility imputation in the pipeline<br />
-        3) KMeans youth opportunity groupings<br />
-        4) Group-weighted career recommendation engine<br />
-        5) Tract-level education ROI context (not school-level ranking)
-      </div>
-      <div class="card compact">
-        <h3>Computation Reference</h3>
-        <ul class="calc-list">
-          <li><strong>Risk score:</strong> sum of 4 interpretable binary rules from task composition and job zone.</li>
-          <li><strong>KNN imputation:</strong> missing mobility-related fields estimated from 5 nearest tracts.</li>
-          <li><strong>Segmentation:</strong> KMeans on standardized <code>pov20</code>, <code>mob_up</code>, <code>inc20</code>, <code>opp_gap</code>.</li>
-          <li><strong>Career match:</strong> weighted blend of normalized safety and accessibility.</li>
-          <li><strong>Education ROI:</strong> group means from tract-level Scorecard/OES fields.</li>
-        </ul>
-        <code class="formula">All displayed metrics are derived from uploaded CSV/JSON exports in data/.</code>
-      </div>
-      <div class="card compact">
-        <h3>Column Dictionary (Plain English)</h3>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Column</th>
-                <th>Meaning</th>
-                <th>Units / Scale</th>
-                <th>Used For</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><code>pov20</code></td><td>2020 poverty share in tract</td><td>0-1 (percent)</td><td>Segmentation, context</td></tr>
-              <tr><td><code>mob_up</code></td><td>Upward mobility indicator</td><td>0-1 (higher better)</td><td>Segmentation, outcomes</td></tr>
-              <tr><td><code>inc20</code></td><td>Median household income</td><td>USD</td><td>Segmentation, context</td></tr>
-              <tr><td><code>opp_gap</code></td><td>Opportunity disparity index</td><td>Numeric index</td><td>Segmentation, context</td></tr>
-              <tr><td><code>flag_disadv</code></td><td>Disadvantaged tract flag</td><td>0/1</td><td>Context and support focus</td></tr>
-              <tr><td><code>risk_score</code></td><td>Rule-based job risk score</td><td>0-4</td><td>Career risk evaluation</td></tr>
-              <tr><td><code>risk_label</code></td><td>Risk category</td><td>Low/Moderate/High</td><td>User-facing comparison</td></tr>
-              <tr><td><code>job_zone</code></td><td>Preparation requirement level</td><td>1-5</td><td>Accessibility scoring</td></tr>
-              <tr><td><code>match_score</code></td><td>Career fit score by group</td><td>Relative score</td><td>Recommendation ranking</td></tr>
-              <tr><td><code>sc_cost_mean</code></td><td>Average education cost context</td><td>USD</td><td>ROI context</td></tr>
-              <tr><td><code>sc_earn10_mean</code></td><td>Average 10-year earnings context</td><td>USD</td><td>ROI context</td></tr>
-              <tr><td><code>oes_emp_chg</code></td><td>Employment change indicator</td><td>Numeric change</td><td>Labor trend context</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="card">
-        <h3>Round 2 Risk Summary</h3>
-        <div id="round2-risk-summary" class="metrics"></div>
-        <div class="code-example"><code># Risk label counts
-risk_counts = job_df["risk_label"].value_counts()
-high = risk_counts["High Risk"]
-moderate = risk_counts["Moderate Risk"]
-low = risk_counts["Low Risk"]</code></div>
-        <h3>Rules and Weights</h3>
-        <div class="grid-2">
-          <div id="risk-rules" class="metrics"></div>
-          <div id="matching-weights" class="metrics"></div>
-        </div>
-        <div class="code-example"><code># Matching weights used in Round 2
-very_disadvantaged_and_disadvantaged = { "safety": 0.45, "access": 0.55 }
-moderate_and_higher_opportunity     = { "safety": 0.60, "access": 0.40 }</code></div>
-        <h3>Data Inventory</h3>
-        <div id="data-inventory" class="table-wrap"></div>
-        <div class="code-example"><code>// Coverage report generation
-for each required_table:
-  status = complete if rows > 0 else empty/missing
-  write(table_name, status, rows)</code></div>
-        <h3>Data Credibility</h3>
-        <div id="data-credibility" class="metrics"></div>
-        <div id="data-claims" class="small-note"></div>
-        <h3>Round Evolution</h3>
-        <div id="round-progress" class="grid-2"></div>
-        <div class="code-example"><code>// Round evolution evidence
-round1 = small prototype (25 occupations)
-round2 = full pipeline (1000+ occupations, imputed tracts, group matching)</code></div>
-        <h3>Pipeline Traceability</h3>
-        <div id="round2-pipeline" class="table-wrap"></div>
-        <h3>Notes</h3>
-        <div id="notes"></div>
-      </div>
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <main class="container">
+    <section class="section"><h1>Technical Appendix (Legacy)</h1><p class="muted">For users, technical details are now presented in a cleaner format directly in the Data Story page.</p></section>
+    <section class="section grid-2">
+      <article class="card"><h3>Model details</h3><p class="muted">Rule-based risk model and K-Means neighborhood grouping are now shown in collapsible chips.</p><a class="btn primary" href="data-story.html">Open Data Story →</a></article>
+      <article class="card"><h3>Action tools</h3><p class="muted">Use the Career Paths tool and AI Advisor to turn the model insights into practical next steps.</p><div class="btn-row"><a class="btn" href="careers.html">Career Paths</a><a class="btn" href="chatbot.html">AI Advisor</a></div></article>
     </section>
   </main>
-  <script src="script.js"></script>
+  <footer class="footer"><div class="container"><p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p><div class="footer-links"><a href="index.html">Home</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="chatbot.html">AI Advisor</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div></div></footer>
+  <script src="app.js"></script>
 </body>
 </html>

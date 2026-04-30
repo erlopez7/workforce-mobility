@@ -3,143 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upward Mobility - Dashboard</title>
+  <title>Legacy Dashboard | WorkForce</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page-dashboard">
-  <nav class="top-nav" aria-label="Primary">
-    <div class="container top-nav-inner">
-      <a class="nav-overview" href="index.html">Overview</a>
-      <a class="nav-problem" href="problem.html">Map Context</a>
-      <a class="nav-dashboard" href="dashboard.html">Dashboard</a>
-      <a class="nav-careers" href="careers.html">Careers</a>
-      <a class="nav-resources" href="resources.html">Resources</a>
-      <a class="nav-solution" href="solution.html">Solution Logic</a>
-      <a class="nav-technical" href="technical.html">Technical Appendix</a>
-    </div>
-  </nav>
-  <main class="container page-main">
-    <section class="section page-intro alt-bg">
-      <div class="with-side-key">
-        <div>
-          <h1>Dashboard</h1>
-          <p class="section-note">Second step: raw data becomes understandable metrics for cost, earnings, and mobility.</p>
-          <div id="dashboard-evidence" class="metrics"></div>
-          <div id="dashboard-metrics" class="stats-grid"></div>
-          <div class="code-example"><code>// Dashboard cards are group-level means
-avg_mob_up   = mean(mob_up by youth_group)
-avg_inc20    = mean(inc20 by youth_group)
-avg_pov20    = mean(pov20 by youth_group)
-mobility_gap = max(avg_mob_up) - min(avg_mob_up)</code></div>
-        </div>
-        <aside class="card side-key">
-          <h3>Interpretation Key</h3>
-          <p><strong>Poverty (`pov20`):</strong> shown as percent; higher means more economic constraint.</p>
-          <p><strong>Mobility (`mob_up`):</strong> 0-1; higher means stronger upward mobility context.</p>
-          <p><strong>Income (`inc20`):</strong> median household income in USD; higher means stronger earning context.</p>
-          <p><strong>Opportunity Gap (`opp_gap`):</strong> disparity index; larger magnitude means wider opportunity difference.</p>
-          <p><strong>Cost/Earnings fields:</strong> shown in USD group averages for ROI context.</p>
-          <h3>How Determined</h3>
-          <ul class="key-list">
-            <li><strong>Dashboard values:</strong> group means from tract rows (by <code>youth_group</code>).</li>
-            <li><strong>Poverty/Mobility/Income/Opportunity Gap cards:</strong> computed from <code>mean(pov20)</code>, <code>mean(mob_up)</code>, <code>mean(inc20)</code>, <code>mean(opp_gap)</code>.</li>
-            <li><strong>Mobility gap:</strong> <code>max(group avg mob_up) - min(group avg mob_up)</code>.</li>
-          </ul>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Imputed Mobility Reliability</h2>
-      <div id="imputation-status" class="metrics"></div>
-      <div class="card compact">
-        <h3>How Imputation Is Calculated</h3>
-        <p>Missing values are filled with KNN using mobility, poverty, income, opportunity gap, and education/labor context features.</p>
-        <code class="formula">KNNImputer(n_neighbors=5) on [mob_up, pov20, inc20, opp_gap, sc_cost_mean, sc_earn6_mean, sc_earn10_mean, oes_emp_chg, oes_aw_chg]</code>
-      </div>
-      <div class="code-example"><code># Missingness handling from notebook
-tract_df["mobility_was_missing"] = tract_df["mob_up"].isna().astype(int)
-tract_df[impute_cols] = KNNImputer(n_neighbors=5).fit_transform(tract_df[impute_cols])</code></div>
-    </section>
-    <section class="section">
-      <h2>Neighborhood Segmentation</h2>
-      <div class="segment-chips"><span>Very Disadvantaged</span><span>Disadvantaged</span><span>Moderate Opportunity</span><span>Higher Opportunity</span></div>
-      <div class="metrics">
-        <strong>How these four categories are determined</strong><br />
-        KMeans creates 4 clusters from <code>pov20</code>, <code>mob_up</code>, <code>inc20</code>, and <code>opp_gap</code>.
-        Clusters are then ordered by average <code>mob_up</code> from lowest to highest and labeled:
-        Very Disadvantaged -> Disadvantaged -> Moderate Opportunity -> Higher Opportunity.
-      </div>
-      <details class="card technical" open>
-        <summary>Youth Group Profile Table</summary>
-        <div class="table-wrap">
-          <table id="cluster-table">
-            <thead><tr><th>Youth Group</th><th>Poverty</th><th>Mobility</th><th>Income</th><th>Opportunity Gap</th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </details>
-      <h3>Category Interpretation Guide</h3>
-      <div id="context-category-guide" class="card-grid-3"></div>
-      <div class="code-example"><code># Cluster-to-label mapping
-ordered = cluster_summary.sort_values("mob_up").index.tolist()
-label_map = {
-  ordered[0]: "Very Disadvantaged",
-  ordered[1]: "Disadvantaged",
-  ordered[2]: "Moderate Opportunity",
-  ordered[3]: "Higher Opportunity"
-}</code></div>
-    </section>
-
-    <section class="section alt-bg">
-      <h2>Education Outcome Explorer</h2>
-      <p class="section-note">
-        Group-level ROI context from tract-level College Scorecard and labor indicators.
-      </p>
-      <div class="card compact">
-        <h3>How ROI Context Is Calculated</h3>
-        <p>For each youth group, dashboard values are group means from tract-level fields.</p>
-        <code class="formula">avg_sc_cost_mean = mean(sc_cost_mean by youth_group), avg_sc_earn10_mean = mean(sc_earn10_mean by youth_group)</code>
-      </div>
-      <label for="education-group-filter">Select Youth Group</label>
-      <select id="education-group-filter"></select>
-      <div id="education-outcomes" class="stats-grid"></div>
-      <div class="code-example"><code># Education ROI context by group
-education_summary = tract_df.groupby("youth_group")[
-  ["sc_cost_mean", "sc_earn6_mean", "sc_earn10_mean", "oes_emp_chg", "oes_aw_chg"]
-].mean()</code></div>
-    </section>
-
-    <section class="section">
-      <h2>Education and Labor Metric Definitions</h2>
-      <div class="card-grid-3">
-        <article class="card compact definition-card">
-          <h3>Education Cost (`sc_cost_mean`)</h3>
-          <p><strong>Meaning:</strong> Average total education cost context from Scorecard-derived fields.</p>
-          <p><strong>Scale:</strong> USD.</p>
-          <p><strong>Use:</strong> Higher values increase affordability pressure in pathway decisions.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Earnings 6/10 Years (`sc_earn6_mean`, `sc_earn10_mean`)</h3>
-          <p><strong>Meaning:</strong> Average earnings outcome context after entry.</p>
-          <p><strong>Scale:</strong> USD.</p>
-          <p><strong>Use:</strong> Used to compare long-term return potential across youth groups.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Employment Change (`oes_emp_chg`)</h3>
-          <p><strong>Meaning:</strong> Change in employment level from OES context variables.</p>
-          <p><strong>Scale:</strong> Numeric change.</p>
-          <p><strong>Use:</strong> Indicates whether labor demand context is growing or shrinking.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Average Wage Change (`oes_aw_chg`)</h3>
-          <p><strong>Meaning:</strong> Average wage change context from OES.</p>
-          <p><strong>Scale:</strong> Numeric change (USD context).</p>
-          <p><strong>Use:</strong> Adds labor-market trend context to ROI interpretation.</p>
-        </article>
-      </div>
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <main class="container">
+    <section class="section"><h1>Dashboard (Legacy)</h1><p class="muted">The old dashboard has been merged into the new Education Explorer and Data Story pages.</p></section>
+    <section class="section grid-3">
+      <article class="card"><h3>Education ROI</h3><p class="muted">Compare cost, earnings, and net price by opportunity group.</p><a class="btn primary" href="education.html">Open Education Explorer →</a></article>
+      <article class="card"><h3>Model Findings</h3><p class="muted">See model outcomes, AI labor context, and responsible use notes.</p><a class="btn" href="data-story.html">Open Data Story</a></article>
+      <article class="card"><h3>Career Recommendations</h3><p class="muted">Run ZIP-based recommendations and explore AI automation risk.</p><a class="btn" href="careers.html">Open Career Paths</a></article>
     </section>
   </main>
-  <script src="script.js"></script>
+  <footer class="footer"><div class="container"><p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p><div class="footer-links"><a href="index.html">Home</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="chatbot.html">AI Advisor</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div></div></footer>
+  <script src="app.js"></script>
 </body>
 </html>

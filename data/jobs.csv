@@ -1,0 +1,26 @@
+title,risk_score,risk_label,job_zone
+Registered Nurses,0,Low Risk,3
+Nurse Practitioners,0,Low Risk,4
+Physical Therapists,0,Low Risk,4
+Social Workers,1,Low Risk,3
+Web Developers,1,Low Risk,3
+Software Developers,1,Low Risk,3
+Cybersecurity Analysts,1,Low Risk,3
+GIS Technologists,1,Low Risk,3
+Health Information Technologists,1,Low Risk,3
+Teachers (Elementary),1,Low Risk,3
+Computer User Support Specialists,1,Low Risk,3
+Administrative Assistants,2,Moderate Risk,2
+Customer Service Representatives,2,Moderate Risk,2
+Retail Sales Workers,2,Moderate Risk,2
+Landscapers,2,Moderate Risk,2
+Nannies,2,Moderate Risk,2
+Bookkeeping Clerks,3,High Risk,2
+Pharmacy Aides,3,High Risk,2
+Order Clerks,3,High Risk,2
+Cashiers,3,High Risk,1
+Telemarketers,4,High Risk,1
+Bank Tellers,4,High Risk,2
+File Clerks,4,High Risk,1
+Data Entry Clerks,4,High Risk,1
+Truck Drivers,3,High Risk,2

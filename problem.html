@@ -3,90 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upward Mobility - Map Context</title>
+  <title>Legacy Map Context | WorkForce</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page-problem">
-  <nav class="top-nav" aria-label="Primary">
-    <div class="container top-nav-inner">
-      <a class="nav-overview" href="index.html">Overview</a>
-      <a class="nav-problem" href="problem.html">Map Context</a>
-      <a class="nav-dashboard" href="dashboard.html">Dashboard</a>
-      <a class="nav-careers" href="careers.html">Careers</a>
-      <a class="nav-resources" href="resources.html">Resources</a>
-      <a class="nav-solution" href="solution.html">Solution Logic</a>
-      <a class="nav-technical" href="technical.html">Technical Appendix</a>
-    </div>
-  </nav>
-  <main class="container page-main">
-    <section class="section page-intro alt-bg" id="problem-section">
-      <h1>Map Context</h1>
-      <p class="section-note">First step: geographic context helps users understand opportunity conditions around where they live.</p>
-      <div id="problem-evidence" class="metrics"></div>
-      <div class="card-grid-3">
-        <article class="card compact"><h3>Cost and Outcome Uncertainty</h3><p>Many students cannot clearly compare cost, debt risk, and long-term earnings.</p></article>
-        <article class="card compact"><h3>Unequal Access to Guidance</h3><p>Underserved communities often lack centralized pathway support.</p></article>
-        <article class="card compact"><h3>Insight Gap</h3><p>The issue is not lack of data, but converting data into decisions.</p></article>
-      </div>
-    </section>
-    <section class="section">
-      <h2>Why Context Matters</h2>
-      <div id="map-summary" class="metrics"></div>
-      <div id="state-map-legend" class="small-note"></div>
-      <div id="state-map" class="state-map"></div>
-      <div id="state-map-detail" class="small-note">Hover or click a state to view details.</div>
-      <div id="state-bars" class="bars"></div>
-      <div class="code-example"><code># Context pull from tract table
-SELECT tract20, state_abbr, city, pov20, mob_up, inc20, opp_gap, flag_disadv
-FROM tract_master_enriched;</code></div>
-    </section>
-
-    <section class="section alt-bg">
-      <h2>What These Context Metrics Mean</h2>
-      <div class="card-grid-3">
-        <article class="card compact definition-card">
-          <h3>Poverty (`pov20`)</h3>
-          <p><strong>Meaning:</strong> Share of residents in poverty in 2020.</p>
-          <p><strong>Scale:</strong> 0 to 1 (shown as %).</p>
-          <p><strong>Interpretation:</strong> Higher values usually indicate more economic constraint in a neighborhood.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Upward Mobility (`mob_up`)</h3>
-          <p><strong>Meaning:</strong> Long-run mobility indicator (chance of moving up economically).</p>
-          <p><strong>Scale:</strong> 0 to 1 (higher is better).</p>
-          <p><strong>Interpretation:</strong> Higher values suggest stronger local mobility outcomes.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Income (`inc20`)</h3>
-          <p><strong>Meaning:</strong> Median household income in 2020.</p>
-          <p><strong>Scale:</strong> USD.</p>
-          <p><strong>Interpretation:</strong> Higher values indicate stronger local household earnings context.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Opportunity Gap (`opp_gap`)</h3>
-          <p><strong>Meaning:</strong> Neighborhood opportunity disparity measure.</p>
-          <p><strong>Scale:</strong> Numeric index.</p>
-          <p><strong>Interpretation:</strong> Larger magnitude reflects wider distance between current and potential outcomes.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Disadvantage Flag (`flag_disadv`)</h3>
-          <p><strong>Meaning:</strong> Binary indicator for disadvantaged tracts.</p>
-          <p><strong>Scale:</strong> 0 = No, 1 = Yes.</p>
-          <p><strong>Interpretation:</strong> Used for context and support targeting, not for limiting options.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Youth Group (`youth_group`)</h3>
-          <p><strong>Meaning:</strong> Cluster label from Round 2 segmentation.</p>
-          <p><strong>Values:</strong> Very Disadvantaged, Disadvantaged, Moderate Opportunity, Higher Opportunity.</p>
-          <p><strong>Interpretation:</strong> Starting context category used to personalize guidance.</p>
-        </article>
-      </div>
-      <div class="code-example"><code>// Derived context labels used in the site
-if (flag_disadv == 1) tag = "Disadvantaged context"
-if (mob_up is null)   mob_up = KNNImputer(k=5)</code></div>
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <main class="container">
+    <section class="section"><h1>Map Context (Legacy)</h1><p class="muted">This page has been consolidated into the new interactive mobility experience.</p></section>
+    <section class="section grid-2">
+      <article class="card"><h3>Where to go now</h3><p class="muted">Use the new map page for state-level search, mobility color mapping, and detail panels.</p><a class="btn primary" href="map.html">Open Mobility Map →</a></article>
+      <article class="card"><h3>Next step</h3><p class="muted">After map exploration, continue to career pathways for recommendations tailored to your context.</p><a class="btn" href="careers.html">Go to Career Paths</a></article>
     </section>
   </main>
-  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-  <script src="script.js"></script>
+  <footer class="footer"><div class="container"><p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p><div class="footer-links"><a href="index.html">Home</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="chatbot.html">AI Advisor</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div></div></footer>
+  <script src="app.js"></script>
 </body>
 </html>

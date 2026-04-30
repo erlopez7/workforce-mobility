@@ -3,158 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upward Mobility - Careers</title>
+  <title>Career Paths | WorkForce</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page-careers">
-  <nav class="top-nav" aria-label="Primary">
-    <div class="container top-nav-inner">
-      <a class="nav-overview" href="index.html">Overview</a>
-      <a class="nav-problem" href="problem.html">Map Context</a>
-      <a class="nav-dashboard" href="dashboard.html">Dashboard</a>
-      <a class="nav-careers" href="careers.html">Careers</a>
-      <a class="nav-resources" href="resources.html">Resources</a>
-      <a class="nav-solution" href="solution.html">Solution Logic</a>
-      <a class="nav-technical" href="technical.html">Technical Appendix</a>
-    </div>
-  </nav>
-  <main class="container page-main">
-    <section class="section page-intro alt-bg">
-      <div class="with-side-key">
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a class="active" href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <main class="container">
+    <section class="section"><h1>Is Your Career AI-Safe?</h1><p class="muted">Search any job and see its automation risk score — based on O*NET-aligned roles.</p></section>
+    <section class="section card">
+      <div class="grid-2">
         <div>
-          <h1>Full Job Risk Model</h1>
-          <p class="section-note">
-            Third step: compare occupations and pathways in a more informed way using risk and fit logic.
-          </p>
-          <div id="careers-evidence" class="metrics"></div>
-          <div class="card compact">
-            <h3>How Risk Score Is Calculated</h3>
-            <ul class="calc-list">
-              <li>+1 if <code>routine_cognitive_tasks &gt;= 0.40</code></li>
-              <li>+1 if <code>nonroutine_cognitive_tasks &lt;= 0.20</code></li>
-              <li>+1 if <code>social_tasks &lt;= 0.10</code></li>
-              <li>+1 if <code>job_zone &lt;= 2</code></li>
-            </ul>
-            <code class="formula">risk_label = High (score >= 3), Moderate (score >= 2), Low (score < 2)</code>
-          </div>
-          <label for="job-risk-search">Search Occupation</label>
-          <input id="job-risk-search" type="text" placeholder="Example: nurse, teacher, analyst..." />
-          <div id="job-risk-result"></div>
-          <div class="code-example"><code># Rule-based risk scoring
-score = 0
-if routine_cognitive_tasks >= 0.40: score += 1
-if nonroutine_cognitive_tasks <= 0.20: score += 1
-if social_tasks <= 0.10: score += 1
-if job_zone <= 2: score += 1</code></div>
+          <input id="jobSearch" placeholder="Search a job title..." />
+          <p id="jobsStatus" class="muted" style="margin:.6rem 0 0;"></p>
+          <div id="jobList" class="pill-group"></div>
+          <div id="riskResults"></div>
         </div>
-        <aside class="card side-key">
-          <h3>Interpretation Key</h3>
-          <p><strong>Risk Score (0-4):</strong> higher means higher automation/displacement exposure.</p>
-          <ul class="key-list">
-            <li><strong>Low:</strong> score &lt; 2</li>
-            <li><strong>Moderate:</strong> score = 2</li>
-            <li><strong>High:</strong> score &gt;= 3</li>
-          </ul>
-          <p><strong>Job Zone (1-5):</strong> preparation level required for entry.</p>
-          <ul class="key-list">
-            <li><strong>1:</strong> little/no preparation</li>
-            <li><strong>2:</strong> some preparation</li>
-            <li><strong>3:</strong> medium preparation</li>
-            <li><strong>4:</strong> considerable preparation</li>
-            <li><strong>5:</strong> extensive preparation</li>
-          </ul>
-          <p><strong>Routine / Social (0-1):</strong> share of task statements matching keyword rules for that category.</p>
-          <h3>How Determined</h3>
-          <ul class="key-list">
-            <li><strong>Routine:</strong> mean of statement-level <code>routine_flag</code> per occupation.</li>
-            <li><strong>Social:</strong> mean of statement-level <code>social_flag</code> per occupation.</li>
-            <li><strong>Risk Score:</strong> +1 each for rule triggers on routine/nonroutine/social/job zone.</li>
-            <li><strong>Risk Label:</strong> High if score &gt;=3, Moderate if score=2, Low if score&lt;2.</li>
-            <li><strong>Job Zone:</strong> imported from O*NET job preparation level (not estimated by the model).</li>
-          </ul>
+        <aside class="card" style="max-height:560px; overflow:auto;">
+          <h3>Common Jobs (Click to Try)</h3>
+          <div id="commonJobsList" class="pill-group"></div>
         </aside>
       </div>
+      <details><summary>Risk Model Explainer</summary><p>Our model scores each occupation based on routine work, decision complexity, human interaction, and training level.</p></details>
+      <p class="muted">Of 1,016 occupations analyzed: 446 Low Risk | 314 Moderate Risk | 256 High Risk</p>
     </section>
-
-    <section class="section page-intro alt-bg" id="career-recommendations">
-      <h2>Personalized Career Recommendations</h2>
-      <p class="section-note">Compare pathways by stability, accessibility, and upward mobility potential.</p>
-      <div class="card compact">
-        <h3>How Match Score Is Calculated</h3>
-        <code class="formula">safety_score = 1 - minmax(risk_score), access_score = 1 - minmax(job_zone)</code>
-        <code class="formula">Very Disadvantaged / Disadvantaged: match = 0.45*safety + 0.55*access</code>
-        <code class="formula">Moderate / Higher Opportunity: match = 0.60*safety + 0.40*access</code>
-      </div>
-      <label for="group-filter">Select Youth Group</label>
-      <select id="group-filter"></select>
-      <div id="recs-cards" class="card-grid-3"></div>
-      <div class="code-example"><code># Group-specific matching engine
-safety_score = 1 - minmax(risk_score)
-access_score = 1 - minmax(job_zone)
-
-if youth_group in ["Very Disadvantaged", "Disadvantaged"]:
-    match_score = 0.45*safety_score + 0.55*access_score
-else:
-    match_score = 0.60*safety_score + 0.40*access_score</code></div>
+    <section class="section"><h2>Personalized Career Recommendations</h2><p class="muted">Input your ZIP code and background — get career pathways matched to your situation.</p></section>
+    <section class="section card">
+      <form id="pathForm" class="grid-2">
+        <div>
+          <label>ZIP code</label>
+          <div class="chat-input-row">
+            <input id="zipInput" required placeholder="e.g. 60619" />
+            <button class="btn primary" type="submit">Find My Path →</button>
+          </div>
+        </div>
+        <div><label>Neighborhood</label><select id="bgGroup"><option>Very Disadvantaged</option><option>Disadvantaged</option><option>Moderate Opportunity</option><option>Higher Opportunity</option><option>I'm not sure</option></select></div>
+        <div style="grid-column:1/-1"><label>Interests</label><div class="pill-group"><button type="button" class="pill interest-pill" data-interest="Healthcare">Healthcare</button><button type="button" class="pill interest-pill" data-interest="Technology">Technology</button><button type="button" class="pill interest-pill" data-interest="Trades">Trades</button><button type="button" class="pill interest-pill" data-interest="Education">Education</button><button type="button" class="pill interest-pill" data-interest="Business">Business</button><button type="button" class="pill interest-pill" data-interest="Creative">Creative</button><button type="button" class="pill interest-pill" data-interest="Social Services">Social Services</button><button type="button" class="pill interest-pill" data-interest="Science">Science</button></div></div>
+      </form>
     </section>
-    <section class="section">
-      <h2>Career Comparison Explorer</h2>
-      <div class="grid-2">
-        <div><label for="risk-filter">Risk Label</label><select id="risk-filter"><option value="">All</option></select></div>
-        <div><label for="jobzone-filter">Job Zone</label><select id="jobzone-filter"><option value="">All</option></select></div>
-      </div>
-      <input id="occupation-search" type="text" placeholder="Search occupation title..." />
-      <div class="table-wrap explorer-table-wrap">
-        <table id="occupation-table">
-          <thead><tr><th>Occupation</th><th>Risk Label</th><th>Risk Score</th><th>Job Zone</th><th>Routine</th><th>Social</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <button id="show-more-btn" class="btn btn-secondary">Show More</button>
-      <div class="code-example"><code>// Explorer filtering logic
-filtered = rows
-  .filter(risk_label == selectedRisk || all)
-  .filter(job_zone == selectedZone || all)
-  .filter(title includes searchQuery)
-  .slice(0, visibleRows)</code></div>
-    </section>
-
-    <section class="section alt-bg">
-      <h2>Career Metric Definitions</h2>
-      <div class="card-grid-3">
-        <article class="card compact definition-card">
-          <h3>Risk Score (`risk_score`)</h3>
-          <p><strong>Meaning:</strong> Rule-based automation/displacement score.</p>
-          <p><strong>Scale:</strong> 0 to 4.</p>
-          <p><strong>Interpretation:</strong> Higher score means higher potential automation vulnerability.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Risk Label (`risk_label`)</h3>
-          <p><strong>Meaning:</strong> Categorical version of risk score.</p>
-          <p><strong>Values:</strong> Low, Moderate, High.</p>
-          <p><strong>Interpretation:</strong> Quick-read classification for decision support.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Job Zone (`job_zone`)</h3>
-          <p><strong>Meaning:</strong> O*NET preparation level for an occupation.</p>
-          <p><strong>Scale:</strong> 1 to 5 (higher = more preparation).</p>
-          <p><strong>Interpretation:</strong> Lower values are generally more immediately accessible.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Task Features</h3>
-          <p><strong>Fields:</strong> `routine_cognitive_tasks`, `manual_tasks`, `social_tasks`, `nonroutine_cognitive_tasks`.</p>
-          <p><strong>Scale:</strong> 0 to 1 proportions.</p>
-          <p><strong>Interpretation:</strong> Task composition inputs that drive risk-rule triggers.</p>
-        </article>
-        <article class="card compact definition-card">
-          <h3>Match Score (`match_score`)</h3>
-          <p><strong>Meaning:</strong> Group-weighted fit score for recommendations.</p>
-          <p><strong>Scale:</strong> Relative ranking score.</p>
-          <p><strong>Interpretation:</strong> Higher score means stronger balance of safety and access for that group.</p>
-        </article>
-      </div>
-    </section>
+    <section id="recCards" class="section grid-3"></section>
+    <section id="roiContext" class="section"></section>
   </main>
-  <script src="script.js"></script>
+  <footer class="footer">
+    <div class="container">
+      <p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p>
+      <div class="footer-links"><a href="index.html">Home</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="chatbot.html">AI Advisor</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div>
+    </div>
+  </footer>
+  <script src="app.js"></script>
 </body>
 </html>

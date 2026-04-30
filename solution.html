@@ -3,70 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upward Mobility - Solution</title>
+  <title>Legacy Solution Logic | WorkForce</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page-solution">
-  <nav class="top-nav" aria-label="Primary">
-    <div class="container top-nav-inner">
-      <a class="nav-overview" href="index.html">Overview</a>
-      <a class="nav-problem" href="problem.html">Map Context</a>
-      <a class="nav-dashboard" href="dashboard.html">Dashboard</a>
-      <a class="nav-careers" href="careers.html">Careers</a>
-      <a class="nav-resources" href="resources.html">Resources</a>
-      <a class="nav-solution" href="solution.html">Solution Logic</a>
-      <a class="nav-technical" href="technical.html">Technical Appendix</a>
-    </div>
-  </nav>
-  <main class="container page-main">
-    <section class="section page-intro alt-bg" id="solution-section">
-      <h1>Solution</h1>
-      <div id="solution-evidence" class="metrics"></div>
-      <div class="flow">
-        <div class="flow-node">Neighborhood Context</div><div class="flow-arrow">→</div>
-        <div class="flow-node">Education ROI</div><div class="flow-arrow">→</div>
-        <div class="flow-node">Career Mobility</div>
-      </div>
-      <p class="section-note">One platform that connects starting point, affordability, and career outcomes.</p>
-      <div class="code-example"><code># Round 2 high-level flow
-tract_df = load("tract_master_enriched")
-tract_df = knn_impute(tract_df)
-tract_df = assign_youth_groups_kmeans(tract_df)
-
-job_df = build_full_onet_job_df()
-job_df = compute_risk_scores(job_df)
-recs  = match_careers_by_group(tract_df, job_df)</code></div>
-    </section>
-    <section class="section alt-bg" id="model-pipeline">
-      <h2>How the Model Works</h2>
-      <div id="round2-pipeline-cards" class="card-grid-3"></div>
-      <div class="card">
-        <h3>How Calculations Work</h3>
-        <ul class="calc-list">
-          <li>
-            <strong>KNN Imputation:</strong> fills missing mobility-related values using nearest neighbors in feature space.
-            <code class="formula">imputed_value = mean(value of k=5 nearest rows)</code>
-          </li>
-          <li>
-            <strong>Youth Grouping:</strong> standardizes features then applies KMeans with 4 clusters.
-            <code class="formula">X_scaled = StandardScaler([pov20, mob_up, inc20, opp_gap]); youth_cluster = KMeans(k=4)</code>
-          </li>
-          <li>
-            <strong>Label Mapping:</strong> clusters are ordered by average mobility and mapped to opportunity names.
-            <code class="formula">lowest mob_up → Very Disadvantaged ... highest mob_up → Higher Opportunity</code>
-          </li>
-        </ul>
-      </div>
-      <details class="card technical">
-        <summary>View Technical Pipeline Table</summary>
-        <div id="round2-pipeline" class="table-wrap"></div>
-      </details>
-      <div class="code-example"><code># KMeans clustering block
-X = tract_df[[pov20, mob_up, inc20, opp_gap]]
-X_scaled = StandardScaler().fit_transform(X)
-tract_df["youth_cluster"] = KMeans(n_clusters=4, random_state=42, n_init=10).fit_predict(X_scaled)</code></div>
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <main class="container">
+    <section class="section"><h1>Solution Logic (Legacy)</h1><p class="muted">Solution details are now integrated into the updated Data Story with cleaner model summaries and collapsible technical badges.</p></section>
+    <section class="section card">
+      <h3>Current model flow</h3>
+      <p class="muted">Neighborhood context + education ROI + automation risk + personalized recommendations.</p>
+      <div class="btn-row"><a class="btn primary" href="data-story.html">View Model Story →</a><a class="btn" href="chatbot.html">Use AI Advisor</a></div>
     </section>
   </main>
-  <script src="script.js"></script>
+  <footer class="footer"><div class="container"><p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p><div class="footer-links"><a href="index.html">Home</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="chatbot.html">AI Advisor</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div></div></footer>
+  <script src="app.js"></script>
 </body>
 </html>
