@@ -1,0 +1,61 @@
+youth_group,rank,occupation,onetsoc_code,risk_label,risk_score,match_score,median_wage,employment_growth_pct,education_required_yrs,job_zone
+Disadvantaged,1,"First-Line Supervisors of Helpers, Laborers, and Material Movers, Hand",53-1042.00,Low Risk,1,0.8875000000000001,,,,2.0
+Disadvantaged,2,"First-Line Supervisors of Entertainment and Recreation Workers, Except Gambling Services",39-1014.00,Low Risk,1,0.8875000000000001,,,,2.0
+Disadvantaged,3,Landscaping and Groundskeeping Workers,37-3011.00,Low Risk,1,0.8875000000000001,,,,2.0
+Disadvantaged,4,Nannies,39-9011.01,Low Risk,1,0.8875000000000001,,,,2.0
+Disadvantaged,5,Hydroelectric Production Managers,11-3051.06,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,6,Patient Representatives,29-2099.08,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,7,Hearing Aid Specialists,29-2092.00,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,8,Health Information Technologists and Medical Registrars,29-9021.00,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,9,Dietetic Technicians,29-2051.00,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,10,Psychiatric Technicians,29-2053.00,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,11,Choreographers,27-2032.00,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,12,Occupational Therapy Assistants,31-2011.00,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,13,Speech-Language Pathology Assistants,31-9099.01,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,14,Tutors,25-3041.00,Low Risk,0,0.8166666666666668,,,,3.0
+Disadvantaged,15,Self-Enrichment Teachers,25-3021.00,Low Risk,0,0.8166666666666668,,,,3.0
+Moderate Opportunity,1,Hydroelectric Production Managers,11-3051.06,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,2,First-Line Supervisors of Material-Moving Machine and Vehicle Operators,53-1043.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,3,Geographic Information Systems Technologists and Technicians,15-1299.02,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,4,Web Developers,15-1254.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,5,Computer User Support Specialists,15-1232.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,6,Health Information Technologists and Medical Registrars,29-9021.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,7,Occupational Therapy Assistants,31-2011.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,8,Patient Representatives,29-2099.08,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,9,Psychiatric Technicians,29-2053.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,10,Dietetic Technicians,29-2051.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,11,Hearing Aid Specialists,29-2092.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,12,Speech-Language Pathology Assistants,31-9099.01,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,13,Choreographers,27-2032.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,14,Self-Enrichment Teachers,25-3021.00,Low Risk,0,0.8666666666666667,,,,3.0
+Moderate Opportunity,15,Tutors,25-3041.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,1,Hydroelectric Production Managers,11-3051.06,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,2,First-Line Supervisors of Material-Moving Machine and Vehicle Operators,53-1043.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,3,Geographic Information Systems Technologists and Technicians,15-1299.02,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,4,Web Developers,15-1254.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,5,Computer User Support Specialists,15-1232.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,6,Health Information Technologists and Medical Registrars,29-9021.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,7,Occupational Therapy Assistants,31-2011.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,8,Patient Representatives,29-2099.08,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,9,Psychiatric Technicians,29-2053.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,10,Dietetic Technicians,29-2051.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,11,Hearing Aid Specialists,29-2092.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,12,Speech-Language Pathology Assistants,31-9099.01,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,13,Choreographers,27-2032.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,14,Self-Enrichment Teachers,25-3021.00,Low Risk,0,0.8666666666666667,,,,3.0
+Higher Opportunity,15,Tutors,25-3041.00,Low Risk,0,0.8666666666666667,,,,3.0
+Very Disadvantaged,1,"First-Line Supervisors of Helpers, Laborers, and Material Movers, Hand",53-1042.00,Low Risk,1,0.8875000000000001,,,,2.0
+Very Disadvantaged,2,"First-Line Supervisors of Entertainment and Recreation Workers, Except Gambling Services",39-1014.00,Low Risk,1,0.8875000000000001,,,,2.0
+Very Disadvantaged,3,Landscaping and Groundskeeping Workers,37-3011.00,Low Risk,1,0.8875000000000001,,,,2.0
+Very Disadvantaged,4,Nannies,39-9011.01,Low Risk,1,0.8875000000000001,,,,2.0
+Very Disadvantaged,5,Hydroelectric Production Managers,11-3051.06,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,6,Patient Representatives,29-2099.08,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,7,Hearing Aid Specialists,29-2092.00,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,8,Health Information Technologists and Medical Registrars,29-9021.00,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,9,Dietetic Technicians,29-2051.00,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,10,Psychiatric Technicians,29-2053.00,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,11,Choreographers,27-2032.00,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,12,Occupational Therapy Assistants,31-2011.00,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,13,Speech-Language Pathology Assistants,31-9099.01,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,14,Tutors,25-3041.00,Low Risk,0,0.8166666666666668,,,,3.0
+Very Disadvantaged,15,Self-Enrichment Teachers,25-3021.00,Low Risk,0,0.8166666666666668,,,,3.0

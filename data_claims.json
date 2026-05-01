@@ -1,0 +1,31 @@
+{
+    "summary": "Key statistical findings from the Upward Mobility project, highlighting structural inequalities and potential pathways.",
+    "claims": [
+        {
+            "id": "C1",
+            "metric": "Average Poverty Rate",
+            "disadvantaged": 0.22129979035639413,
+            "non_disadvantaged": 0.13002653106345347,
+            "description": "Disadvantaged tracts have nearly double the poverty rate of non-disadvantaged tracts."
+        },
+        {
+            "id": "C2",
+            "metric": "Average Upward Mobility",
+            "disadvantaged": 0.3736163522012579,
+            "non_disadvantaged": 0.4274260446606235,
+            "description": "Non-disadvantaged tracts exhibit significantly greater upward mobility."
+        },
+        {
+            "id": "C3",
+            "metric": "Average Median Earnings 10 Years Post-Entry (Top 5 States)",
+            "value": 59508.53,
+            "description": "Certain states show significantly higher average median earnings 10 years after college entry."
+        },
+        {
+            "id": "C4",
+            "metric": "Count of High-Risk Occupations",
+            "value": 256,
+            "description": "Identified number of occupations at high risk of automation/displacement."
+        }
+    ]
+}
