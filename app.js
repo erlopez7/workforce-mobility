@@ -805,10 +805,10 @@ function initEducationPage() {
       cards.innerHTML = `<div class="card"><p class="muted">Education data is currently unavailable.</p></div>`;
       return;
     }
-    const avgCost = pickNumber(d.sc_cost_mean, d.cost);
-    const earn10 = pickNumber(d.sc_earn10_mean, d.earn10);
-    const pubNet = pickNumber(d.sc_np_pub_mean, d.pub);
-    const privNet = pickNumber(d.sc_np_priv_mean, d.priv);
+    const avgCost = pickNumber(d.sc_cost_mean, fallback?.cost);
+    const earn10 = pickNumber(d.sc_earn10_mean, fallback?.earn10);
+    const pubNet = pickNumber(d.sc_np_pub_mean, fallback?.pub);
+    const privNet = pickNumber(d.sc_np_priv_mean, fallback?.priv);
     const mobility = pickNumber(d.mob_up, fallback?.mobility);
 
     cards.innerHTML = `

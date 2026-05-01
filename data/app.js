@@ -726,10 +726,10 @@ function initEducationPage() {
       cards.innerHTML = `<div class="card"><p class="muted">Education data is currently unavailable.</p></div>`;
       return;
     }
-    const avgCost = pickNumber(d.sc_cost_mean, d.cost);
-    const earn10 = pickNumber(d.sc_earn10_mean, d.earn10);
-    const pubNet = pickNumber(d.sc_np_pub_mean, d.pub);
-    const privNet = pickNumber(d.sc_np_priv_mean, d.priv);
+    const avgCost = pickNumber(d.sc_cost_mean, fallback?.cost);
+    const earn10 = pickNumber(d.sc_earn10_mean, fallback?.earn10);
+    const pubNet = pickNumber(d.sc_np_pub_mean, fallback?.pub);
+    const privNet = pickNumber(d.sc_np_priv_mean, fallback?.priv);
     const mobility = pickNumber(d.mob_up, fallback?.mobility);
 
     cards.innerHTML = `
@@ -824,7 +824,8 @@ function initEducationPage() {
     }
 
     if (chartSummary) {
-      chartSummary.textContent = `Simple takeaway: for ${activeGroup}, average public net price is ${money(pubNet)} while average earnings after 10 years are ${money(earn10)}. Public net price is the estimated out-of-pocket amount after aid, not the full sticker price.`;
+      const ratio = pubNet > 0 ? (earn10 / pubNet) : 0;
+      chartSummary.textContent = `Why this highlight matters: ${activeGroup} is the group we are focusing on for decision-making. In this group, average public net price is ${money(pubNet)} while average 10-year earnings are ${money(earn10)} (${ratio.toFixed(1)}x higher). The purple bar marks this priority group so the audience can quickly see the cost-to-outcome gap.`;
     }
   };
 
