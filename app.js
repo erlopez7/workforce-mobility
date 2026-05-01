@@ -864,6 +864,9 @@ function initEducationPage() {
         sc_earn10_mean: pickNumber(r.sc_earn10_mean, g.earn10)
       };
     });
+    const activeIdx = Math.max(0, groupsInOrder.indexOf(activeGroup));
+    const netPriceBarColors = chartRows.map((_, idx) => (idx === activeIdx ? "#64748b" : "#334155"));
+    const earningsBarColors = chartRows.map((_, idx) => (idx === activeIdx ? "#8b5cf6" : "#475569"));
     const ctx = document.getElementById("roiChart");
     if (ctx && window.Chart) {
       if (chart) chart.destroy();
@@ -872,8 +875,8 @@ function initEducationPage() {
         data: {
           labels: chartRows.map((r) => r.youth_group),
           datasets: [
-            { label: "Public Net Price", data: chartRows.map((r) => Number(r.sc_np_pub_mean || 0)), backgroundColor: "#06b6d4" },
-            { label: "10-Year Earnings", data: chartRows.map((r) => Number(r.sc_earn10_mean || 0)), backgroundColor: "#8b5cf6" }
+            { label: "Public Net Price", data: chartRows.map((r) => Number(r.sc_np_pub_mean || 0)), backgroundColor: netPriceBarColors, borderRadius: 6 },
+            { label: "10-Year Earnings", data: chartRows.map((r) => Number(r.sc_earn10_mean || 0)), backgroundColor: earningsBarColors, borderRadius: 6 }
           ]
         },
         options: {
@@ -903,7 +906,8 @@ function initEducationPage() {
     }
 
     if (chartSummary) {
-      chartSummary.textContent = `Simple takeaway: for ${activeGroup}, average public net price is ${money(pubNet)} while average earnings after 10 years are ${money(earn10)}. Public net price is the estimated out-of-pocket amount after aid, not the full sticker price.`;
+      const ratio = pubNet > 0 ? (earn10 / pubNet) : 0;
+      chartSummary.textContent = `${activeGroup}: average public net price is ${money(pubNet)} and average earnings after 10 years are ${money(earn10)} (${ratio.toFixed(1)}x higher). Highlighted purple bar = the selected group's 10-year earnings; gray bars provide context across other groups.`;
     }
   };
 
