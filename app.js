@@ -117,6 +117,85 @@ function getSystemPrompt() {
   return buildSystemPrompt();
 }
 
+let CHAT_REC_CONTEXT_CACHE = null;
+
+function extractZipFromHistory(conversationHistory) {
+  for (let i = conversationHistory.length - 1; i >= 0; i -= 1) {
+    const msg = conversationHistory[i];
+    if (msg?.role !== "user") continue;
+    const m = String(msg.content || "").match(/\b\d{5}\b/);
+    if (m) return m[0];
+  }
+  return "";
+}
+
+function inferInterestsFromText(text) {
+  const t = String(text || "").toLowerCase();
+  const tags = new Set();
+  if (/(nurs|health|medical|patient|therapy|psych)/.test(t)) tags.add("Healthcare");
+  if (/(web|computer|software|tech|cyber|it\b|data)/.test(t)) tags.add("Technology");
+  if (/(trade|electric|plumb|hvac|construction|mechanic|landscap)/.test(t)) tags.add("Trades");
+  if (/(teach|education|school|tutor|childcare|kids)/.test(t)) tags.add("Education");
+  if (/(business|manager|admin|office|operations|marketing|hr\b)/.test(t)) tags.add("Business");
+  if (/(design|art|creative|music|dance|choreograph)/.test(t)) tags.add("Creative");
+  if (/(social|community|counsel|case worker)/.test(t)) tags.add("Social Services");
+  if (/(science|lab|research|biology|chemistry)/.test(t)) tags.add("Science");
+  return tags;
+}
+
+function inferInterestsFromTitle(title) {
+  const t = String(title || "").toLowerCase();
+  const tags = new Set();
+  if (/(nurs|health|medical|patient|hearing aid|dietetic|psychiatric|therap)/.test(t)) tags.add("Healthcare");
+  if (/(web|computer|technolog|software|hydroelectric|geographic information)/.test(t)) tags.add("Technology");
+  if (/(landscap|helpers, labor|material mover|electric|plumb|hvac|construction)/.test(t)) tags.add("Trades");
+  if (/(tutor|teacher|enrichment|nann|speech-language|choreograph)/.test(t)) tags.add("Education");
+  if (/(supervisor|manager|operator|administrative|marketing|human resources)/.test(t)) tags.add("Business");
+  if (/(choreograph|creative|design|artist)/.test(t)) tags.add("Creative");
+  if (/(science|lab|research)/.test(t)) tags.add("Science");
+  if (/(social|community|counsel|case worker)/.test(t)) tags.add("Social Services");
+  if (!tags.size) tags.add("Business");
+  return tags;
+}
+
+function buildChatContextLine(recommendationsByGroup, conversationHistory) {
+  const zip = extractZipFromHistory(conversationHistory);
+  const group = zip ? zipToGroup(zip) : "";
+  const base = recommendationsByGroup[group] || recommendationsByGroup["Moderate Opportunity"] || [];
+  const lastUser = [...conversationHistory].reverse().find((m) => m.role === "user");
+  const interestHints = inferInterestsFromText(lastUser?.content || "");
+  const filtered = interestHints.size
+    ? base.filter((r) => {
+      const tags = inferInterestsFromTitle(r.title);
+      return [...interestHints].some((x) => tags.has(x));
+    })
+    : base;
+  const pool = filtered.length ? filtered : base;
+  const roles = pool
+    .slice()
+    .sort((a, b) => Number(b.match_score) - Number(a.match_score))
+    .slice(0, 8)
+    .map((r) => `${r.title} (${r.risk_label})`);
+  if (!roles.length) return "";
+  const zipLine = zip ? `ZIP ${zip} maps to ${group}.` : "No ZIP provided yet; ask for ZIP if needed.";
+  const interestLine = interestHints.size ? `Interest hints: ${[...interestHints].join(", ")}.` : "No clear interest hints yet.";
+  return `\n\nLive Recommendation Context:\n- ${zipLine}\n- ${interestLine}\n- Prioritize these role options first: ${roles.join("; ")}.`;
+}
+
+async function getChatSystemPrompt(conversationHistory) {
+  const basePrompt = getSystemPrompt();
+  try {
+    if (!CHAT_REC_CONTEXT_CACHE) {
+      const out = await loadCareerRecommendationsByGroup();
+      CHAT_REC_CONTEXT_CACHE = out.map || {};
+    }
+    const contextLine = buildChatContextLine(CHAT_REC_CONTEXT_CACHE, conversationHistory);
+    return `${basePrompt}${contextLine}`;
+  } catch {
+    return basePrompt;
+  }
+}
+
 function parseCSVLine(line) {
   const out = [];
   let cur = "";
@@ -413,7 +492,7 @@ const DEFAULT_JOBS = [
   { title: "Human Resources Managers", risk_score: "1", risk_label: "Low Risk", job_zone: "4" }
 ];
 
-async function askGeminiWithModel(conversationHistory, modelName) {
+async function askGeminiWithModel(conversationHistory, modelName, systemPrompt) {
   const GEMINI_API_KEY = GEMINI_DIRECT_KEY;
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`,
@@ -425,7 +504,7 @@ async function askGeminiWithModel(conversationHistory, modelName) {
           role: msg.role === "assistant" ? "model" : "user",
           parts: [{ text: msg.content }]
         })),
-        systemInstruction: { parts: [{ text: getSystemPrompt() }] },
+        systemInstruction: { parts: [{ text: systemPrompt }] },
         generationConfig: { maxOutputTokens: 1000, temperature: 0.7, thinkingConfig: { thinkingBudget: 0 } }
       })
     }
@@ -437,7 +516,7 @@ async function askGeminiWithModel(conversationHistory, modelName) {
   return data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 }
 
-async function askGroq(conversationHistory) {
+async function askGroq(conversationHistory, systemPrompt) {
   const GROQ_API_KEY = GROQ_DIRECT_KEY;
   if (!GROQ_API_KEY || GROQ_API_KEY === "GROQ_API_KEY_PLACEHOLDER") {
     throw new Error("Groq key not configured.");
@@ -456,7 +535,7 @@ async function askGroq(conversationHistory) {
         temperature: 0.7,
         max_tokens: 1000,
         messages: [
-          { role: "system", content: getSystemPrompt() },
+          { role: "system", content: systemPrompt },
           ...conversationHistory.map((m) => ({ role: m.role, content: m.content }))
         ]
       })
@@ -471,11 +550,12 @@ async function askGroq(conversationHistory) {
 }
 
 async function askWithFallbacks(conversationHistory) {
+  const chatSystemPrompt = await getChatSystemPrompt(conversationHistory);
   if (API_BASE_URL) {
     const response = await fetch(`${API_BASE_URL.replace(/\/$/, "")}/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ conversationHistory, systemPrompt: getSystemPrompt() })
+      body: JSON.stringify({ conversationHistory, systemPrompt: chatSystemPrompt })
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data?.error || "Proxy request failed.");
@@ -488,19 +568,19 @@ async function askWithFallbacks(conversationHistory) {
 
   const errors = [];
   try {
-    const text = await askGeminiWithModel(conversationHistory, "gemini-2.5-flash");
+    const text = await askGeminiWithModel(conversationHistory, "gemini-2.5-flash", chatSystemPrompt);
     if (text) return text;
   } catch (e) {
     errors.push(`Gemini 2.5: ${e.message}`);
   }
   try {
-    const text = await askGeminiWithModel(conversationHistory, "gemini-2.0-flash-lite");
+    const text = await askGeminiWithModel(conversationHistory, "gemini-2.0-flash-lite", chatSystemPrompt);
     if (text) return text;
   } catch (e) {
     errors.push(`Gemini Lite: ${e.message}`);
   }
   try {
-    const text = await askGroq(conversationHistory);
+    const text = await askGroq(conversationHistory, chatSystemPrompt);
     if (text) return text;
   } catch (e) {
     errors.push(`Groq: ${e.message}`);
