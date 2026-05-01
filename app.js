@@ -156,9 +156,63 @@ function parseCSV(text) {
 }
 
 async function loadCSV(path) {
-  const r = await fetch(path);
+  const url = path.startsWith("http") ? path : new URL(path, document.baseURI).href;
+  const r = await fetch(url);
   if (!r.ok) throw new Error(path);
   return parseCSV(await r.text());
+}
+
+const REC_GROUP_KEYS = ["Very Disadvantaged", "Disadvantaged", "Moderate Opportunity", "Higher Opportunity"];
+
+function normalizeRecRow(r) {
+  return {
+    title: String(r.title || r.occupation || "").trim(),
+    risk_label: r.risk_label || "Low Risk",
+    job_zone: r.job_zone ?? "",
+    match_score: r.match_score ?? "0"
+  };
+}
+
+async function loadCareerRecommendationsByGroup() {
+  const recFiles = {
+    "Very Disadvantaged": "data/career_recommendations_Very_Disadvantaged.csv",
+    Disadvantaged: "data/career_recommendations_Disadvantaged.csv",
+    "Moderate Opportunity": "data/career_recommendations_Moderate_Opportunity.csv",
+    "Higher Opportunity": "data/career_recommendations_Higher_Opportunity.csv"
+  };
+  const out = {};
+  await Promise.all(Object.entries(recFiles).map(async ([group, file]) => {
+    const rows = await loadCSV(file).catch(() => []);
+    out[group] = rows.map(normalizeRecRow).filter((x) => x.title);
+  }));
+
+  let sourceNote = "per-group CSV files in /data/";
+  if (!out["Very Disadvantaged"]?.length) {
+    const raw = await loadCSV("data/career_recommendations_by_group.csv").catch(() => []);
+    const map = { "Very Disadvantaged": [], Disadvantaged: [], "Moderate Opportunity": [], "Higher Opportunity": [] };
+    raw.forEach((r) => {
+      const g = r.youth_group;
+      if (!map[g]) return;
+      const row = normalizeRecRow(r);
+      if (row.title) map[g].push(row);
+    });
+    if (map["Very Disadvantaged"].length) {
+      Object.assign(out, map);
+      sourceNote = "career_recommendations_by_group.csv (bundled)";
+    }
+  }
+
+  if (!out["Very Disadvantaged"]?.length) {
+    sourceNote = "built-in demo list — add recommendation CSVs under data/ on GitHub";
+    const fb = [
+      { title: "Registered Nurses", risk_label: "Low Risk", job_zone: "3", match_score: "0.89" },
+      { title: "Web Developers", risk_label: "Low Risk", job_zone: "3", match_score: "0.84" },
+      { title: "Computer User Support Specialists", risk_label: "Low Risk", job_zone: "3", match_score: "0.84" }
+    ];
+    REC_GROUP_KEYS.forEach((k) => { out[k] = [...fb]; });
+  }
+
+  return { map: out, sourceNote };
 }
 
 function toNum(value, fallback = 0) {
@@ -733,27 +787,7 @@ async function initCareersPage() {
   const qsCareers = new URLSearchParams(window.location.search);
   const urlStateAbbr = (qsCareers.get("state") || "").toUpperCase();
 
-  const recFiles = {
-    "Very Disadvantaged": "data/career_recommendations_Very_Disadvantaged.csv",
-    Disadvantaged: "data/career_recommendations_Disadvantaged.csv",
-    "Moderate Opportunity": "data/career_recommendations_Moderate_Opportunity.csv",
-    "Higher Opportunity": "data/career_recommendations_Higher_Opportunity.csv"
-  };
-
-  const recommendationsByGroup = {};
-  await Promise.all(Object.entries(recFiles).map(async ([group, file]) => {
-    recommendationsByGroup[group] = await loadCSV(file).catch(() => []);
-  }));
-  if (!recommendationsByGroup["Very Disadvantaged"]?.length) {
-    recommendationsByGroup["Very Disadvantaged"] = [
-      { title: "Registered Nurses", risk_label: "Low Risk", job_zone: "3", match_score: "0.89" },
-      { title: "Web Developers", risk_label: "Low Risk", job_zone: "3", match_score: "0.84" },
-      { title: "Computer User Support Specialists", risk_label: "Low Risk", job_zone: "3", match_score: "0.84" }
-    ];
-    recommendationsByGroup["Disadvantaged"] = recommendationsByGroup["Very Disadvantaged"];
-    recommendationsByGroup["Moderate Opportunity"] = recommendationsByGroup["Very Disadvantaged"];
-    recommendationsByGroup["Higher Opportunity"] = recommendationsByGroup["Very Disadvantaged"];
-  }
+  const { map: recommendationsByGroup, sourceNote: recSourceNote } = await loadCareerRecommendationsByGroup();
 
   if (mapStateEl && urlStateAbbr && STATE_DATA[urlStateAbbr]) {
     const st = STATE_DATA[urlStateAbbr];
@@ -834,10 +868,36 @@ async function initCareersPage() {
 
   const inferInterests = (title) => {
     const t = String(title).toLowerCase();
-    if (t.includes("nurs") || t.includes("health") || t.includes("medical")) return ["Healthcare"];
-    if (t.includes("web") || t.includes("computer") || t.includes("gis") || t.includes("technolog")) return ["Technology"];
-    if (t.includes("landscap") || t.includes("supervisor")) return ["Trades"];
-    return ["Business"];
+    const tags = [];
+    if (t.includes("nurs") || t.includes("health") || t.includes("medical") || t.includes("patient rep")
+      || t.includes("hearing aid") || t.includes("dietetic") || t.includes("psychiatric") || t.includes("therap")) {
+      tags.push("Healthcare");
+    }
+    if (t.includes("web") || t.includes("computer") || t.includes("geographic information")
+      || t.includes("technolog") || t.includes("software") || t.includes("hydroelectric")) {
+      tags.push("Technology");
+    }
+    if (t.includes("landscap") || t.includes("helpers, labor") || t.includes("material-mov")) {
+      tags.push("Trades");
+    }
+    if (t.includes("tutor") || t.includes("teacher") || t.includes("enrichment") || t.includes("nann")
+      || t.includes("speech-language") || t.includes("choreograph")) {
+      tags.push("Education");
+    }
+    if (t.includes("supervisor") || t.includes("manager") || t.includes("operator")) {
+      tags.push("Business");
+    }
+    if (t.includes("choreograph") || t.includes("creative")) {
+      tags.push("Creative");
+    }
+    if (t.includes("science") || t.includes("lab ") || t.includes("research")) {
+      tags.push("Science");
+    }
+    if (t.includes("social") || t.includes("community")) {
+      tags.push("Social Services");
+    }
+    if (!tags.length) tags.push("Business");
+    return tags;
   };
 
   const renderJobList = (query) => {
@@ -880,7 +940,8 @@ async function initCareersPage() {
     const list = selectedInterests.size
       ? base.filter((r) => inferInterests(r.title).some((i) => selectedInterests.has(i)))
       : base;
-    const pool = list.length ? list : base;
+    const filteredEmpty = selectedInterests.size > 0 && base.length > 0 && !list.length;
+    const pool = filteredEmpty ? [] : (list.length ? list : base);
     const sorted = [...pool].sort((a, b) => (
       Number(b.match_score) - Number(a.match_score) || String(a.title).localeCompare(String(b.title))
     ));
@@ -891,11 +952,13 @@ async function initCareersPage() {
       for (let i = 0; i < seed.length; i += 1) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
       start = h % (sorted.length - 5);
     }
-    const chosen = sorted.slice(start, start + 5);
+    const chosen = pool.length ? sorted.slice(start, start + 5) : [];
     recCards.className = "section grid-3 fade-in";
-    recCards.innerHTML = chosen.map((r) => {
-      const pctScore = Math.round(Number(r.match_score) * 100);
-      return `
+    recCards.innerHTML = filteredEmpty
+      ? `<div class="card" style="grid-column:1/-1"><p><strong>No matches for selected interests.</strong></p><p class="muted">Clear interest pills or pick another group, then click <strong>Find My Path</strong> again.</p></div>`
+      : chosen.map((r) => {
+        const pctScore = Math.round(Number(r.match_score) * 100);
+        return `
         <div class="card">
           <h3>${r.title}</h3>
           <p><span class="badge-risk ${riskClass(r.risk_label)}">${r.risk_label}</span></p>
@@ -904,11 +967,16 @@ async function initCareersPage() {
           <div class="progress"><span style="width:${pctScore}%"></span></div>
         </div>
       `;
-    }).join("");
+      }).join("");
 
     if (pathRecMeta) {
       pathRecMeta.classList.remove("hide");
-      pathRecMeta.innerHTML = `These <strong>5</strong> roles are drawn from <strong>${pool.length}</strong> ranked recommendations in <code>career_recommendations_${String(group).replace(/\s+/g, "_")}.csv</code>. The “Is Your Career AI-Safe?” search above uses <strong>${jobs.length.toLocaleString()}</strong> occupations with automation risk scores.`;
+      const fileHint = recSourceNote.includes("bundled")
+        ? "<code>career_recommendations_by_group.csv</code>"
+        : `<code>career_recommendations_${String(group).replace(/\s+/g, "_")}.csv</code>`;
+      pathRecMeta.innerHTML = filteredEmpty
+        ? `<span class="muted">Data source: ${recSourceNote}.</span>`
+        : `These picks come from your group’s ranked list (<strong>${base.length}</strong> roles in the dataset). Source: ${recSourceNote}. File: ${fileHint}. The job search above uses <strong>${jobs.length.toLocaleString()}</strong> risk-scored occupations.`;
     }
 
     const row = youthSummaryRows.find((x) => x.youth_group === group);

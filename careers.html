@@ -26,21 +26,24 @@
       <details><summary>Risk Model Explainer</summary><p>Our model scores each occupation based on routine work, decision complexity, human interaction, and training level.</p></details>
       <p class="muted">Of 1,016 occupations analyzed: 446 Low Risk | 314 Moderate Risk | 256 High Risk</p>
     </section>
-    <section class="section"><h2>Personalized Career Recommendations</h2><p class="muted">Input your ZIP code and background — get career pathways matched to your situation.</p></section>
+    <section id="mapStateContext" class="section card hide" aria-live="polite"></section>
+    <section class="section"><h2>Personalized Career Recommendations</h2><p class="muted">Input your ZIP code and background — get career pathways matched to your situation. Results appear below after you click Find My Path.</p></section>
     <section class="section card">
       <form id="pathForm" class="grid-2">
         <div>
           <label>ZIP code</label>
           <div class="chat-input-row">
-            <input id="zipInput" required placeholder="e.g. 60619" />
-            <button class="btn primary" type="submit">Find My Path →</button>
+            <input id="zipInput" name="zip" inputmode="numeric" autocomplete="postal-code" minlength="5" maxlength="10" required placeholder="e.g. 60619" />
+            <button id="findPathBtn" class="btn primary" type="submit">Find My Path →</button>
           </div>
         </div>
-        <div><label>Neighborhood</label><select id="bgGroup"><option>Very Disadvantaged</option><option>Disadvantaged</option><option>Moderate Opportunity</option><option>Higher Opportunity</option><option>I'm not sure</option></select></div>
+        <div><label>Neighborhood opportunity group</label><select id="bgGroup"><option value="Very Disadvantaged">Very Disadvantaged</option><option value="Disadvantaged">Disadvantaged</option><option value="Moderate Opportunity">Moderate Opportunity</option><option value="Higher Opportunity">Higher Opportunity</option><option value="I'm not sure">I'm not sure (use ZIP rule)</option></select></div>
         <div style="grid-column:1/-1"><label>Interests</label><div class="pill-group"><button type="button" class="pill interest-pill" data-interest="Healthcare">Healthcare</button><button type="button" class="pill interest-pill" data-interest="Technology">Technology</button><button type="button" class="pill interest-pill" data-interest="Trades">Trades</button><button type="button" class="pill interest-pill" data-interest="Education">Education</button><button type="button" class="pill interest-pill" data-interest="Business">Business</button><button type="button" class="pill interest-pill" data-interest="Creative">Creative</button><button type="button" class="pill interest-pill" data-interest="Social Services">Social Services</button><button type="button" class="pill interest-pill" data-interest="Science">Science</button></div></div>
       </form>
+      <p id="pathFeedback" class="callout hide" role="status" style="margin-top:1rem;"></p>
     </section>
     <section id="recCards" class="section grid-3"></section>
+    <p id="pathRecMeta" class="section muted hide"></p>
     <section id="roiContext" class="section"></section>
   </main>
   <footer class="footer">
