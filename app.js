@@ -709,10 +709,11 @@ async function initMapPage() {
     const st = STATE_DATA[abbr];
     if (!st) return;
     const group = mobilityGroup(Number(st.mobility));
+    const groupColor = mobilityColor(Number(st.mobility));
     details.innerHTML = `
       <h3>${st.name} Key Data</h3>
       <p>━━━━━━━━━━━━━━━━━━━━</p>
-      <p>🏷️ Opportunity group: ${group}</p>
+      <p>🏷️ Opportunity group: <span style="display:inline-block;padding:2px 8px;border-radius:999px;background:${groupColor};color:#fff;font-weight:700;">${group}</span></p>
       <p>📍 Tract count: ${Number(st.tracts).toLocaleString()}</p>
       <p>📈 Avg mobility score: ${Number(st.mobility).toFixed(2)}</p>
       <p>💸 Avg poverty rate: ${pct(st.poverty)}</p>
@@ -726,7 +727,10 @@ async function initMapPage() {
   };
 
   const entries = Object.entries(STATE_DATA).map(([abbr, v]) => ({ abbr, ...v })).sort((a, b) => b.mobility - a.mobility);
-  tableBody.innerHTML = entries.map((s) => `<tr><td>${s.name}</td><td>${s.abbr}</td><td>${Number(s.mobility).toFixed(2)}</td><td>${pct(s.poverty)}</td></tr>`).join("");
+  tableBody.innerHTML = entries.map((s) => {
+    const group = mobilityGroup(Number(s.mobility));
+    return `<tr><td>${s.name}</td><td>${s.abbr}</td><td>${group}</td><td>${Number(s.mobility).toFixed(2)}</td><td>${pct(s.poverty)}</td></tr>`;
+  }).join("");
   const legend = document.querySelector(".map-legend");
   if (legend) {
     legend.innerHTML = `
