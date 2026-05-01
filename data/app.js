@@ -824,8 +824,11 @@ function initEducationPage() {
     }
 
     if (chartSummary) {
-      const ratio = pubNet > 0 ? (earn10 / pubNet) : 0;
-      chartSummary.textContent = `Why this highlight matters: ${activeGroup} is the group we are focusing on for decision-making. In this group, average public net price is ${money(pubNet)} while average 10-year earnings are ${money(earn10)} (${ratio.toFixed(1)}x higher). The purple bar marks this priority group so the audience can quickly see the cost-to-outcome gap.`;
+      const selected = chartRows.find((r) => r.youth_group === activeGroup) || {};
+      const summaryPubNet = pickNumber(selected.sc_np_pub_mean, fallback?.pub);
+      const summaryEarn10 = pickNumber(selected.sc_earn10_mean, fallback?.earn10);
+      const ratio = summaryPubNet > 0 ? (summaryEarn10 / summaryPubNet) : 0;
+      chartSummary.textContent = `Why this highlight matters: ${activeGroup} is the group we are focusing on for decision-making. In this group, average public net price is ${money(summaryPubNet)} while average 10-year earnings are ${money(summaryEarn10)} (${ratio.toFixed(1)}x higher). The purple bar marks this priority group so the audience can quickly see the cost-to-outcome gap.`;
     }
   };
 
