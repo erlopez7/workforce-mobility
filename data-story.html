@@ -4,9 +4,26 @@
 <body>
   <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a class="active" href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
   <main class="container">
-    <section class="section"><h1>The Data Behind the Platform</h1><p class="muted">How we turn complex public data into actionable guidance.</p></section>
-    <section class="section grid-3"><article class="card"><h3>73,202</h3><p>neighborhoods mapped across the US</p></article><article class="card"><h3>25.3%</h3><p>average poverty rate in disadvantaged tracts</p></article><article class="card"><h3>$0.35 per $1</h3><p>opportunity gap for children from low-income families</p></article></section>
-    <section class="section card"><h2>Data Pipeline</h2><p>Opportunity Insights → Neighborhood mobility</p><p>College Scorecard → College costs and outcomes</p><p>BLS OES → Wages and demand</p><p>O*NET Database → Tasks and automation risk</p><p>NHGIS Census → Demographics and geography</p><p>↓ Combined in DuckDB → 73,202 tracts, 1,016 occupations</p><p>↓ WorkForce Platform → Career guidance, maps, tools</p></section>
+    <section class="section"><h1>The Data Behind the Platform</h1><p class="muted">A brief view of what we used, what we built, and what it means.</p></section>
+
+    <section class="section callout">
+      <h2>Research Focus + AI Threat</h2>
+      <p><strong>Research focus:</strong> How can public data help low-income students choose education and career pathways with better long-term mobility outcomes?</p>
+      <p><strong>Why this matters now:</strong> AI is already shifting entry-level hiring. Workers entering highly automatable roles face more risk, so clear pathways toward lower-risk, accessible careers are increasingly important.</p>
+    </section>
+
+    <section class="section grid-3"><article class="card"><h3>73,202</h3><p>neighborhood tracts included</p></article><article class="card"><h3>1,016</h3><p>occupations scored for automation risk</p></article><article class="card"><h3>4</h3><p>opportunity groups used for recommendations</p></article></section>
+
+    <section class="section card">
+      <h2>Visual Data Pipeline</h2>
+      <div class="grid-3">
+        <article class="card"><h3>1) Data Sources</h3><p>Opportunity Insights, College Scorecard, BLS OES, O*NET, NHGIS</p></article>
+        <article class="card"><h3>2) Processing</h3><p>DuckDB joins + cleaning + KNN imputation for missing mobility fields</p></article>
+        <article class="card"><h3>3) Outputs</h3><p>State mobility map, education ROI context, job risk scoring, and career recommendations</p></article>
+      </div>
+      <p class="muted" style="margin-top:.8rem;">Flow: <strong>Raw public datasets</strong> → <strong>clean + merge</strong> → <strong>risk and opportunity models</strong> → <strong>user-facing guidance tools</strong>.</p>
+    </section>
+
     <section class="section card">
       <h2>Live CSVs Used in This Site</h2>
       <p><strong>Map:</strong> <code>data/state_mobility.csv</code> + <code>data/geo_context_state_summary.csv</code></p>
@@ -14,38 +31,34 @@
       <p><strong>Career Search (AI-Safe Jobs):</strong> <code>data/job_df_full_occupations.csv</code> (fallback: <code>data/occupation_risk_round2.csv</code>)</p>
       <p><strong>Career Recommendations:</strong> <code>data/career_recommendations_*.csv</code></p>
       <p><strong>Chat Context:</strong> opportunity group metrics from <code>data/opportunity_groups.csv</code> + platform job-risk data</p>
-      <p class="muted">If a CSV cannot load (for example without a local server), the app uses limited fallback defaults for continuity.</p>
-    </section>
-    <section class="section callout"><h2>The AI Threat</h2><p>AI is already reshaping hiring. Young workers aged 22–25 are being hired 14% less into high-AI-exposure jobs since late 2022. Women are 16% more likely to work in high exposure occupations. Workers with degrees are often better positioned to use AI as a tool.</p></section>
-    <section class="section">
-      <h2>Model 1 — Job Automation Risk Predictor</h2>
-      <div class="grid-3" style="align-items:start;">
-        <article class="card"><h3>🔵 Round 1 — Supervised Learning</h3><p>Algorithm: Random Forest (100 decision trees)</p><p>Data: 25 manually labeled jobs</p><p>Training: Yes — learned from known examples (Frey & Osborne research)</p><p>X inputs (7): routine_cognitive_tasks, manual_tasks, social_tasks, nonroutine_cognitive_tasks, median_wage, employment_growth_pct, education_required_yrs</p><p>Y output: high_automation_risk (1 = high risk, 0 = safe)</p><p>Accuracy: 96% cross-validation | 80% test accuracy</p><p>Result: Cashier, Bookkeeper, Truck Driver as high risk; Nurse, Physical Therapist, Cybersecurity Analyst as low risk</p><p>Limitation: only worked for 25 jobs — not scalable</p></article>
-        <div class="card" style="text-align:center;font-weight:700;">→ Updated in Round 2</div>
-        <article class="card"><h3>🟢 Round 2 — Rule-Based Interpretable Scoring</h3><p>Algorithm: Rule-based scoring system</p><p>Data: 1,016 occupations from full O*NET database</p><p>Training: No — uses economic theory + task structure logic</p><p>X inputs (5): routine_cognitive_tasks, nonroutine_cognitive_tasks, social_tasks, manual_tasks, job_zone</p><p>Y output: risk_score (0–4), risk_label (Low / Moderate / High)</p><p>Risk logic: +1 routine ≥ 0.40, +1 nonroutine ≤ 0.20, +1 social ≤ 0.10, +1 job_zone ≤ 2</p><p>Results: 446 Low Risk | 314 Moderate Risk | 256 High Risk</p><p>Validation: Matches real-world expectations for repetitive vs social/creative jobs</p><p>Why better: explainable and scalable to 1,000+ occupations</p></article>
-      </div>
-      <div class="card"><table><thead><tr><th></th><th>Round 1</th><th>Round 2</th></tr></thead><tbody><tr><td>Model Type</td><td>Supervised (Random Forest)</td><td>Rule-based scoring</td></tr><tr><td>Data</td><td>25 jobs</td><td>1,016 jobs</td></tr><tr><td>Training</td><td>Yes</td><td>No</td></tr><tr><td>Interpretability</td><td>Low</td><td>High</td></tr><tr><td>Scalability</td><td>Low</td><td>High</td></tr></tbody></table></div>
+      <p class="muted">If a CSV cannot load, the app uses limited fallback defaults to keep the interface usable.</p>
     </section>
 
     <section class="section">
-      <h2>Model 2 — Youth Career Matching Engine</h2>
-      <div class="grid-3" style="align-items:start;">
-        <article class="card"><h3>🔵 Round 1 — K-Means Clustering (5,000 tracts)</h3><p>Algorithm: K-Means (unsupervised)</p><p>Data: 5,000 US census tracts</p><p>X inputs: pov20, mob_up, inc20, opp_gap</p><p>Y output: None — model discovers groups</p><p>Groups: Very Disadvantaged | Disadvantaged | Moderate Opportunity | Higher Opportunity</p><p>Scoring weights: Safety 35% | Job Growth 25% | Accessibility 25% | Income boost 15%</p><p>Verification: Very Disadvantaged mobility 0.291 | Higher Opportunity 0.626</p></article>
-        <div class="card" style="text-align:center;font-weight:700;">→ Updated in Round 2</div>
-        <article class="card"><h3>🟢 Round 2 — K-Means + KNN Imputation (73,202 tracts)</h3><p>Algorithm: K-Means + KNN Imputation (k=5)</p><p>Data: Full 73,202 census tracts</p><p>New addition: KNN imputation filled 15.98% missing mobility values to 0% missing</p><p>X inputs: pov20, mob_up, inc20, opp_gap</p><p>Y output: None — unsupervised</p><p>Weights: Lower-opportunity groups Safety 45% + Accessibility 55%; Moderate/Higher Safety 60% + Accessibility 40%</p><p>Verification: 0.34 → 0.41 → 0.41 → 0.51 group ordering</p></article>
+      <h2>Model 1 Used in Final Platform — Job Automation Risk</h2>
+      <div class="grid-2">
+        <article class="card"><h3>Method</h3><p>Rule-based interpretable scoring on 1,016 O*NET occupations.</p><p>Inputs: routine tasks, nonroutine tasks, social tasks, manual tasks, job zone.</p></article>
+        <article class="card"><h3>Output + Result</h3><p>Risk score (0–4) and risk label (Low / Moderate / High).</p><p>Final split: <strong>446 Low</strong> | <strong>314 Moderate</strong> | <strong>256 High</strong>.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Model 2 Used in Final Platform — Youth Opportunity Grouping + Career Match</h2>
+      <div class="grid-2">
+        <article class="card"><h3>Method</h3><p>K-Means clustering on full tract dataset (73,202) with KNN imputation for missing mobility values.</p><p>Groups: Very Disadvantaged, Disadvantaged, Moderate Opportunity, Higher Opportunity.</p></article>
+        <article class="card"><h3>Output + Result</h3><p>Group-aware recommendation ranking with safety + accessibility weighting.</p><p>Group mobility ordering used in platform: <strong>0.34 → 0.41 → 0.41 → 0.51</strong>.</p></article>
       </div>
     </section>
 
     <section class="section callout">
-      <h2>What our platform can confidently show you</h2>
-      <p>✅ <strong>Full Job Risk Scoring</strong> — 1,016 occupations scored for automation risk using O*NET task data</p>
-      <p>✅ <strong>Imputed Mobility Handling</strong> — KNN imputation ensures every neighborhood returns a valid result (0% missing after imputation)</p>
-      <p>✅ <strong>Youth Opportunity Clustering</strong> — 4 neighborhood groups discovered by K-Means from 73,202 census tracts</p>
-      <p>✅ <strong>Personalized Career Ranking</strong> — careers ranked by match score using safety + accessibility weights per group</p>
-      <p>✅ <strong>Education ROI (Return on Investment) Context</strong> — average cost, earnings, and net price by opportunity group from College Scorecard data</p>
-      <p class="muted">We only show what our models can support. We do not rank specific colleges, guarantee individual outcomes, or make claims beyond what the data shows.</p>
+      <h2>What the Platform Can Reliably Show</h2>
+      <p>✅ Job automation risk across 1,016 occupations</p>
+      <p>✅ Opportunity-group context across 73,202 neighborhoods</p>
+      <p>✅ Career recommendations tied to ZIP-based group logic</p>
+      <p>✅ Education ROI context (cost, net price, 10-year earnings)</p>
+      <p class="muted">We provide data-based guidance. We do not rank specific colleges or guarantee individual outcomes.</p>
     </section>
-    <section class="section card"><h2>Research Statement</h2><p>How can we use public data to help low-income students identify educational pathways and maximize economic mobility? Our findings show that clearer pathways, lower-cost education options, and low-automation-risk jobs can improve long-term outcomes.</p></section>
+
     <section class="section card"><h2>Responsible Use Notice</h2><p>✓ Show average education cost and earnings by opportunity group</p><p>✓ Score jobs for automation risk based on task structure</p><p>✓ Recommend career pathways based on neighborhood context</p><p>✗ We do not rank specific colleges</p><p>✗ We do not guarantee exact salary outcomes</p><p>✗ Individual results vary — this is guidance, not a guarantee</p></section>
   </main>
   <footer class="footer">
