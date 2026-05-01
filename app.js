@@ -631,7 +631,6 @@ async function initMapPage() {
       <p>💰 Avg income: ${money(st.income)}</p>
       <p>⚖️ Avg opportunity gap: ${Number(st.opp_gap).toFixed(2)}</p>
       <p>🔴 Disadvantaged share: ${pct(st.disadvantaged_share)}</p>
-      <a class="btn primary" href="careers.html?state=${encodeURIComponent(abbr)}">View career paths with ${st.name} context →</a>
     `;
     document.querySelectorAll(".state-path").forEach((el) => el.classList.remove("active"));
     const path = document.querySelector(`[data-abbr="${abbr}"]`);
@@ -860,15 +859,9 @@ async function initCareersPage() {
   const { map: recommendationsByGroup, sourceNote: recSourceNoteInitial } = await loadCareerRecommendationsByGroup();
   let recSourceNote = recSourceNoteInitial;
 
-  if (mapStateEl && urlStateAbbr && STATE_DATA[urlStateAbbr]) {
-    const st = STATE_DATA[urlStateAbbr];
-    mapStateEl.classList.remove("hide");
-    mapStateEl.innerHTML = `
-      <h3>Mobility context: ${st.name}</h3>
-      <p class="muted">You opened Career Paths from the map. The numbers below are <strong>state-level</strong> averages from our tract summary data; recommended occupations still come from your <strong>ZIP + opportunity group</strong> rules.</p>
-      <p>📍 Tracts: ${Number(st.tracts).toLocaleString()} · Avg mobility: ${Number(st.mobility).toFixed(2)} · Avg poverty: ${pct(st.poverty)} · Avg income: ${money(st.income)} · Opportunity gap: ${Number(st.opp_gap).toFixed(2)} · Disadvantaged tract share: ${pct(st.disadvantaged_share)}</p>
-      <p><a class="btn" href="map.html?highlight=${encodeURIComponent(urlStateAbbr)}">← Back to map</a></p>
-    `;
+  if (mapStateEl) {
+    mapStateEl.classList.add("hide");
+    mapStateEl.innerHTML = "";
   }
 
   const youthSummaryRows = normalizeYouthSummaryRows(await loadCSVFirst(["data/youth_group_summary.csv", "youth_group_summary.csv"]));
