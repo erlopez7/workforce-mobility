@@ -1,0 +1,6 @@
+resource_id,resource_name,resource_type,target_group,state_abbr,description,url,phone,eligibility_note
+R001,FAFSA Help Center,financial_aid,High School Seniors,National,Guidance for completing federal student aid applications,https://studentaid.gov/help-center,+1-800-433-3243,Prototype directory entry
+R002,Community College Success Coach,mentorship,First Generation Students,National,Academic and career planning support for low-income and first-generation learners,https://www.communitycollegereview.com/,+1-888-555-0101,Prototype directory entry
+R003,State Workforce Board Job Training,training,Young Adults Seeking Career Entry,CA,Workforce training programs aligned with local high-demand occupations,https://www.labor.ca.gov/,+1-916-653-9900,Prototype directory entry
+R004,Career Navigation Hotline,counseling,Underserved Students,TX,Phone-based support for pathway planning and short-term credential options,https://www.twc.texas.gov/,+1-800-939-6631,Prototype directory entry
+R005,Scholarship Finder Resource,scholarship,Low Income Students,National,Search portal for grant and scholarship opportunities to reduce debt burden,https://www.careeronestop.org/toolkit/training/find-scholarships.aspx,+1-877-872-5627,Prototype directory entry

@@ -1,0 +1,5 @@
+group,poverty_rate,mobility_score,median_income,sc_cost_mean,sc_earn10_mean,sc_np_pub_mean,sc_np_priv_mean
+Very Disadvantaged,0.33,0.34,40805,28490,41451,9985,20279
+Disadvantaged,0.13,0.41,71329,29890,43544,10167,21745
+Moderate Opportunity,0.10,0.41,83864,30911,44503,10830,21627
+Higher Opportunity,0.05,0.51,140836,31653,46505,10776,22525

@@ -1,0 +1,9 @@
+metric,category,value
+risk_label_count,High Risk,256
+risk_label_count,Low Risk,446
+risk_label_count,Moderate Risk,314
+risk_score_count,0,184
+risk_score_count,1,262
+risk_score_count,2,314
+risk_score_count,3,232
+risk_score_count,4,24

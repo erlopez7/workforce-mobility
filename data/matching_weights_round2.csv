@@ -1,0 +1,3 @@
+segment_name,safety_weight,access_weight,growth_weight,uplift_weight,formula_note
+very_disadvantaged_and_disadvantaged,0.45,0.55,,,match_score = 0.45 * safety_score + 0.55 * access_score
+moderate_and_higher_opportunity,0.6,0.4,,,match_score = 0.60 * safety_score + 0.40 * access_score
