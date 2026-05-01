@@ -16,12 +16,16 @@
 
     <section class="section card">
       <h2>Visual Data Pipeline</h2>
-      <div class="grid-3">
-        <article class="card"><h3>1) Data Sources</h3><p>Opportunity Insights, College Scorecard, BLS OES, O*NET, NHGIS</p></article>
-        <article class="card"><h3>2) Processing</h3><p>DuckDB joins + cleaning + KNN imputation for missing mobility fields</p></article>
-        <article class="card"><h3>3) Outputs</h3><p>State mobility map, education ROI context, job risk scoring, and career recommendations</p></article>
+      <div style="display:grid;gap:.8rem;">
+        <div style="display:flex;gap:.6rem;align-items:stretch;flex-wrap:wrap;">
+          <div class="card" style="margin:0;"><h3 style="margin-bottom:.35rem;">1) Sources</h3><p class="muted" style="margin:0;">Opportunity Insights, Scorecard, BLS, O*NET, NHGIS</p></div>
+          <div class="muted" style="font-weight:700;">→</div>
+          <div class="card" style="margin:0;"><h3 style="margin-bottom:.35rem;">2) ETL + Modeling</h3><p class="muted" style="margin:0;">DuckDB merge, cleaning, KNN imputation, risk/opportunity scoring</p></div>
+          <div class="muted" style="font-weight:700;">→</div>
+          <div class="card" style="margin:0;"><h3 style="margin-bottom:.35rem;">3) Platform Outputs</h3><p class="muted" style="margin:0;">Map, Education ROI, Career matching, AI advisor context</p></div>
+        </div>
       </div>
-      <p class="muted" style="margin-top:.8rem;">Flow: <strong>Raw public datasets</strong> → <strong>clean + merge</strong> → <strong>risk and opportunity models</strong> → <strong>user-facing guidance tools</strong>.</p>
+      <p class="muted" style="margin-top:.8rem;"><strong>Simple read:</strong> Public datasets in, cleaned and modeled, then translated into student-friendly guidance tools.</p>
     </section>
 
     <section class="section card">

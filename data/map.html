@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mobility Map | WorkForce</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .map-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: start; }
+    .group-list { display: grid; gap: .6rem; }
+    .group-item { border: 1px solid var(--border); border-radius: 10px; padding: .65rem .75rem; background: #0d1528; }
+    .group-label { display: inline-flex; align-items: center; gap: .4rem; font-weight: 700; }
+    .group-dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; }
+    @media (max-width: 900px) { .map-layout { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
   <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a class="active" href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
@@ -14,26 +22,32 @@
       <div><input id="stateSearch" placeholder="Search by state name or abbreviation..." /></div>
       <div><button id="viewToggle" class="btn">Show Table View</button></div>
     </section>
-    <section id="mapWrap" class="section">
-      <div class="map-svg-wrap">
-        <svg id="usMap" width="100%" height="540" role="img" aria-label="US mobility map"></svg>
+    <section id="mapWrap" class="section map-layout">
+      <div>
+        <div class="map-svg-wrap">
+          <svg id="usMap" width="100%" height="540" role="img" aria-label="US mobility map"></svg>
+        </div>
+        <div class="map-legend">
+          <span><span class="legend-dot" style="background:#22c55e;"></span>Higher Opportunity (0.45+)</span>
+          <span><span class="legend-dot" style="background:#3b82f6;"></span>Moderate Opportunity (0.40-0.44)</span>
+          <span><span class="legend-dot" style="background:#8b5cf6;"></span>Disadvantaged (0.35-0.39)</span>
+          <span><span class="legend-dot" style="background:#dc2626;"></span>Very Disadvantaged (&lt;0.35)</span>
+        </div>
+        <div id="stateDetails" class="card"><p class="muted">Select a state to see details.</p></div>
       </div>
-      <div class="map-legend">
-        <span><span class="legend-dot" style="background:#22c55e;"></span>0.45+</span>
-        <span><span class="legend-dot" style="background:#3b82f6;"></span>0.40-0.44</span>
-        <span><span class="legend-dot" style="background:#8b5cf6;"></span>0.35-0.39</span>
-        <span><span class="legend-dot" style="background:#dc2626;"></span>&lt; 0.35</span>
-      </div>
-      <div id="stateDetails" class="card"><p class="muted">Select a state to see details.</p></div>
+      <aside class="card">
+        <h3>Opportunity Groups</h3>
+        <p class="muted" style="margin-top:-.25rem;">Simple map guide from higher to lower opportunity.</p>
+        <div class="group-list">
+          <div class="group-item"><span class="group-label"><span class="group-dot" style="background:#22c55e;"></span>Higher Opportunity</span><p class="muted" style="margin:.25rem 0 0;">Avg poverty 5%, avg mobility 0.51</p></div>
+          <div class="group-item"><span class="group-label"><span class="group-dot" style="background:#3b82f6;"></span>Moderate Opportunity</span><p class="muted" style="margin:.25rem 0 0;">Avg poverty 10%, avg mobility 0.41</p></div>
+          <div class="group-item"><span class="group-label"><span class="group-dot" style="background:#8b5cf6;"></span>Disadvantaged</span><p class="muted" style="margin:.25rem 0 0;">Avg poverty 13%, avg mobility 0.41</p></div>
+          <div class="group-item"><span class="group-label"><span class="group-dot" style="background:#dc2626;"></span>Very Disadvantaged</span><p class="muted" style="margin:.25rem 0 0;">Avg poverty 33%, avg mobility 0.34</p></div>
+        </div>
+      </aside>
     </section>
     <section id="tableWrap" class="section hide">
       <div class="card"><table><thead><tr><th>State</th><th>Abbr</th><th>Mobility</th><th>Poverty</th></tr></thead><tbody id="stateRows"></tbody></table></div>
-    </section>
-    <section class="section grid-2">
-      <article class="card"><h3>Very Disadvantaged</h3><p>Avg poverty 33%, avg mobility 0.34, avg income $40,805</p></article>
-      <article class="card"><h3>Disadvantaged</h3><p>Avg poverty 13%, avg mobility 0.41, avg income $71,329</p></article>
-      <article class="card"><h3>Moderate Opportunity</h3><p>Avg poverty 10%, avg mobility 0.41, avg income $83,864</p></article>
-      <article class="card"><h3>Higher Opportunity</h3><p>Avg poverty 5%, avg mobility 0.51, avg income $140,836</p></article>
     </section>
     <section class="section callout"><h2>What Is the Opportunity Gap?</h2><p>The opportunity gap is the difference between what children from low-income and high-income families earn as adults, based on where they grew up.</p></section>
     <section class="section"><p class="muted">Data sourced from Opportunity Insights (Raj Chetty et al.), using IRS tax records and US Census data tracking 73,202 neighborhoods.</p></section>
