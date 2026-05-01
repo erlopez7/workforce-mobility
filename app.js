@@ -437,7 +437,6 @@ function mobilityColor(v) {
   if (v >= 0.45) return "#22c55e";
   if (v >= 0.4) return "#3b82f6";
   if (v >= 0.35) return "#8b5cf6";
-  if (v >= 0.3) return "#f87171";
   return "#dc2626";
 }
 function riskClass(label) {
