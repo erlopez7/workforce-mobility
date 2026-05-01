@@ -506,7 +506,7 @@ async function initMapPage() {
       <p>💰 Avg income: ${money(st.income)}</p>
       <p>⚖️ Avg opportunity gap: ${Number(st.opp_gap).toFixed(2)}</p>
       <p>🔴 Disadvantaged share: ${pct(st.disadvantaged_share)}</p>
-      <a class="btn primary" href="careers.html">View Career Paths for This Area →</a>
+      <a class="btn primary" href="careers.html?state=${encodeURIComponent(abbr)}">View career paths with ${st.name} context →</a>
     `;
     document.querySelectorAll(".state-path").forEach((el) => el.classList.remove("active"));
     const path = document.querySelector(`[data-abbr="${abbr}"]`);
@@ -551,11 +551,15 @@ async function initMapPage() {
       if (abbr) setDetails(abbr);
     });
 
-  setDetails("CA");
+  const qsMap = new URLSearchParams(window.location.search);
+  const highlight = (qsMap.get("highlight") || "").toUpperCase();
+  if (highlight && STATE_DATA[highlight]) setDetails(highlight);
+  else setDetails("CA");
 }
 
 function zipToGroup(zip) {
-  const first = String(zip || "").trim()[0];
+  const digits = String(zip || "").replace(/\D/g, "");
+  const first = digits[0] || String(zip || "").trim()[0];
   if (first === "9") return "Disadvantaged";
   if (first === "1" || first === "2") return "Moderate Opportunity";
   if (first === "3" || first === "4") return "Very Disadvantaged";
@@ -721,8 +725,13 @@ async function initCareersPage() {
   const groupSelect = document.getElementById("bgGroup");
   const recCards = document.getElementById("recCards");
   const roiContext = document.getElementById("roiContext");
+  const pathFeedback = document.getElementById("pathFeedback");
+  const pathRecMeta = document.getElementById("pathRecMeta");
+  const mapStateEl = document.getElementById("mapStateContext");
   const jobsStatus = document.getElementById("jobsStatus");
   const commonJobsList = document.getElementById("commonJobsList");
+  const qsCareers = new URLSearchParams(window.location.search);
+  const urlStateAbbr = (qsCareers.get("state") || "").toUpperCase();
 
   const recFiles = {
     "Very Disadvantaged": "data/career_recommendations_Very_Disadvantaged.csv",
@@ -744,6 +753,17 @@ async function initCareersPage() {
     recommendationsByGroup["Disadvantaged"] = recommendationsByGroup["Very Disadvantaged"];
     recommendationsByGroup["Moderate Opportunity"] = recommendationsByGroup["Very Disadvantaged"];
     recommendationsByGroup["Higher Opportunity"] = recommendationsByGroup["Very Disadvantaged"];
+  }
+
+  if (mapStateEl && urlStateAbbr && STATE_DATA[urlStateAbbr]) {
+    const st = STATE_DATA[urlStateAbbr];
+    mapStateEl.classList.remove("hide");
+    mapStateEl.innerHTML = `
+      <h3>Mobility context: ${st.name}</h3>
+      <p class="muted">You opened Career Paths from the map. The numbers below are <strong>state-level</strong> averages from our tract summary data; recommended occupations still come from your <strong>ZIP + opportunity group</strong> rules.</p>
+      <p>📍 Tracts: ${Number(st.tracts).toLocaleString()} · Avg mobility: ${Number(st.mobility).toFixed(2)} · Avg poverty: ${pct(st.poverty)} · Avg income: ${money(st.income)} · Opportunity gap: ${Number(st.opp_gap).toFixed(2)} · Disadvantaged tract share: ${pct(st.disadvantaged_share)}</p>
+      <p><a class="btn" href="map.html?highlight=${encodeURIComponent(urlStateAbbr)}">← Back to map</a></p>
+    `;
   }
 
   const youthSummaryRows = normalizeYouthSummaryRows(await loadCSV("data/youth_group_summary.csv").catch(() => []));
@@ -802,10 +822,14 @@ async function initCareersPage() {
 
   const interestButtons = [...document.querySelectorAll(".interest-pill")];
   const selectedInterests = new Set();
+  let lastPathContext = { group: "", zip: "", state: urlStateAbbr };
   interestButtons.forEach((btn) => btn.addEventListener("click", () => {
     btn.classList.toggle("active");
     const v = btn.dataset.interest;
     if (selectedInterests.has(v)) selectedInterests.delete(v); else selectedInterests.add(v);
+    if (lastPathContext.group && lastPathContext.zip) {
+      renderRecs(lastPathContext.group, lastPathContext.zip, lastPathContext.state);
+    }
   }));
 
   const inferInterests = (title) => {
@@ -851,12 +875,23 @@ async function initCareersPage() {
   renderJobList("");
   jobSearch.addEventListener("input", () => renderJobList(jobSearch.value));
 
-  const renderRecs = (group) => {
+  const renderRecs = (group, zipForWindow = "", stateForWindow = "") => {
     const base = recommendationsByGroup[group] || [];
     const list = selectedInterests.size
       ? base.filter((r) => inferInterests(r.title).some((i) => selectedInterests.has(i)))
       : base;
-    const chosen = (list.length ? list : base).slice(0, 5);
+    const pool = list.length ? list : base;
+    const sorted = [...pool].sort((a, b) => (
+      Number(b.match_score) - Number(a.match_score) || String(a.title).localeCompare(String(b.title))
+    ));
+    let start = 0;
+    if (sorted.length > 5 && stateForWindow) {
+      let h = 0;
+      const seed = `${zipForWindow}|${stateForWindow}`;
+      for (let i = 0; i < seed.length; i += 1) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+      start = h % (sorted.length - 5);
+    }
+    const chosen = sorted.slice(start, start + 5);
     recCards.className = "section grid-3 fade-in";
     recCards.innerHTML = chosen.map((r) => {
       const pctScore = Math.round(Number(r.match_score) * 100);
@@ -871,6 +906,11 @@ async function initCareersPage() {
       `;
     }).join("");
 
+    if (pathRecMeta) {
+      pathRecMeta.classList.remove("hide");
+      pathRecMeta.innerHTML = `These <strong>5</strong> roles are drawn from <strong>${pool.length}</strong> ranked recommendations in <code>career_recommendations_${String(group).replace(/\s+/g, "_")}.csv</code>. The “Is Your Career AI-Safe?” search above uses <strong>${jobs.length.toLocaleString()}</strong> occupations with automation risk scores.`;
+    }
+
     const row = youthSummaryRows.find((x) => x.youth_group === group);
     const d = row || GROUP_DATA[group] || GROUP_DATA["Moderate Opportunity"];
     roiContext.innerHTML = `
@@ -883,17 +923,42 @@ async function initCareersPage() {
     `;
   };
 
-  form.addEventListener("submit", (e) => {
+  const submitPath = (e) => {
     e.preventDefault();
-    const zip = zipInput.value.trim();
+    const raw = zipInput.value.trim();
+    const digits = raw.replace(/\D/g, "");
+    if (digits.length < 5) {
+      if (pathFeedback) {
+        pathFeedback.textContent = "Please enter a 5-digit US ZIP code (numbers only, e.g. 60619).";
+        pathFeedback.classList.remove("hide");
+      }
+      zipInput.focus();
+      return;
+    }
+    const zip = digits.slice(0, 5);
+    zipInput.value = zip;
     const autoGroup = zipToGroup(zip);
-    const chosen = groupSelect.value === "I'm not sure" ? autoGroup : groupSelect.value;
+    const usedZipRule = groupSelect.value === "I'm not sure";
+    const chosen = usedZipRule ? autoGroup : groupSelect.value;
     groupSelect.value = chosen;
-    renderRecs(chosen);
-  });
+    const ruleNote = usedZipRule ? "ZIP-prefix rule" : "your dropdown choice";
+    lastPathContext = { group: chosen, zip, state: urlStateAbbr };
+    renderRecs(chosen, zip, urlStateAbbr);
+    if (pathFeedback) {
+      pathFeedback.innerHTML = `<strong>Paths updated.</strong> Using ZIP <strong>${zip}</strong> → opportunity group <strong>${chosen}</strong> (${ruleNote}). Scroll down to see recommendations.`;
+      pathFeedback.classList.remove("hide");
+    }
+    requestAnimationFrame(() => {
+      recCards?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
+  if (form) {
+    form.addEventListener("submit", submitPath);
+  }
 
   if (groupSelect.value && groupSelect.value !== "I'm not sure") {
-    renderRecs(groupSelect.value);
+    renderRecs(groupSelect.value, "", urlStateAbbr);
   }
 }
 
@@ -906,7 +971,7 @@ async function init() {
   initHomeWidget();
   initMapPage();
   initEducationPage();
-  initCareersPage();
+  await initCareersPage();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
