@@ -360,6 +360,13 @@ function mobilityColor(v) {
   if (v >= 0.35) return "#8b5cf6";
   return "#dc2626";
 }
+
+function mobilityGroup(v) {
+  if (v >= 0.45) return "Higher Opportunity";
+  if (v >= 0.4) return "Moderate Opportunity";
+  if (v >= 0.35) return "Disadvantaged";
+  return "Very Disadvantaged";
+}
 function riskClass(label) {
   if (String(label).includes("Low")) return "risk-low";
   if (String(label).includes("Moderate")) return "risk-moderate";
@@ -621,9 +628,11 @@ async function initMapPage() {
   const setDetails = (abbr) => {
     const st = STATE_DATA[abbr];
     if (!st) return;
+    const group = mobilityGroup(Number(st.mobility));
     details.innerHTML = `
       <h3>${st.name} Key Data</h3>
       <p>━━━━━━━━━━━━━━━━━━━━</p>
+      <p>🏷️ Opportunity group: ${group}</p>
       <p>📍 Tract count: ${Number(st.tracts).toLocaleString()}</p>
       <p>📈 Avg mobility score: ${Number(st.mobility).toFixed(2)}</p>
       <p>💸 Avg poverty rate: ${pct(st.poverty)}</p>
@@ -639,6 +648,15 @@ async function initMapPage() {
 
   const entries = Object.entries(STATE_DATA).map(([abbr, v]) => ({ abbr, ...v })).sort((a, b) => b.mobility - a.mobility);
   tableBody.innerHTML = entries.map((s) => `<tr><td>${s.name}</td><td>${s.abbr}</td><td>${Number(s.mobility).toFixed(2)}</td><td>${pct(s.poverty)}</td></tr>`).join("");
+  const legend = document.querySelector(".map-legend");
+  if (legend) {
+    legend.innerHTML = `
+      <span><span class="legend-dot" style="background:#22c55e;"></span>Higher Opportunity (0.45+)</span>
+      <span><span class="legend-dot" style="background:#3b82f6;"></span>Moderate Opportunity (0.40-0.44)</span>
+      <span><span class="legend-dot" style="background:#8b5cf6;"></span>Disadvantaged (0.35-0.39)</span>
+      <span><span class="legend-dot" style="background:#dc2626;"></span>Very Disadvantaged (&lt;0.35)</span>
+    `;
+  }
 
   toggle.addEventListener("click", () => {
     mapWrap.classList.toggle("hide");
