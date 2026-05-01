@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Data Story | WorkForce</title><link rel="stylesheet" href="styles.css" /></head>
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a class="active" href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <main class="container">
+    <section class="section"><h1>The Data Behind the Platform</h1><p class="muted">A brief view of what we used, what we built, and what it means.</p></section>
+
+    <section class="section callout">
+      <h2>Research Focus + AI Threat</h2>
+      <p><strong>Research focus:</strong> How can public data help low-income students choose education and career pathways with better long-term mobility outcomes?</p>
+      <p><strong>Why this matters now:</strong> AI is already shifting entry-level hiring. Workers entering highly automatable roles face more risk, so clear pathways toward lower-risk, accessible careers are increasingly important.</p>
+    </section>
+
+    <section class="section grid-3"><article class="card"><h3>73,202</h3><p>neighborhood tracts included</p></article><article class="card"><h3>1,016</h3><p>occupations scored for automation risk</p></article><article class="card"><h3>4</h3><p>opportunity groups used for recommendations</p></article></section>
+
+    <section class="section card">
+      <h2>Visual Data Pipeline</h2>
+      <div class="grid-3">
+        <article class="card"><h3>1) Data Sources</h3><p>Opportunity Insights, College Scorecard, BLS OES, O*NET, NHGIS</p></article>
+        <article class="card"><h3>2) Processing</h3><p>DuckDB joins + cleaning + KNN imputation for missing mobility fields</p></article>
+        <article class="card"><h3>3) Outputs</h3><p>State mobility map, education ROI context, job risk scoring, and career recommendations</p></article>
+      </div>
+      <p class="muted" style="margin-top:.8rem;">Flow: <strong>Raw public datasets</strong> → <strong>clean + merge</strong> → <strong>risk and opportunity models</strong> → <strong>user-facing guidance tools</strong>.</p>
+    </section>
+
+    <section class="section card">
+      <h2>Live CSVs Used in This Site</h2>
+      <p><strong>Map:</strong> <code>data/state_mobility.csv</code> + <code>data/geo_context_state_summary.csv</code></p>
+      <p><strong>Education Explorer:</strong> <code>data/youth_group_summary.csv</code> + <code>data/opportunity_groups.csv</code></p>
+      <p><strong>Career Search (AI-Safe Jobs):</strong> <code>data/job_df_full_occupations.csv</code> (fallback: <code>data/occupation_risk_round2.csv</code>)</p>
+      <p><strong>Career Recommendations:</strong> <code>data/career_recommendations_*.csv</code></p>
+      <p><strong>Chat Context:</strong> opportunity group metrics from <code>data/opportunity_groups.csv</code> + platform job-risk data</p>
+      <p class="muted">If a CSV cannot load, the app uses limited fallback defaults to keep the interface usable.</p>
+    </section>
+
+    <section class="section">
+      <h2>Model 1 Used in Final Platform — Job Automation Risk</h2>
+      <div class="grid-2">
+        <article class="card"><h3>Method</h3><p>Rule-based interpretable scoring on 1,016 O*NET occupations.</p><p>Inputs: routine tasks, nonroutine tasks, social tasks, manual tasks, job zone.</p></article>
+        <article class="card"><h3>Output + Result</h3><p>Risk score (0–4) and risk label (Low / Moderate / High).</p><p>Final split: <strong>446 Low</strong> | <strong>314 Moderate</strong> | <strong>256 High</strong>.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Model 2 Used in Final Platform — Youth Opportunity Grouping + Career Match</h2>
+      <div class="grid-2">
+        <article class="card"><h3>Method</h3><p>K-Means clustering on full tract dataset (73,202) with KNN imputation for missing mobility values.</p><p>Groups: Very Disadvantaged, Disadvantaged, Moderate Opportunity, Higher Opportunity.</p></article>
+        <article class="card"><h3>Output + Result</h3><p>Group-aware recommendation ranking with safety + accessibility weighting.</p><p>Group mobility ordering used in platform: <strong>0.34 → 0.41 → 0.41 → 0.51</strong>.</p></article>
+      </div>
+    </section>
+
+    <section class="section callout">
+      <h2>What the Platform Can Reliably Show</h2>
+      <p>✅ Job automation risk across 1,016 occupations</p>
+      <p>✅ Opportunity-group context across 73,202 neighborhoods</p>
+      <p>✅ Career recommendations tied to ZIP-based group logic</p>
+      <p>✅ Education ROI context (cost, net price, 10-year earnings)</p>
+      <p class="muted">We provide data-based guidance. We do not rank specific colleges or guarantee individual outcomes.</p>
+    </section>
+
+    <section class="section card"><h2>Responsible Use Notice</h2><p>✓ Show average education cost and earnings by opportunity group</p><p>✓ Score jobs for automation risk based on task structure</p><p>✓ Recommend career pathways based on neighborhood context</p><p>✗ We do not rank specific colleges</p><p>✗ We do not guarantee exact salary outcomes</p><p>✗ Individual results vary — this is guidance, not a guarantee</p></section>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p>
+      <div class="footer-links"><a href="index.html">Home</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="chatbot.html">AI Advisor</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
