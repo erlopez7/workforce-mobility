@@ -222,6 +222,63 @@ input, select, textarea {
   padding-top: .8rem;
 }
 
+.chart-panel {
+  background: #0b1224;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1rem 0.35rem;
+  margin-top: 1rem;
+  max-width: 720px;
+}
+
+.chart-panel--fixed {
+  position: relative;
+  height: min(320px, 55vw);
+  min-height: 220px;
+}
+.chart-panel--fixed canvas {
+  display: block;
+  max-height: 100%;
+}
+
+.chart-panel--radar {
+  position: relative;
+  height: min(420px, 70vw);
+  min-height: 300px;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.chart-panel--radar canvas {
+  display: block;
+  max-height: 100%;
+}
+
+.missingness-table {
+  width: 100%;
+  max-width: 720px;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.missingness-table th,
+.missingness-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.65rem 0.5rem 0;
+  text-align: left;
+  vertical-align: top;
+}
+.missingness-table th {
+  color: #b7c0d2;
+  font-weight: 600;
+}
+.missingness-table td {
+  color: var(--text-secondary);
+}
+.missingness-table .after-cell {
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
 @media (max-width: 900px) {
   .menu-btn { display: inline-block; }
   .nav-links {

@@ -794,7 +794,16 @@ function zipToGroup(zip) {
 function normalizeYouthSummaryRows(rows) {
   if (!rows.length) return [];
   if (rows[0].youth_group) return rows;
-  const ordered = [...rows].sort((a, b) => Number(a.mob_up) - Number(b.mob_up));
+  const ordered = [...rows].sort((a, b) => {
+    const va = Number(a.mob_up);
+    const vb = Number(b.mob_up);
+    const fa = Number.isFinite(va);
+    const fb = Number.isFinite(vb);
+    if (fa && fb) return va - vb;
+    if (fa && !fb) return -1;
+    if (!fa && fb) return 1;
+    return 0;
+  });
   const labels = ["Very Disadvantaged", "Disadvantaged", "Moderate Opportunity", "Higher Opportunity"];
   return ordered.map((row, idx) => ({ ...row, youth_group: labels[idx] || `Group ${idx + 1}` }));
 }
@@ -805,6 +814,336 @@ function pickNumber(primary, fallback) {
   const f = Number(fallback);
   if (Number.isFinite(f)) return f;
   return 0;
+}
+
+/** Upward mobility is a unitless rate in [0,1]; allow 0 and treat only non-finite as missing. */
+function pickMobility(primary, fallback) {
+  const p = Number(primary);
+  if (Number.isFinite(p)) return p;
+  const f = Number(fallback);
+  return Number.isFinite(f) ? f : 0;
+}
+
+/** Mirrors data/tract_key_fields_missingness.csv when fetch fails (e.g. file:// or wrong path). */
+const TRACT_MISSINGNESS_FALLBACK = [
+  { field: "mob_up", field_label: "Upward mobility (mob_up)", stage: "before_knn", null_pct: "15.87", tract_count: "73202" },
+  { field: "mob_up", field_label: "Upward mobility (mob_up)", stage: "after_knn", null_pct: "0", tract_count: "73202" },
+  { field: "pov20", field_label: "Poverty rate (pov20)", stage: "before_knn", null_pct: "1.42", tract_count: "73202" },
+  { field: "pov20", field_label: "Poverty rate (pov20)", stage: "after_knn", null_pct: "0", tract_count: "73202" },
+  { field: "inc20", field_label: "Median income (inc20)", stage: "before_knn", null_pct: "2.08", tract_count: "73202" },
+  { field: "inc20", field_label: "Median income (inc20)", stage: "after_knn", null_pct: "0", tract_count: "73202" },
+  { field: "opp_gap", field_label: "Opportunity gap (opp_gap)", stage: "before_knn", null_pct: "3.65", tract_count: "73202" },
+  { field: "opp_gap", field_label: "Opportunity gap (opp_gap)", stage: "after_knn", null_pct: "0", tract_count: "73202" }
+];
+
+function tractMissingnessCsvPaths() {
+  const root = (document.documentElement.getAttribute("data-data-root") || "").replace(/\/$/, "");
+  const name = "tract_key_fields_missingness.csv";
+  const paths = [];
+  if (root) paths.push(`${root}/data/${name}`);
+  paths.push(`data/${name}`, name);
+  return paths;
+}
+
+async function initDataStoryImputationChart() {
+  const canvas = document.getElementById("tractMissingnessChart");
+  const captionEl = document.getElementById("tractMissingnessCaption");
+  if (!captionEl && !canvas) return;
+
+  let rows = await loadCSVFirst(tractMissingnessCsvPaths());
+  const usedFallback = !rows.length;
+  if (usedFallback) rows = TRACT_MISSINGNESS_FALLBACK;
+
+  const order = [];
+  const seen = new Set();
+  rows.forEach((r) => {
+    const key = r.field_label || r.field;
+    if (key && !seen.has(key)) {
+      seen.add(key);
+      order.push(key);
+    }
+  });
+
+  const byLabel = new Map();
+  rows.forEach((r) => {
+    const label = r.field_label || r.field;
+    if (!byLabel.has(label)) byLabel.set(label, { before: 0, after: 0 });
+    const rec = byLabel.get(label);
+    const pct = Number(r.null_pct);
+    const v = Number.isFinite(pct) ? pct : 0;
+    if (r.stage === "before_knn") rec.before = v;
+    if (r.stage === "after_knn") rec.after = v;
+  });
+
+  const beforeData = order.map((l) => byLabel.get(l).before);
+  const afterData = order.map((l) => byLabel.get(l).after);
+  const hi = Math.max(1, ...beforeData, ...afterData);
+
+  if (captionEl) {
+    const n = rows[0]?.tract_count || "";
+    const fetchNote = usedFallback
+      ? " <strong>Note:</strong> Showing bundled figures (CSV fetch failed — use a local server like <code>python -m http.server</code> to load <code>data/tract_key_fields_missingness.csv</code> live)."
+      : "";
+    const intro = n
+      ? `Tract modeling frame: N=${Number(n).toLocaleString()} census tracts. Red bars are missing share before imputation. After KNN, the clustering feature matrix has no nulls in these columns (see table).${fetchNote}`
+      : `Red bars: missing share before imputation. After KNN values are in the table.${fetchNote}`;
+    const tableRows = order
+      .map((label, i) => {
+        const b = beforeData[i].toFixed(2);
+        const a = afterData[i].toFixed(2);
+        return `<tr><td>${label}</td><td>${b}%</td><td class="after-cell">${a}%</td></tr>`;
+      })
+      .join("");
+    captionEl.innerHTML = `
+      <p class="muted" style="margin:0 0 .75rem;">${intro}</p>
+      <div style="overflow-x:auto;" class="missingness-table-wrap">
+        <table class="missingness-table">
+          <thead>
+            <tr>
+              <th scope="col">Tract field</th>
+              <th scope="col">Before KNN (raw merge)</th>
+              <th scope="col">After KNN (modeling frame)</th>
+            </tr>
+          </thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  if (!canvas || typeof Chart === "undefined") {
+    if (captionEl && typeof Chart === "undefined") {
+      const warn = document.createElement("p");
+      warn.className = "muted";
+      warn.style.marginTop = ".75rem";
+      warn.textContent = "Chart library did not load. The table above still shows before/after missingness.";
+      captionEl.appendChild(warn);
+    }
+    return;
+  }
+
+  const ctx = canvas.getContext("2d");
+  if (canvas._tractMissingnessChart) {
+    canvas._tractMissingnessChart.destroy();
+  }
+  try {
+    canvas._tractMissingnessChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: order,
+      datasets: [
+        {
+          label: "Before KNN (raw merge)",
+          data: beforeData,
+          backgroundColor: "rgba(248, 113, 113, 0.8)",
+          borderColor: "rgba(248, 113, 113, 1)",
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: { color: "#e5e7eb" }
+        },
+        title: {
+          display: true,
+          text: "Before KNN — percent of tracts with missing values",
+          color: "#f9fafb",
+          font: { size: 15, weight: "600" }
+        },
+        tooltip: {
+          callbacks: {
+            label(c) {
+              return `${c.dataset.label}: ${c.parsed.y.toFixed(2)}%`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          suggestedMax: hi * 1.12,
+          ticks: {
+            color: "#9ca3af",
+            callback: (v) => `${v}%`
+          },
+          grid: { color: "rgba(148, 163, 184, 0.2)" },
+          title: {
+            display: true,
+            text: "Missing (%)",
+            color: "#cbd5e1",
+            font: { size: 12, weight: "600" }
+          }
+        },
+        x: {
+          ticks: { color: "#9ca3af", maxRotation: 28, minRotation: 0 },
+          grid: { display: false },
+          title: {
+            display: true,
+            text: "Tract field",
+            color: "#cbd5e1",
+            font: { size: 12, weight: "600" }
+          }
+        }
+      }
+    }
+    });
+  } catch (e) {
+    console.error("tract missingness chart", e);
+    const p = document.createElement("p");
+    p.className = "muted";
+    p.textContent = "Could not draw chart; see table above.";
+    captionEl?.appendChild(p);
+  }
+}
+
+const YOUTH_GROUP_ORDER = ["Very Disadvantaged", "Disadvantaged", "Moderate Opportunity", "Higher Opportunity"];
+
+const CLUSTER_PROFILE_FEATURES = [
+  { key: "pov20", label: "Poverty (pov20)", format: "rate" },
+  { key: "mob_up", label: "Upward mobility (mob_up)", format: "rate" },
+  { key: "inc20", label: "Median income (inc20)", format: "money" },
+  { key: "opp_gap", label: "Opportunity gap (opp_gap)", format: "rate" }
+];
+
+const CLUSTER_PROFILE_FALLBACK = [
+  { youth_group: "Disadvantaged", pov20: "0.10036765948981917", mob_up: "0.412231942717917", inc20: "83573.9284868977", opp_gap: "0.12873829247675503" },
+  { youth_group: "Higher Opportunity", pov20: "0.05041693302080513", mob_up: "0.512564116769657", inc20: "140800.83116698635", opp_gap: "0.06076391789189566" },
+  { youth_group: "Moderate Opportunity", pov20: "0.1277797397062185", mob_up: "0.41161641677448696", inc20: "71366.47968642975", opp_gap: "0.03900309764822313" },
+  { youth_group: "Very Disadvantaged", pov20: "0.3321536045233258", mob_up: "0.3402339249253945", inc20: "40772.19189571228", opp_gap: "0.06013499293230748" }
+];
+
+function clusterProfileCsvPaths() {
+  const root = (document.documentElement.getAttribute("data-data-root") || "").replace(/\/$/, "");
+  const name = "model2_cluster_profiles_mean.csv";
+  const paths = [];
+  if (root) paths.push(`${root}/data/${name}`);
+  paths.push(`data/${name}`, name);
+  return paths;
+}
+
+async function initYouthClusterProfileChart() {
+  const canvas = document.getElementById("youthClusterProfileChart");
+  const cap = document.getElementById("youthClusterProfileCaption");
+  if (!canvas && !cap) return;
+
+  let rows = await loadCSVFirst(clusterProfileCsvPaths());
+  const usedFallback = !rows.length;
+  if (usedFallback) rows = CLUSTER_PROFILE_FALLBACK;
+
+  const byGroup = new Map();
+  rows.forEach((r) => {
+    const g = String(r.youth_group || "").trim();
+    if (g) byGroup.set(g, r);
+  });
+
+  const axisLabels = CLUSTER_PROFILE_FEATURES.map((f) => f.label);
+  const palette = [
+    { border: "rgba(239, 68, 68, 0.95)", fill: "rgba(239, 68, 68, 0.11)" },
+    { border: "rgba(245, 158, 11, 0.95)", fill: "rgba(245, 158, 11, 0.11)" },
+    { border: "rgba(6, 182, 212, 0.95)", fill: "rgba(6, 182, 212, 0.12)" },
+    { border: "rgba(16, 185, 129, 0.95)", fill: "rgba(16, 185, 129, 0.12)" }
+  ];
+
+  const datasets = YOUTH_GROUP_ORDER.map((gName, gi) => {
+    const row = byGroup.get(gName);
+    if (!row) return null;
+    const data = CLUSTER_PROFILE_FEATURES.map((feat) => {
+      const vals = YOUTH_GROUP_ORDER.map((g2) => Number(byGroup.get(g2)?.[feat.key]));
+      const finite = vals.filter((x) => Number.isFinite(x));
+      const min = Math.min(...finite);
+      const max = Math.max(...finite);
+      const span = max - min || 1;
+      const v = Number(row[feat.key]);
+      return ((v - min) / span) * 100;
+    });
+    const p = palette[gi % palette.length];
+    return {
+      label: gName,
+      data,
+      borderColor: p.border,
+      backgroundColor: p.fill,
+      borderWidth: 2,
+      pointRadius: 3,
+      pointHoverRadius: 5
+    };
+  }).filter(Boolean);
+
+  if (cap) {
+    let note = "Profiles summarize mean tract-level features used in KMeans. Each corner is one feature; distance from the center reflects how high that group’s mean is relative to the other three groups on that dimension.";
+    if (usedFallback) {
+      note += " <strong>Note:</strong> Bundled snapshot (CSV fetch failed — run a local HTTP server to load <code>data/model2_cluster_profiles_mean.csv</code> live).";
+    }
+    cap.innerHTML = note;
+  }
+
+  if (!canvas || typeof Chart === "undefined") return;
+
+  const ctx = canvas.getContext("2d");
+  if (canvas._youthClusterChart) canvas._youthClusterChart.destroy();
+  try {
+    canvas._youthClusterChart = new Chart(ctx, {
+      type: "radar",
+      data: { labels: axisLabels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: { color: "#e5e7eb", boxWidth: 12, padding: 12, usePointStyle: true }
+          },
+          title: {
+            display: true,
+            text: "Group means — relative spread per feature (0 = lowest group, 100 = highest)",
+            color: "#f9fafb",
+            font: { size: 14, weight: "600" }
+          },
+          tooltip: {
+            callbacks: {
+              label(ctx) {
+                const g = ctx.dataset.label;
+                const feat = CLUSTER_PROFILE_FEATURES[ctx.dataIndex];
+                const raw = Number(byGroup.get(g)?.[feat.key]);
+                const scaled = typeof ctx.raw === "number" ? ctx.raw : 0;
+                let s;
+                if (feat.format === "money") s = `$${Math.round(raw).toLocaleString()}`;
+                else s = Number.isFinite(raw) ? raw.toFixed(3) : "—";
+                return `${g} — ${feat.label}: ${s} (relative ${Number(scaled).toFixed(0)}%)`;
+              }
+            }
+          }
+        },
+        scales: {
+          r: {
+            min: 0,
+            max: 100,
+            ticks: {
+              color: "#9ca3af",
+              stepSize: 25,
+              backdropColor: "transparent",
+              callback: (v) => `${v}%`
+            },
+            grid: { color: "rgba(148, 163, 184, 0.22)" },
+            angleLines: { color: "rgba(148, 163, 184, 0.18)" },
+            pointLabels: { color: "#cbd5e1", font: { size: 11 } }
+          }
+        }
+      }
+    });
+  } catch (e) {
+    console.error("youth cluster profile chart", e);
+    if (cap) {
+      const p = document.createElement("p");
+      p.className = "muted";
+      p.style.marginTop = ".5rem";
+      p.textContent = "Could not draw radar chart.";
+      cap.appendChild(p);
+    }
+  }
 }
 
 function initEducationPage() {
@@ -830,7 +1169,7 @@ function initEducationPage() {
     const earn10 = pickNumber(d.sc_earn10_mean, fallback?.earn10);
     const pubNet = pickNumber(d.sc_np_pub_mean, fallback?.pub);
     const privNet = pickNumber(d.sc_np_priv_mean, fallback?.priv);
-    const mobility = pickNumber(d.mob_up, fallback?.mobility);
+    const mobility = pickMobility(d.mob_up, fallback?.mobility);
 
     cards.innerHTML = `
       <div class="card">
@@ -1228,6 +1567,12 @@ async function init() {
   initMapPage();
   initEducationPage();
   await initCareersPage();
+  try {
+    await initDataStoryImputationChart();
+    await initYouthClusterProfileChart();
+  } catch (err) {
+    console.error("Data Story charts:", err);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

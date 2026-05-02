@@ -1,0 +1,9 @@
+field,field_label,stage,null_pct,tract_count
+mob_up,Upward mobility (mob_up),before_knn,15.87,73202
+mob_up,Upward mobility (mob_up),after_knn,0,73202
+pov20,Poverty rate (pov20),before_knn,1.42,73202
+pov20,Poverty rate (pov20),after_knn,0,73202
+inc20,Median income (inc20),before_knn,2.08,73202
+inc20,Median income (inc20),after_knn,0,73202
+opp_gap,Opportunity gap (opp_gap),before_knn,3.65,73202
+opp_gap,Opportunity gap (opp_gap),after_knn,0,73202

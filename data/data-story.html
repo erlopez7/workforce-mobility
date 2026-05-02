@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Data Story | WorkForce</title><link rel="stylesheet" href="styles.css" /></head>
+<html lang="en" data-data-root="..">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Story | WorkForce</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
 <body>
-  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a class="active" href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="../index.html">↗ WorkForce</a>
+      <button id="menuBtn" class="menu-btn" aria-label="Open menu">☰</button>
+      <div id="navLinks" class="nav-links">
+        <a href="../map.html">Mobility Map</a>
+        <a href="../education.html">Education Explorer</a>
+        <a href="../careers.html">Career Paths</a>
+        <a class="active" href="data-story.html">Data Story</a>
+        <a href="../resources.html">Resources</a>
+      </div>
+    </div>
+  </nav>
   <main class="container">
-    <section class="section"><h1>The Data Behind the Platform</h1><p class="muted">A brief view of what we used, what we built, and what it means.</p></section>
+    <section class="section">
+      <h1>The Data Behind the Platform</h1>
+      <p class="muted">A brief view of what we used, what we built, and what it means.</p>
+    </section>
 
     <section class="section callout">
       <h2>Research Focus + AI Threat</h2>
@@ -12,20 +32,20 @@
       <p><strong>Why this matters now:</strong> AI is already shifting entry-level hiring. Workers entering highly automatable roles face more risk, so clear pathways toward lower-risk, accessible careers are increasingly important.</p>
     </section>
 
-    <section class="section grid-3"><article class="card"><h3>73,202</h3><p>neighborhood tracts included</p></article><article class="card"><h3>1,016</h3><p>occupations scored for automation risk</p></article><article class="card"><h3>4</h3><p>opportunity groups used for recommendations</p></article></section>
+    <section class="section grid-3">
+      <article class="card"><h3>73,202</h3><p>neighborhood tracts included</p></article>
+      <article class="card"><h3>1,016</h3><p>occupations scored for automation risk</p></article>
+      <article class="card"><h3>4</h3><p>opportunity groups used for recommendations</p></article>
+    </section>
 
     <section class="section card">
       <h2>Visual Data Pipeline</h2>
-      <div style="display:grid;gap:.8rem;">
-        <div style="display:flex;gap:.6rem;align-items:stretch;flex-wrap:wrap;">
-          <div class="card" style="margin:0;"><h3 style="margin-bottom:.35rem;">1) Sources</h3><p class="muted" style="margin:0;">Opportunity Insights, Scorecard, BLS, O*NET, NHGIS</p></div>
-          <div class="muted" style="font-weight:700;">→</div>
-          <div class="card" style="margin:0;"><h3 style="margin-bottom:.35rem;">2) ETL + Modeling</h3><p class="muted" style="margin:0;">DuckDB merge, cleaning, KNN imputation, risk/opportunity scoring</p></div>
-          <div class="muted" style="font-weight:700;">→</div>
-          <div class="card" style="margin:0;"><h3 style="margin-bottom:.35rem;">3) Platform Outputs</h3><p class="muted" style="margin:0;">Map, Education ROI, Career matching, AI advisor context</p></div>
-        </div>
+      <div class="grid-3">
+        <article class="card"><h3>1) Sources</h3><p class="muted">Opportunity Insights, College Scorecard, BLS OES, O*NET, NHGIS</p></article>
+        <article class="card"><h3>2) ETL + modeling</h3><p class="muted">DuckDB merge, cleaning, KNN imputation, risk and opportunity scoring</p></article>
+        <article class="card"><h3>3) Platform outputs</h3><p class="muted">Mobility map, education ROI, career matching, AI advisor context</p></article>
       </div>
-      <p class="muted" style="margin-top:.8rem;"><strong>Simple read:</strong> Public datasets in, cleaned and modeled, then translated into student-friendly guidance tools.</p>
+      <p class="muted" style="margin-top:1rem;"><strong>Simple read:</strong> Public datasets in, cleaned and modeled, then translated into student-friendly guidance tools.</p>
     </section>
 
     <section class="section card">
@@ -35,6 +55,8 @@
       <p><strong>Career Search (AI-Safe Jobs):</strong> <code>data/job_df_full_occupations.csv</code> (fallback: <code>data/occupation_risk_round2.csv</code>)</p>
       <p><strong>Career Recommendations:</strong> <code>data/career_recommendations_*.csv</code></p>
       <p><strong>Chat Context:</strong> opportunity group metrics from <code>data/opportunity_groups.csv</code> + platform job-risk data</p>
+      <p><strong>Youth cluster profiles (this page):</strong> <code>data/model2_cluster_profiles_mean.csv</code> — mean <code>pov20</code>, <code>mob_up</code>, <code>inc20</code>, <code>opp_gap</code> by <code>youth_group</code>.</p>
+      <p><strong>Imputation story (this page):</strong> <code>data/tract_key_fields_missingness.csv</code> — before/after missingness for KMeans tract features.</p>
       <p class="muted">If a CSV cannot load, the app uses limited fallback defaults to keep the interface usable.</p>
     </section>
 
@@ -54,6 +76,24 @@
       </div>
     </section>
 
+    <section class="section card">
+      <h2 class="chart-title">Youth opportunity clustering — group profiles</h2>
+      <p class="muted">Mean tract features by <code>youth_group</code> from <code>model2_cluster_profiles_mean.csv</code>. Each axis is scaled 0–100 across the four groups (lowest group mean → 0, highest → 100) so poverty, mobility, income, and opportunity gap are comparable on one chart. Hover a point for raw values.</p>
+      <div class="chart-panel chart-panel--radar">
+        <canvas id="youthClusterProfileChart" aria-label="Radar chart of cluster means by opportunity group"></canvas>
+      </div>
+      <div id="youthClusterProfileCaption" class="chart-summary muted"></div>
+    </section>
+
+    <section class="section card">
+      <h2 class="chart-title">Imputed mobility — missingness before vs after KNN</h2>
+      <p class="muted">KMeans uses tract-level <code>pov20</code>, <code>mob_up</code>, <code>inc20</code>, and <code>opp_gap</code>. Raw merges left many tracts without upward mobility; KNN imputation fills those features so clustering and downstream UI logic do not drop rows or fail on nulls.</p>
+      <div class="chart-panel chart-panel--fixed">
+        <canvas id="tractMissingnessChart" aria-label="Bar chart of missing values before KNN"></canvas>
+      </div>
+      <div id="tractMissingnessCaption" class="chart-summary"></div>
+    </section>
+
     <section class="section callout">
       <h2>What the Platform Can Reliably Show</h2>
       <p>✅ Job automation risk across 1,016 occupations</p>
@@ -63,14 +103,31 @@
       <p class="muted">We provide data-based guidance. We do not rank specific colleges or guarantee individual outcomes.</p>
     </section>
 
-    <section class="section card"><h2>Responsible Use Notice</h2><p>✓ Show average education cost and earnings by opportunity group</p><p>✓ Score jobs for automation risk based on task structure</p><p>✓ Recommend career pathways based on neighborhood context</p><p>✗ We do not rank specific colleges</p><p>✗ We do not guarantee exact salary outcomes</p><p>✗ Individual results vary — this is guidance, not a guarantee</p></section>
+    <section class="section card">
+      <h2>Responsible Use Notice</h2>
+      <p>✓ Show average education cost and earnings by opportunity group</p>
+      <p>✓ Score jobs for automation risk based on task structure</p>
+      <p>✓ Recommend career pathways based on neighborhood context</p>
+      <p>✗ We do not rank specific colleges</p>
+      <p>✗ We do not guarantee exact salary outcomes</p>
+      <p>✗ Individual results vary — this is guidance, not a guarantee</p>
+    </section>
   </main>
   <footer class="footer">
     <div class="container">
       <p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p>
-      <div class="footer-links"><a href="index.html">Home</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="chatbot.html">AI Advisor</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div>
+      <div class="footer-links">
+        <a href="../index.html">Home</a>
+        <a href="../map.html">Mobility Map</a>
+        <a href="../education.html">Education Explorer</a>
+        <a href="../careers.html">Career Paths</a>
+        <a href="../chatbot.html">AI Advisor</a>
+        <a href="../resources.html">Resources</a>
+        <a href="data-story.html">Data Story</a>
+      </div>
     </div>
   </footer>
-  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../app.js"></script>
 </body>
 </html>
