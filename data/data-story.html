@@ -55,8 +55,8 @@
       <p><strong>Career Search (AI-Safe Jobs):</strong> <code>data/job_df_full_occupations.csv</code> (fallback: <code>data/occupation_risk_round2.csv</code>)</p>
       <p><strong>Career Recommendations:</strong> <code>data/career_recommendations_*.csv</code></p>
       <p><strong>Chat Context:</strong> opportunity group metrics from <code>data/opportunity_groups.csv</code> + platform job-risk data</p>
-      <p><strong>Youth cluster profiles (this page):</strong> <code>data/model2_cluster_profiles_mean.csv</code> — mean <code>pov20</code>, <code>mob_up</code>, <code>inc20</code>, <code>opp_gap</code> by <code>youth_group</code>.</p>
       <p><strong>Imputation story (this page):</strong> <code>data/tract_key_fields_missingness.csv</code> — before/after missingness for KMeans tract features.</p>
+      <p><strong>Youth cluster profiles (this page):</strong> <code>data/model2_cluster_profiles_mean.csv</code> — mean <code>pov20</code>, <code>mob_up</code>, <code>inc20</code>, <code>opp_gap</code> by <code>youth_group</code>.</p>
       <p class="muted">If a CSV cannot load, the app uses limited fallback defaults to keep the interface usable.</p>
     </section>
 
@@ -77,21 +77,27 @@
     </section>
 
     <section class="section card">
-      <h2 class="chart-title">Youth opportunity clustering — group profiles</h2>
-      <p class="muted">Mean tract features by <code>youth_group</code> from <code>model2_cluster_profiles_mean.csv</code>. Each axis is scaled 0–100 across the four groups (lowest group mean → 0, highest → 100) so poverty, mobility, income, and opportunity gap are comparable on one chart. Hover a point for raw values.</p>
-      <div class="chart-panel chart-panel--radar">
-        <canvas id="youthClusterProfileChart" aria-label="Radar chart of cluster means by opportunity group"></canvas>
-      </div>
-      <div id="youthClusterProfileCaption" class="chart-summary muted"></div>
-    </section>
-
-    <section class="section card">
       <h2 class="chart-title">Imputed mobility — missingness before vs after KNN</h2>
       <p class="muted">KMeans uses tract-level <code>pov20</code>, <code>mob_up</code>, <code>inc20</code>, and <code>opp_gap</code>. Raw merges left many tracts without upward mobility; KNN imputation fills those features so clustering and downstream UI logic do not drop rows or fail on nulls.</p>
       <div class="chart-panel chart-panel--fixed">
         <canvas id="tractMissingnessChart" aria-label="Bar chart of missing values before KNN"></canvas>
       </div>
       <div id="tractMissingnessCaption" class="chart-summary"></div>
+      <div class="chart-insight">
+        <strong>Key insight:</strong> Upward mobility missingness drops from about 16% to 0% after KNN imputation, allowing all 73,202 tracts to remain usable in the clustering pipeline. These values are estimated, not originally observed.
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2 class="chart-title">Youth opportunity clustering — group profiles</h2>
+      <p class="muted">Mean tract features by <code>youth_group</code> from <code>model2_cluster_profiles_mean.csv</code>. Each axis is scaled 0–100 across the four groups (lowest group mean → 0, highest → 100) so poverty, mobility, income, and opportunity gap are comparable on one chart. Hover a point for raw values.</p>
+      <div class="chart-panel chart-panel--radar">
+        <canvas id="youthClusterProfileChart" aria-label="Radar chart of cluster means by opportunity group"></canvas>
+      </div>
+      <div id="youthClusterProfileCaption" class="chart-summary muted"></div>
+      <div class="chart-insight">
+        <strong>Note:</strong> Values are normalized to a 0–100 scale so income, poverty, mobility, and opportunity gap can be compared fairly in one group profile chart.
+      </div>
     </section>
 
     <section class="section callout">
