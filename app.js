@@ -451,12 +451,11 @@ function mobilityGroup(v) {
   return "Very Disadvantaged";
 }
 function riskClass(label) {
-  const s = String(label);
-  if (s.includes("Moderate")) return "risk-moderate";
-  if (s.includes("High")) return "risk-high";
-  if (s.includes("Low")) return "risk-low";
-  return "";
+  if (String(label).includes("Low")) return "risk-low";
+  if (String(label).includes("Moderate")) return "risk-moderate";
+  return "risk-high";
 }
+
 
 function initNav() {
   const btn = document.getElementById("menuBtn");
@@ -473,13 +472,16 @@ function initReveal() {
 function initCounters() {
   document.querySelectorAll("[data-counter]").forEach((el) => {
     const target = Number(el.dataset.counter);
+    if (!Number.isFinite(target)) return;
     const suffix = el.dataset.suffix || "";
     const decimals = Number(el.dataset.decimals || 0);
+    const duration = 400;
+    const fmt = (v) => (decimals ? `${v.toFixed(decimals)}${suffix}` : `${Math.round(v).toLocaleString()}${suffix}`);
     const start = performance.now();
     const tick = (now) => {
-      const p = Math.min((now - start) / 900, 1);
+      const p = Math.min((now - start) / duration, 1);
       const v = target * p;
-      el.textContent = decimals ? `${v.toFixed(decimals)}${suffix}` : `${Math.round(v).toLocaleString()}${suffix}`;
+      el.textContent = fmt(v);
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -660,6 +662,10 @@ function attachChatBehavior({ input, sendBtn, log, suggestionSelector, helperTog
       addMsg(`Connection error: ${err?.message || "Unknown error"}`, false);
     }
   };
+  if (statusEl) {
+    statusEl.classList.remove("ok", "err");
+    statusEl.innerHTML = `<span class="status-dot"></span><span>AI Advisor ready — add ZIP, education level, budget, and interests. Checking backend…</span>`;
+  }
   testGeminiConnection().then((res) => setApiStatus(statusEl, res.ok));
   sendBtn.addEventListener("click", send);
   input.addEventListener("keydown", (e) => e.key === "Enter" && send());
@@ -1031,6 +1037,14 @@ function clusterProfileCsvPaths() {
   return paths;
 }
 
+function formatClusterProfileCell(feat, raw) {
+  const v = Number(raw);
+  if (!Number.isFinite(v)) return "—";
+  if (feat.format === "money") return `$${Math.round(v).toLocaleString()}`;
+  return `${(v * 100).toFixed(1)}%`;
+}
+
+
 const OCC_RISK_DIST_FALLBACK = [
   { metric: "risk_label_count", category: "Low Risk", value: "446" },
   { metric: "risk_label_count", category: "Moderate Risk", value: "314" },
@@ -1131,6 +1145,14 @@ function findJobProfileForRec(jobs, rec) {
     const t = String(j.title || "").toLowerCase();
     return t === target || t.includes(target) || target.includes(t);
   }) || null;
+}
+
+function riskLabelBucketForTier(lab) {
+  const s = String(lab);
+  if (s.includes("Moderate")) return "moderate";
+  if (s.includes("High")) return "high";
+  if (s.includes("Low")) return "low";
+  return "other";
 }
 
 function riskTransparencyHtml(job) {
@@ -1507,10 +1529,12 @@ async function initCareerMatchHeatmap() {
   `;
 }
 
+
 async function initYouthClusterProfileChart() {
   const canvas = document.getElementById("youthClusterProfileChart");
   const cap = document.getElementById("youthClusterProfileCaption");
-  if (!canvas && !cap) return;
+  const tableWrap = document.getElementById("youthClusterProfileTableWrap");
+  if (!canvas && !cap && !tableWrap) return;
 
   let rows = await loadCSVFirst(clusterProfileCsvPaths());
   const usedFallback = !rows.length;
@@ -1522,15 +1546,21 @@ async function initYouthClusterProfileChart() {
     if (g) byGroup.set(g, r);
   });
 
-  const axisLabels = CLUSTER_PROFILE_FEATURES.map((f) => f.label);
+  const rowLabels = CLUSTER_PROFILE_FEATURES.map((f) => {
+    if (f.key === "pov20") return "Poverty rate";
+    if (f.key === "mob_up") return "Upward mobility";
+    if (f.key === "inc20") return "Median income";
+    return "Opportunity gap";
+  });
+
   const palette = [
-    { border: "rgba(239, 68, 68, 0.95)", fill: "rgba(239, 68, 68, 0.11)" },
-    { border: "rgba(245, 158, 11, 0.95)", fill: "rgba(245, 158, 11, 0.11)" },
-    { border: "rgba(6, 182, 212, 0.95)", fill: "rgba(6, 182, 212, 0.12)" },
-    { border: "rgba(16, 185, 129, 0.95)", fill: "rgba(16, 185, 129, 0.12)" }
+    { border: "rgba(239, 68, 68, 0.95)", fill: "rgba(239, 68, 68, 0.55)" },
+    { border: "rgba(245, 158, 11, 0.95)", fill: "rgba(245, 158, 11, 0.52)" },
+    { border: "rgba(6, 182, 212, 0.95)", fill: "rgba(6, 182, 212, 0.5)" },
+    { border: "rgba(16, 185, 129, 0.95)", fill: "rgba(16, 185, 129, 0.5)" }
   ];
 
-  const datasets = YOUTH_GROUP_ORDER.map((gName, gi) => {
+  const barDatasets = YOUTH_GROUP_ORDER.map((gName, gi) => {
     const row = byGroup.get(gName);
     if (!row) return null;
     const data = CLUSTER_PROFILE_FEATURES.map((feat) => {
@@ -1546,43 +1576,57 @@ async function initYouthClusterProfileChart() {
     return {
       label: gName,
       data,
-      borderColor: p.border,
       backgroundColor: p.fill,
-      borderWidth: 2,
-      pointRadius: 3,
-      pointHoverRadius: 5
+      borderColor: p.border,
+      borderWidth: 1
     };
   }).filter(Boolean);
 
-  if (cap) {
-    let note = "Profiles summarize mean tract-level features used in KMeans. Each corner is one feature; distance from the center reflects how high that group’s mean is relative to the other three groups on that dimension.";
-    if (usedFallback) {
-      note += " <strong>Note:</strong> Bundled snapshot (CSV fetch failed — run a local HTTP server to load <code>data/model2_cluster_profiles_mean.csv</code> live).";
-    }
-    cap.innerHTML = note;
+  if (tableWrap) {
+    const headerCells = CLUSTER_PROFILE_FEATURES.map((_, i) => `<th scope="col">${rowLabels[i]}</th>`).join("");
+    const bodyRows = YOUTH_GROUP_ORDER.map((gName) => {
+      const r = byGroup.get(gName);
+      if (!r) return "";
+      const cells = CLUSTER_PROFILE_FEATURES.map((feat) => `<td>${formatClusterProfileCell(feat, r[feat.key])}</td>`).join("");
+      return `<tr><th scope="row">${gName}</th>${cells}</tr>`;
+    }).join("");
+    tableWrap.innerHTML = `<table class="missingness-table youth-cluster-table"><thead><tr><th scope="col">Opportunity group</th>${headerCells}</tr></thead><tbody>${bodyRows}</tbody></table>`;
   }
 
-  if (!canvas || typeof Chart === "undefined") return;
+  if (cap) {
+    const fetchNote = usedFallback
+      ? " <strong>Note:</strong> Bundled averages (live CSV did not load — use a local server for <code>data/model2_cluster_profiles_mean.csv</code>)."
+      : "";
+    cap.innerHTML = `Use the <strong>table</strong> for real averages. The horizontal bars use the same 0–100 “within this row only” scores so you can see which group is highest on each measure without reading a radar.${fetchNote}`;
+  }
+
+  if (!canvas || typeof Chart === "undefined") {
+    if (canvas && cap && typeof Chart === "undefined") {
+      cap.insertAdjacentHTML("beforeend", "<p class=\"muted\" style=\"margin-top:.5rem\">Chart library did not load; the table above is complete.</p>");
+    }
+    return;
+  }
 
   const ctx = canvas.getContext("2d");
   if (canvas._youthClusterChart) canvas._youthClusterChart.destroy();
   try {
     canvas._youthClusterChart = new Chart(ctx, {
-      type: "radar",
-      data: { labels: axisLabels, datasets },
+      type: "bar",
+      data: { labels: rowLabels, datasets: barDatasets },
       options: {
+        indexAxis: "y",
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
           legend: {
             position: "bottom",
-            labels: { color: "#e5e7eb", boxWidth: 12, padding: 12, usePointStyle: true }
+            labels: { color: "#e5e7eb", boxWidth: 12, padding: 10, usePointStyle: true }
           },
           title: {
             display: true,
-            text: "Group means — relative spread per feature (0 = lowest group, 100 = highest)",
-            color: "#f9fafb",
-            font: { size: 14, weight: "600" }
+            text: "Relative position per row (0 = lowest group on that measure, 100 = highest)",
+            color: "#e5e7eb",
+            font: { size: 13, weight: "600" }
           },
           tooltip: {
             callbacks: {
@@ -1593,25 +1637,28 @@ async function initYouthClusterProfileChart() {
                 const scaled = typeof ctx.raw === "number" ? ctx.raw : 0;
                 let s;
                 if (feat.format === "money") s = `$${Math.round(raw).toLocaleString()}`;
-                else s = Number.isFinite(raw) ? raw.toFixed(3) : "—";
-                return `${g} — ${feat.label}: ${s} (relative ${Number(scaled).toFixed(0)}%)`;
+                else s = Number.isFinite(raw) ? `${(raw * 100).toFixed(1)}%` : "—";
+                return `${g}: ${s} (score ${Number(scaled).toFixed(0)})`;
               }
             }
           }
         },
         scales: {
-          r: {
+          x: {
             min: 0,
             max: 100,
-            ticks: {
-              color: "#9ca3af",
-              stepSize: 25,
-              backdropColor: "transparent",
-              callback: (v) => `${v}%`
-            },
-            grid: { color: "rgba(148, 163, 184, 0.22)" },
-            angleLines: { color: "rgba(148, 163, 184, 0.18)" },
-            pointLabels: { color: "#cbd5e1", font: { size: 11 } }
+            grid: { color: "rgba(148, 163, 184, 0.12)" },
+            ticks: { color: "#9ca3af" },
+            title: {
+              display: true,
+              text: "0 = lowest of the four groups on that row, 100 = highest",
+              color: "#94a3b8",
+              font: { size: 11 }
+            }
+          },
+          y: {
+            ticks: { color: "#cbd5e1", font: { size: 12 } },
+            grid: { display: false }
           }
         }
       }
@@ -1622,7 +1669,7 @@ async function initYouthClusterProfileChart() {
       const p = document.createElement("p");
       p.className = "muted";
       p.style.marginTop = ".5rem";
-      p.textContent = "Could not draw radar chart.";
+      p.textContent = "Could not draw comparison chart; see table above.";
       cap.appendChild(p);
     }
   }
@@ -2072,14 +2119,6 @@ const TIER_PROFILE_FEATURES = [
   { key: "inc20", label: "Median income (tract)", format: "money" },
   { key: "opp_gap", label: "Opportunity gap", format: "decimal" }
 ];
-
-function riskLabelBucketForTier(lab) {
-  const s = String(lab);
-  if (s.includes("Moderate")) return "moderate";
-  if (s.includes("High")) return "high";
-  if (s.includes("Low")) return "low";
-  return "other";
-}
 
 function buildTierProfileBarsHTML(groupName, profByGroup, allGroups) {
   const row = profByGroup.get(groupName);
