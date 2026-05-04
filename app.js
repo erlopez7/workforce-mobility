@@ -452,6 +452,24 @@ function riskClass(label) {
   return "risk-high";
 }
 
+function riskWhyLine(j) {
+  const label = String(j.risk_label || "");
+  const z = Number(j.job_zone);
+  const score = Number(j.risk_score);
+  const zText = Number.isFinite(z) ? z : "?";
+  if (label.includes("Low")) {
+    return `Why lower risk: The work tends to involve more training (job zone ${zText}), judgment, or in-person coordination, which is harder to fully automate.`;
+  }
+  if (label.includes("Moderate")) {
+    return `Why moderate risk: Mix of repeatable tasks and specialized work—tools can help with parts of the role, but humans still carry decisions and relationships.`;
+  }
+  if (label.includes("High")) {
+    const s = Number.isFinite(score) ? score : "—";
+    return `Why higher risk: More rule-based or repetitive task patterns (risk score ${s}) often align with stronger automation or software assistance over time.`;
+  }
+  return `This label comes from task-based patterns in O*NET data (job zone ${zText}), not from how well you would perform in the role.`;
+}
+
 function initNav() {
   const btn = document.getElementById("menuBtn");
   const links = document.getElementById("navLinks");
@@ -467,13 +485,16 @@ function initReveal() {
 function initCounters() {
   document.querySelectorAll("[data-counter]").forEach((el) => {
     const target = Number(el.dataset.counter);
+    if (!Number.isFinite(target)) return;
     const suffix = el.dataset.suffix || "";
     const decimals = Number(el.dataset.decimals || 0);
+    const duration = 400;
+    const fmt = (v) => (decimals ? `${v.toFixed(decimals)}${suffix}` : `${Math.round(v).toLocaleString()}${suffix}`);
     const start = performance.now();
     const tick = (now) => {
-      const p = Math.min((now - start) / 900, 1);
+      const p = Math.min((now - start) / duration, 1);
       const v = target * p;
-      el.textContent = decimals ? `${v.toFixed(decimals)}${suffix}` : `${Math.round(v).toLocaleString()}${suffix}`;
+      el.textContent = fmt(v);
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -654,6 +675,10 @@ function attachChatBehavior({ input, sendBtn, log, suggestionSelector, helperTog
       addMsg(`Connection error: ${err?.message || "Unknown error"}`, false);
     }
   };
+  if (statusEl) {
+    statusEl.classList.remove("ok", "err");
+    statusEl.innerHTML = `<span class="status-dot"></span><span>AI Advisor ready — add ZIP, education level, budget, and interests. Checking backend…</span>`;
+  }
   testGeminiConnection().then((res) => setApiStatus(statusEl, res.ok));
   sendBtn.addEventListener("click", send);
   input.addEventListener("keydown", (e) => e.key === "Enter" && send());
@@ -1440,7 +1465,7 @@ async function initCareersPage() {
     if (!q) {
       const starters = jobs.slice(0, 8);
       jobList.innerHTML = starters.map((j) => `<button class="pill">${j.title}</button>`).join("");
-      riskResults.innerHTML = starters.slice(0, 3).map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`).join("");
+      riskResults.innerHTML = starters.slice(0, 3).map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p><p class="muted">${riskWhyLine(j)}</p></div>`).join("");
       return;
     }
     const filtered = jobs.filter((j) => {
@@ -1452,14 +1477,14 @@ async function initCareersPage() {
     if (!filtered.length && q) {
       const low = jobs.filter((j) => String(j.risk_label).includes("Low")).slice(0, 3);
       jobList.innerHTML = `<p class="muted">No exact match — here are similar careers:</p>`;
-      riskResults.innerHTML = low.map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`).join("");
+      riskResults.innerHTML = low.map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p><p class="muted">${riskWhyLine(j)}</p></div>`).join("");
       return;
     }
     jobList.innerHTML = filtered.slice(0, 10).map((j) => `<button class="pill">${j.title}</button>`).join("");
-    riskResults.innerHTML = filtered.slice(0, 5).map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`).join("");
+    riskResults.innerHTML = filtered.slice(0, 5).map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p><p class="muted">${riskWhyLine(j)}</p></div>`).join("");
     [...jobList.querySelectorAll(".pill")].forEach((pill, idx) => pill.addEventListener("click", () => {
       const j = filtered[idx];
-      riskResults.innerHTML = `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`;
+      riskResults.innerHTML = `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p><p class="muted">${riskWhyLine(j)}</p></div>`;
     }));
   };
   renderJobList("");
@@ -1493,6 +1518,7 @@ async function initCareersPage() {
           <h3>${r.title}</h3>
           <p><span class="badge-risk ${riskClass(r.risk_label)}">${r.risk_label}</span></p>
           <p class="muted">Job Zone: ${r.job_zone}</p>
+          <p class="muted">${riskWhyLine(r)}</p>
           <p class="muted">Match Score: ${pctScore}%</p>
           <div class="progress"><span style="width:${pctScore}%"></span></div>
         </div>

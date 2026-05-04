@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Education Explorer | WorkForce</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="chatbot.html">AI Advisor</a><a href="map.html">Mobility Map</a><a class="active" href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <main class="container">
+    <section class="section"><h1>Education Outcome Explorer</h1><p class="muted">Compare average education costs and earnings outcomes based on neighborhood opportunity context — not guesswork.</p></section>
+    <section class="section pill-group">
+      <button class="pill active" data-group="Very Disadvantaged">Very Disadvantaged</button>
+      <button class="pill" data-group="Disadvantaged">Disadvantaged</button>
+      <button class="pill" data-group="Moderate Opportunity">Moderate Opportunity</button>
+      <button class="pill" data-group="Higher Opportunity">Higher Opportunity</button>
+    </section>
+    <section id="eduCards" class="section grid-3"></section>
+    <section class="section card">
+      <h2 class="chart-title">What Education Costs vs Earnings Look Like Across Opportunity Groups</h2>
+      <canvas id="roiChart" height="120"></canvas>
+      <p id="eduChartSummary" class="muted chart-summary"></p>
+    </section>
+    <section class="section callout"><p>Public college is significantly more affordable for students in every opportunity group. The average public net price ($9,985–$10,830) is less than a quarter of the average total cost — making community college and public university transfers the highest ROI (Return on Investment) pathway for most low-income students.</p></section>
+    <section class="section grid-3">
+      <article class="card"><h3>Avoid Debt Traps</h3><p class="muted">High-cost private schools without strong earnings outcomes can lock students into decades of debt.</p></article>
+      <article class="card"><h3>Transfer Paths Work</h3><p class="muted">Community college transfer routes often provide the strongest return for disadvantaged students.</p></article>
+      <article class="card"><h3>Fast Skills Matter</h3><p class="muted">Healthcare, IT, and trade certificates can lead to strong wages with shorter training timelines.</p></article>
+    </section>
+    <section class="section">
+      <p class="muted">Next: <a href="chatbot.html">AI Advisor</a> for a personalized path · <a href="careers.html">Career Paths</a> for job risk · <a href="map.html">Mobility Map</a> for neighborhood context.</p>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p>
+      <div class="footer-links"><a href="index.html">Home</a><a href="chatbot.html">AI Advisor</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

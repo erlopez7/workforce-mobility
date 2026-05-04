@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>AI Advisor | WorkForce</title><link rel="stylesheet" href="styles.css" /></head>
+<body>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a class="active" href="chatbot.html">AI Advisor</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <main class="container">
+    <section class="section"><h1>Your Personal Career Advisor</h1><p class="muted">Answer a few questions and get a personalized pathway — built from real workforce and education data.</p></section>
+    <section class="section chat-shell">
+      <div id="chatApiStatus" class="status-pill"><span class="status-dot"></span><span>AI Advisor ready — add ZIP, education level, budget, and interests. Checking backend…</span></div>
+      <div id="chatSuggestions" class="pill-group">
+        <button class="pill" data-prompt="What careers are safe from AI automation?">What careers are safe from AI automation?</button>
+        <button class="pill" data-prompt="I live in a low-income area — what's my best path?">I live in a low-income area — what's my best path?</button>
+        <button class="pill" data-prompt="What jobs pay well without a 4-year degree?">What jobs pay well without a 4-year degree?</button>
+        <button class="pill" data-prompt="Compare community college vs university ROI (Return on Investment)">Compare community college vs university ROI (Return on Investment)</button>
+        <button class="pill" data-prompt="I'm interested in healthcare — where do I start?">I'm interested in healthcare — where do I start?</button>
+      </div>
+      <div id="chatLog" class="chat-wrap"></div>
+      <div id="chatHelper" class="chat-helper">
+        <strong>💡 For the best results, tell us:</strong>
+        <ul>
+          <li>📍 Your ZIP code or city/state</li>
+          <li>🎓 Your current education level</li>
+          <li>💰 Your approximate budget for school</li>
+          <li>💼 Your career interests</li>
+          <li>⚠️ Any concerns (debt, time, AI risk)</li>
+        </ul>
+      </div>
+      <div class="chat-input-row"><input id="chatInput" placeholder="I'm from ZIP 90001 in LA, finished high school, can't afford much, interested in healthcare or tech — what's my best path?" /><button id="sendBtn" class="btn primary">Send</button></div>
+      <p class="muted" style="margin-top:1rem;">Next: <a href="map.html">Mobility Map</a> · <a href="careers.html">Career Paths</a> · <a href="data-story.html">Data Story</a></p>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p>
+      <div class="footer-links"><a href="index.html">Home</a><a href="chatbot.html">AI Advisor</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="resources.html">Resources</a><a href="data-story.html">Data Story</a></div>
+    </div>
+  </footer>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

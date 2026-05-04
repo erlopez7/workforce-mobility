@@ -2,3 +2,7 @@
 *.zip
 
 .env.local
+
+# Accidental paste artifacts (never commit keys)
+*ssh-agent*
+data/proxy/.wrangler/

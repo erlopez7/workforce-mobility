@@ -4,19 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Data Story | WorkForce</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <nav class="navbar">
     <div class="container nav-inner">
-      <a class="brand" href="../index.html">↗ WorkForce</a>
+      <a class="brand" href="index.html">↗ WorkForce</a>
       <button id="menuBtn" class="menu-btn" aria-label="Open menu">☰</button>
       <div id="navLinks" class="nav-links">
-        <a href="../map.html">Mobility Map</a>
-        <a href="../education.html">Education Explorer</a>
-        <a href="../careers.html">Career Paths</a>
+        <a href="chatbot.html">AI Advisor</a>
+        <a href="map.html">Mobility Map</a>
+        <a href="education.html">Education Explorer</a>
+        <a href="careers.html">Career Paths</a>
         <a class="active" href="data-story.html">Data Story</a>
-        <a href="../resources.html">Resources</a>
+        <a href="resources.html">Resources</a>
       </div>
     </div>
   </nav>
@@ -36,6 +37,17 @@
       <article class="card"><h3>73,202</h3><p>neighborhood tracts included</p></article>
       <article class="card"><h3>1,016</h3><p>occupations scored for automation risk</p></article>
       <article class="card"><h3>4</h3><p>opportunity groups used for recommendations</p></article>
+    </section>
+
+    <section class="section card" id="four-model-outputs">
+      <h2>Four proof points (what we built)</h2>
+      <p class="muted">These four outputs power the map, careers view, recommendations, and AI advisor context.</p>
+      <div class="grid-2">
+        <article class="card"><h3>1) Full job risk scoring</h3><p class="muted">1,016 O*NET occupations with interpretable Low / Moderate / High labels from task structure and job zone.</p><p><a href="#model-job-risk">Technical details ↓</a></p></article>
+        <article class="card"><h3>2) KNN mobility imputation</h3><p class="muted">Missing neighborhood mobility fields are filled with k-nearest neighbors so clustering runs on the full 73,202-tract grid.</p><p><a href="#model-youth-cluster">Technical details ↓</a></p></article>
+        <article class="card"><h3>3) Youth opportunity clustering</h3><p class="muted">K-Means splits tracts into four opportunity groups used everywhere the site references your neighborhood context.</p><p><a href="#model-youth-cluster">Technical details ↓</a></p></article>
+        <article class="card"><h3>4) Personalized career ranking</h3><p class="muted">ZIP maps to a group, then ranked recommendations (with optional interest filters) align with the same risk labels as job search.</p><p><a href="careers.html">Try Career Paths →</a></p></article>
+      </div>
     </section>
 
     <section class="section card">
@@ -60,7 +72,7 @@
       <p class="muted">If a CSV cannot load, the app uses limited fallback defaults to keep the interface usable.</p>
     </section>
 
-    <section class="section">
+    <section class="section" id="model-job-risk">
       <h2>Model 1 Used in Final Platform — Job Automation Risk</h2>
       <div class="grid-2">
         <article class="card"><h3>Method</h3><p>Rule-based interpretable scoring on 1,016 O*NET occupations.</p><p>Inputs: routine tasks, nonroutine tasks, social tasks, manual tasks, job zone.</p></article>
@@ -68,7 +80,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="model-youth-cluster">
       <h2>Model 2 Used in Final Platform — Youth Opportunity Grouping + Career Match</h2>
       <div class="grid-2">
         <article class="card"><h3>Method</h3><p>K-Means clustering on full tract dataset (73,202) with KNN imputation for missing mobility values.</p><p>Groups: Very Disadvantaged, Disadvantaged, Moderate Opportunity, Higher Opportunity.</p></article>
@@ -123,17 +135,17 @@
     <div class="container">
       <p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p>
       <div class="footer-links">
-        <a href="../index.html">Home</a>
-        <a href="../map.html">Mobility Map</a>
-        <a href="../education.html">Education Explorer</a>
-        <a href="../careers.html">Career Paths</a>
-        <a href="../chatbot.html">AI Advisor</a>
-        <a href="../resources.html">Resources</a>
+        <a href="index.html">Home</a>
+        <a href="chatbot.html">AI Advisor</a>
+        <a href="map.html">Mobility Map</a>
+        <a href="education.html">Education Explorer</a>
+        <a href="careers.html">Career Paths</a>
+        <a href="resources.html">Resources</a>
         <a href="data-story.html">Data Story</a>
       </div>
     </div>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="../app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
