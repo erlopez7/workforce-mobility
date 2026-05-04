@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All occupations (risk labels) | WorkForce</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">↗ WorkForce</a>
+      <button id="menuBtn" class="menu-btn" aria-label="Open menu">☰</button>
+      <div id="navLinks" class="nav-links">
+        <a href="map.html">Mobility Map</a>
+        <a href="education.html">Education Explorer</a>
+        <a href="careers.html">Career Paths</a>
+        <a class="active" href="all-occupations.html">All occupations</a>
+        <a href="opportunity-tiers.html">Opportunity tiers</a>
+        <a href="data/data-story.html">Data Story</a>
+        <a href="resources.html">Resources</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <section class="section">
+      <h1>All scored occupations</h1>
+      <p class="muted">Every row is one O*NET-style job in Model 1 with an automation-style <strong>risk score</strong> (0–4) and <strong>Low / Moderate / High</strong> label. This is the full universe used on Career Paths—not the short top-15 recommendation sample in the Data Story.</p>
+      <p class="muted">Opportunity groups (Very Disadvantaged → Higher Opportunity) describe <strong>neighborhood context</strong> from census tracts, not the job itself. <a href="data/data-story.html#opportunity-groups">Read how those groups differ →</a></p>
+    </section>
+    <section class="section card" id="allOccupationsMount">
+      <p id="allOccStatus" class="muted">Loading occupations…</p>
+      <div class="chat-input-row" style="margin-top:.75rem;">
+        <input id="allOccSearch" type="search" placeholder="Search title or O*NET code…" autocomplete="off" />
+        <select id="allOccRiskFilter" aria-label="Filter by risk label">
+          <option value="">All risk labels</option>
+          <option value="low">Low risk only</option>
+          <option value="moderate">Moderate risk only</option>
+          <option value="high">High risk only</option>
+        </select>
+      </div>
+      <p id="allOccCountFoot" class="muted" style="margin:.6rem 0 0;"></p>
+      <div class="all-occ-table-wrap" style="margin-top:.75rem;">
+        <table class="missingness-table" style="max-width:none;">
+          <thead>
+            <tr>
+              <th scope="col">O*NET code</th>
+              <th scope="col">Title</th>
+              <th scope="col">Job zone</th>
+              <th scope="col">Risk score</th>
+              <th scope="col">Risk label</th>
+            </tr>
+          </thead>
+          <tbody id="allOccTbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="careers.html">Career Paths</a>
+        <a href="data/data-story.html">Data Story</a>
+      </div>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opportunity tiers & occupations | WorkForce</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">↗ WorkForce</a>
+      <button id="menuBtn" class="menu-btn" aria-label="Open menu">☰</button>
+      <div id="navLinks" class="nav-links">
+        <a href="map.html">Mobility Map</a>
+        <a href="education.html">Education Explorer</a>
+        <a href="careers.html">Career Paths</a>
+        <a href="all-occupations.html">All occupations</a>
+        <a class="active" href="opportunity-tiers.html">Opportunity tiers</a>
+        <a href="data/data-story.html">Data Story</a>
+        <a href="resources.html">Resources</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <section class="section">
+      <h1>Each opportunity tier: neighborhood “why” + recommended occupations</h1>
+      <p class="muted"><strong>Important:</strong> Very Disadvantaged → Higher Opportunity describe <strong>census tract (neighborhood) patterns</strong> from clustering—not a property of a job. Occupations listed under a tier are the roles <strong>Model 2 recommends when someone’s context maps to that tier</strong> (same automation scores as everywhere else; ranking changes). Below, for <strong>each tier</strong>: tract summary stats, cluster-mean bars (why the tier differs), two small charts on the <strong>risk mix of that tier’s picks</strong>, and the full ranked table from the bundled CSVs.</p>
+      <p class="muted">Full scored job list (all 1,016): <a href="all-occupations.html">All occupations →</a> · deeper methodology: <a href="data/data-story.html#opportunity-groups">Data Story: opportunity groups →</a></p>
+      <p id="opportunityTiersStatus" class="muted" style="margin-top:.5rem;">Loading…</p>
+    </section>
+    <div id="opportunityTiersMount"></div>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <p>WorkForce — Pathways to Mobility<br />This platform provides guidance only. Results vary by individual circumstance.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="careers.html">Career Paths</a>
+        <a href="all-occupations.html">All occupations</a>
+        <a href="data/data-story.html">Data Story</a>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

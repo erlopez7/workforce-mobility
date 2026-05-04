@@ -259,6 +259,8 @@ const REC_GROUP_KEYS = ["Very Disadvantaged", "Disadvantaged", "Moderate Opportu
 function normalizeRecRow(r) {
   return {
     title: String(r.title || r.occupation || "").trim(),
+    onetsoc_code: String(r.onetsoc_code || r.onetsoc || "").trim(),
+    risk_score: r.risk_score ?? "",
     risk_label: r.risk_label || "Low Risk",
     job_zone: r.job_zone ?? "",
     match_score: r.match_score ?? "0"
@@ -317,6 +319,8 @@ function syntheticRecsFromJobs(jobs, groupKey) {
   }
   return picked.map((j, idx) => ({
     title: j.title,
+    onetsoc_code: j.onetsoc_code || "",
+    risk_score: j.risk_score ?? "",
     risk_label: j.risk_label || "Low Risk",
     job_zone: j.job_zone ?? "",
     match_score: String(Math.max(0.55, 0.9 - idx * 0.01))
@@ -447,9 +451,11 @@ function mobilityGroup(v) {
   return "Very Disadvantaged";
 }
 function riskClass(label) {
-  if (String(label).includes("Low")) return "risk-low";
-  if (String(label).includes("Moderate")) return "risk-moderate";
-  return "risk-high";
+  const s = String(label);
+  if (s.includes("Moderate")) return "risk-moderate";
+  if (s.includes("High")) return "risk-high";
+  if (s.includes("Low")) return "risk-low";
+  return "";
 }
 
 function initNav() {
@@ -1025,6 +1031,482 @@ function clusterProfileCsvPaths() {
   return paths;
 }
 
+const OCC_RISK_DIST_FALLBACK = [
+  { metric: "risk_label_count", category: "Low Risk", value: "446" },
+  { metric: "risk_label_count", category: "Moderate Risk", value: "314" },
+  { metric: "risk_label_count", category: "High Risk", value: "256" }
+];
+
+/** Multi-line hover copy for the risk distribution chart (plain language for younger readers). */
+const OCC_RISK_DIST_TOOLTIP_LINES = {
+  Low: [
+    "Context: WorkForce looked at 1,016 real job types and sorted them by how much of the work looks easy to hand off to software, AI, or tighter routines.",
+    "What “Low” means here: these jobs usually need more human judgment, creativity, people skills, or serious training. The tasks are less like “the same steps every day on a screen.”",
+    "So what should I do with that? If you are picking a direction for college, trade school, or training, Low-risk jobs are often a smarter long-run bet—still hard work, but the role itself tends to age better as tech changes.",
+    "Important: this is not saying you are “smarter” if you pick these jobs. It is just a map of the work, not a grade on you."
+  ],
+  Moderate: [
+    "Context: This bar counts jobs in the middle band. The model mixed together how routine the work is, how much thinking and people skills it needs, and how much training it usually takes.",
+    "What “Moderate” means here: some parts of the job could get faster or smaller because of tech, while other parts still need a person in the loop. Think “mixed bag,” not “safe” or “doomed.”",
+    "So what should I do with that? These paths can still be worth it—especially if you keep learning on the side, pick up a certificate, or plan a next-step job you can slide into later.",
+    "Remember: many adults build a career by starting in one lane and moving sideways. Moderate is a signal to have a backup skill, not to panic."
+  ],
+  High: [
+    "Context: WorkForce flags jobs where the tasks look more repeatable or easier to automate or streamline—like heavy screen work, tight scripts, or simple routines—based on public job-task data.",
+    "What “High” means here: it is easier for employers to use tools, software, or new processes to do big chunks of the work. That can mean more competition for entry spots or flatter pay over time—not always, but often enough to notice.",
+    "So what should I do with that? It does not mean “never do this.” Lots of people use these jobs as a first paycheck. It does mean: go in with a plan—save for the next class, ask about tuition help, and look for a “next job” that sits in Low or Moderate if you want more stability.",
+    "Again: you are not “less than” if you start here. The label is about the job’s task pattern, not your future if you keep leveling up."
+  ]
+};
+
+function occupationRiskDistCsvPaths() {
+  const root = (document.documentElement.getAttribute("data-data-root") || "").replace(/\/$/, "");
+  const name = "occupation_risk_distribution.csv";
+  const paths = [];
+  if (root) paths.push(`${root}/data/${name}`);
+  paths.push(`data/${name}`, name);
+  return paths;
+}
+
+function careerRecByGroupCsvPaths() {
+  const root = (document.documentElement.getAttribute("data-data-root") || "").replace(/\/$/, "");
+  const name = "career_recommendations_by_group.csv";
+  const paths = [];
+  if (root) paths.push(`${root}/data/${name}`);
+  paths.push(`data/${name}`, name);
+  return paths;
+}
+
+function riskLabelShort(cat) {
+  const s = String(cat || "");
+  if (s.includes("Low")) return "Low";
+  if (s.includes("Moderate")) return "Moderate";
+  if (s.includes("High")) return "High";
+  return s.replace(/\s*Risk\s*/i, "").trim() || s;
+}
+
+function truncateTitle(s, max = 48) {
+  const t = String(s || "").trim();
+  if (t.length <= max) return t;
+  return `${t.slice(0, max - 1)}…`;
+}
+
+function escapeHtmlAttr(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function escapeHtmlText(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function parseTaskShare01(v) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return NaN;
+  return Math.min(1, Math.max(0, n));
+}
+
+function normalizeOccTitle(s) {
+  return String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function findJobProfileForRec(jobs, rec) {
+  if (!jobs || !rec) return null;
+  const code = String(rec.onetsoc_code || rec.onetsoc || "").trim();
+  if (code) {
+    const byCode = jobs.find((j) => String(j.onetsoc_code || "").trim() === code);
+    if (byCode) return byCode;
+  }
+  const target = normalizeOccTitle(rec.title || rec.occupation);
+  if (!target) return null;
+  const exact = jobs.find((j) => normalizeOccTitle(j.title) === target);
+  if (exact) return exact;
+  return jobs.find((j) => {
+    const t = String(j.title || "").toLowerCase();
+    return t === target || t.includes(target) || target.includes(t);
+  }) || null;
+}
+
+function riskTransparencyHtml(job) {
+  const label = String(job?.risk_label || "").trim() || "Low Risk";
+  const zone = String(job?.job_zone ?? "").trim();
+  const rs = job?.risk_score !== undefined && job?.risk_score !== null && job?.risk_score !== ""
+    ? String(job.risk_score)
+    : "";
+  const R = parseTaskShare01(job?.routine_cognitive_tasks);
+  const M = parseTaskShare01(job?.manual_tasks);
+  const S = parseTaskShare01(job?.social_tasks);
+  const N = parseTaskShare01(job?.nonroutine_cognitive_tasks);
+  const hasTasks = [R, M, S, N].every((x) => Number.isFinite(x));
+
+  const zPhrase = zone
+    ? ` Typical preparation depth is summarized as <strong>Job Zone ${escapeHtmlText(zone)}</strong>, which the model blends with task style—not a judgment about people.`
+    : " Job Zone (training depth) is part of the score when we have it.";
+
+  if (!hasTasks) {
+    const escLabel = escapeHtmlText(label);
+    const scoreBit = rs ? ` The numeric output is <strong>${escapeHtmlText(rs)}</strong> (higher means more automation-style exposure in our blend).` : "";
+    return `<p class="risk-transparency muted"><strong>Why this label:</strong>${scoreBit} <strong>${escLabel}</strong> is the band.${zPhrase} Line-by-line routine / judgment / social / hands-on text loads with <code>data/job_df_full_occupations.csv</code> (serve the site over HTTP, e.g. <code>python3 -m http.server</code>).</p>`;
+  }
+
+  let core;
+  if (R > N + 0.03) {
+    core = "Routine, structured cognitive tasks outweigh open-ended judgment in the O*NET-style task weights we use for this occupation.";
+    const extras = [];
+    if (S >= 0.12) extras.push("people-facing or coordination work is a meaningful slice");
+    if (M >= 0.12) extras.push("hands-on or physical tasks matter too");
+    if (extras.length) {
+      const a = extras[0];
+      const cap = a.charAt(0).toUpperCase() + a.slice(1);
+      core += ` ${cap}${extras[1] ? `, and ${extras[1]}` : ""}.`;
+    } else {
+      core += " Interpersonal and physical-task shares are relatively small in this weighted snapshot.";
+    }
+  } else if (N > R + 0.03) {
+    core = "Open-ended judgment, planning, or novel problems carry more weight than highly repetitive desk-only routines in our task-style inputs.";
+    if (S >= 0.12) core += " There is also a meaningful interpersonal or social-task component.";
+    if (M >= 0.12) core += " Hands-on or physical tasks show up in the mix too.";
+  } else {
+    core = "Routine and non-routine cognitive work are both material in the blend we import; social, hands-on, and training signals tip the score.";
+  }
+
+  const bucket = riskLabelBucketForTier(label);
+  const escLabel2 = escapeHtmlText(label);
+  let bandSentence;
+  if (bucket === "high") {
+    bandSentence = `Together with training signals, that pattern maps to <strong>${escLabel2}</strong>—higher modeled exposure to automation-style substitution or augmentation than many roles with more protective judgment, variability, or physical context. It is not a verdict on any individual worker.`;
+  } else if (bucket === "moderate") {
+    bandSentence = `That combination lands in <strong>${escLabel2}</strong>: more routine or screen-heavy concentration than many low-risk rows, but not the most repetitive-heavy profiles in our export.`;
+  } else {
+    bandSentence = `That combination lands in <strong>${escLabel2}</strong> in this model—lower modeled automation-style exposure than more routine-dominant occupations on average, not a guarantee about the future.`;
+  }
+
+  return `<p class="risk-transparency muted"><strong>Why this label:</strong> ${core}${zPhrase} ${bandSentence}</p>`;
+}
+
+function formatCareerRiskResultCard(j) {
+  const title = escapeHtmlText(j.title);
+  const lab = escapeHtmlText(String(j.risk_label || ""));
+  const rs = escapeHtmlText(String(j.risk_score ?? ""));
+  return `<div class="card"><h3>${title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${lab}</span><p class="muted">Risk score: ${rs}</p>${riskTransparencyHtml(j)}</div>`;
+}
+
+async function initOccupationRiskDistChart() {
+  const canvas = document.getElementById("occupationRiskDistChart");
+  const captionEl = document.getElementById("occupationRiskDistCaption");
+  const debugPre = document.getElementById("occupationRiskDistDebugPre");
+  if (!canvas && !captionEl && !debugPre) return;
+
+  const paths = occupationRiskDistCsvPaths();
+  let rows = await loadCSVFirst(paths);
+  const usedFallback = !rows.length;
+  if (usedFallback) rows = OCC_RISK_DIST_FALLBACK;
+
+  const wanted = rows.filter((r) => String(r.metric || "").includes("risk_label_count"));
+  const order = ["Low", "Moderate", "High"];
+  const byShort = new Map();
+  wanted.forEach((r) => {
+    const sh = riskLabelShort(r.category);
+    const v = Number(r.value);
+    if (Number.isFinite(v)) byShort.set(sh, v);
+  });
+  const labels = order.filter((k) => byShort.has(k));
+  const values = labels.map((k) => byShort.get(k));
+  const total = values.reduce((a, b) => a + b, 0);
+
+  if (!labels.length) {
+    if (captionEl) {
+      captionEl.innerHTML = `<p class="muted" style="margin:0;">No <code>risk_label_count</code> rows found after loading CSV. Check <code>data/occupation_risk_distribution.csv</code> format.</p>`;
+    }
+    if (debugPre) {
+      debugPre.textContent = JSON.stringify({ csvPathsTried: paths, usedFallback, error: "no_label_rows" }, null, 2);
+    }
+    return;
+  }
+
+  if (captionEl) {
+    const note = usedFallback
+      ? " <strong>Note:</strong> Bundled fallback counts (CSV fetch failed — use <code>python -m http.server</code> from the repo root to load <code>data/occupation_risk_distribution.csv</code> live)."
+      : ` Sourced from <code>data/occupation_risk_distribution.csv</code> (metric <code>risk_label_count</code>).`;
+    captionEl.innerHTML = `<p class="muted" style="margin:0;">Total occupations scored: <strong>${total.toLocaleString()}</strong>. Use the three bands to <strong>compare career ideas</strong> and balance quick entry against longer-run task resilience—not to judge individual fit.${note}</p>`;
+  }
+
+  if (debugPre) {
+    debugPre.textContent = JSON.stringify({
+      csvPathsTried: paths,
+      usedFallback,
+      rawRowCount: rows.length,
+      labelRowsUsed: wanted.length,
+      labels,
+      counts: Object.fromEntries(labels.map((k, i) => [k, values[i]])),
+      total
+    }, null, 2);
+  }
+
+  if (!canvas || typeof Chart === "undefined") {
+    if (captionEl && typeof Chart === "undefined") {
+      const p = document.createElement("p");
+      p.className = "muted";
+      p.style.marginTop = ".75rem";
+      p.textContent = "Chart.js did not load; see debug panel for counts.";
+      captionEl.appendChild(p);
+    }
+    return;
+  }
+
+  const colors = labels.map((lab) => {
+    if (lab === "Low") return { bg: "rgba(16, 185, 129, 0.75)", border: "rgba(16, 185, 129, 1)" };
+    if (lab === "Moderate") return { bg: "rgba(245, 158, 11, 0.78)", border: "rgba(245, 158, 11, 1)" };
+    return { bg: "rgba(239, 68, 68, 0.78)", border: "rgba(239, 68, 68, 1)" };
+  });
+
+  const ctx = canvas.getContext("2d");
+  if (canvas._occupationRiskDistChart) canvas._occupationRiskDistChart.destroy();
+  try {
+    canvas._occupationRiskDistChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [{
+          label: "Occupations (count)",
+          data: values,
+          backgroundColor: colors.map((c) => c.bg),
+          borderColor: colors.map((c) => c.border),
+          borderWidth: 1,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: "How 1,016 occupations split on automation-style risk (planning lens)",
+            color: "#f9fafb",
+            font: { size: 14, weight: "600" }
+          },
+          tooltip: {
+            maxWidth: 340,
+            padding: 12,
+            boxPadding: 6,
+            titleFont: { size: 13, weight: "600" },
+            bodyFont: { size: 12 },
+            callbacks: {
+              title(items) {
+                const lab = items[0]?.label || "This band";
+                return `${lab} automation-style risk — the fuller picture`;
+              },
+              label(c) {
+                const n = c.parsed.y;
+                const pct = total > 0 ? ((n / total) * 100).toFixed(1) : "0.0";
+                return `This bar: ${n.toLocaleString()} job types (${pct}% of all 1,016 scored jobs)`;
+              },
+              afterBody(items) {
+                const lab = items[0]?.label;
+                const lines = OCC_RISK_DIST_TOOLTIP_LINES[lab];
+                return lines ? [...lines] : [];
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            suggestedMax: Math.max(...values, 1) * 1.12,
+            ticks: { color: "#9ca3af" },
+            grid: { color: "rgba(148, 163, 184, 0.2)" },
+            title: {
+              display: true,
+              text: "How many jobs fall in each band",
+              color: "#cbd5e1",
+              font: { size: 12, weight: "600" }
+            }
+          },
+          x: {
+            ticks: { color: "#9ca3af" },
+            grid: { display: false },
+            title: {
+              display: true,
+              text: "Automation-style risk band",
+              color: "#cbd5e1",
+              font: { size: 12, weight: "600" }
+            }
+          }
+        }
+      }
+    });
+  } catch (e) {
+    console.error("occupation risk dist chart", e);
+    captionEl?.appendChild(Object.assign(document.createElement("p"), {
+      className: "muted",
+      textContent: "Could not draw risk distribution chart."
+    }));
+  }
+}
+
+const CAREER_MATCH_GROUP_COLORS = [
+  { bg: "rgba(239, 68, 68, 0.82)", border: "rgba(239, 68, 68, 1)" },
+  { bg: "rgba(245, 158, 11, 0.82)", border: "rgba(245, 158, 11, 1)" },
+  { bg: "rgba(6, 182, 212, 0.82)", border: "rgba(6, 182, 212, 1)" },
+  { bg: "rgba(16, 185, 129, 0.82)", border: "rgba(16, 185, 129, 1)" }
+];
+
+function rankSpreadStd(title, groups, byGroupDetail) {
+  const ranks = groups.map((g) => byGroupDetail.get(g).get(title)?.rank).filter((x) => Number.isFinite(x));
+  if (ranks.length < 2) return 0;
+  const mean = ranks.reduce((a, b) => a + b, 0) / ranks.length;
+  const varSum = ranks.reduce((a, x) => a + (x - mean) ** 2, 0) / ranks.length;
+  return Math.sqrt(varSum);
+}
+
+function rankMinMaxSpan(title, groups, byGroupDetail) {
+  const ranks = groups.map((g) => byGroupDetail.get(g).get(title)?.rank).filter((x) => Number.isFinite(x));
+  if (ranks.length < 2) return 0;
+  return Math.max(...ranks) - Math.min(...ranks);
+}
+
+/** Heat cell style: rank 1 = strongest priority (cool/teal), 15 = lower on list (deeper violet). */
+function contextRankHeatStyle(rank) {
+  if (!Number.isFinite(rank)) return { background: "#151d32", color: "#64748b" };
+  const t = (rank - 1) / 14;
+  const h = 172 + t * 92;
+  const s = 58 + t * 14;
+  const l = 26 + (1 - t) * 24;
+  const lightText = l > 48;
+  return {
+    background: `hsl(${h} ${s}% ${l}%)`,
+    color: lightText ? "#0a0f1e" : "#f4f8ff"
+  };
+}
+
+async function initCareerMatchHeatmap() {
+  const mount = document.getElementById("careerMatchHeatmapMount");
+  const captionEl = document.getElementById("careerMatchHeatmapCaption");
+  const debugPre = document.getElementById("careerMatchHeatmapDebugPre");
+  if (!mount && !captionEl && !debugPre) return;
+
+  const paths = careerRecByGroupCsvPaths();
+  const raw = await loadCSVFirst(paths);
+  const groups = [...YOUTH_GROUP_ORDER];
+
+  if (!raw.length) {
+    if (mount) {
+      mount.innerHTML = `<p class="muted">No recommendation rows loaded. Add <code>data/career_recommendations_by_group.csv</code> or serve the site over HTTP so fetch succeeds.</p>`;
+    }
+    if (captionEl) captionEl.innerHTML = "";
+    if (debugPre) {
+      debugPre.textContent = JSON.stringify({ csvPathsTried: paths, error: "empty_or_fetch_failed" }, null, 2);
+    }
+    return;
+  }
+
+  const byGroupDetail = new Map();
+  groups.forEach((g) => byGroupDetail.set(g, new Map()));
+  raw.forEach((r) => {
+    const g = String(r.youth_group || "").trim();
+    const title = String(r.occupation || r.title || "").trim();
+    const rk = Number(r.rank);
+    const sc = Number(r.match_score);
+    if (!g || !title || !byGroupDetail.has(g)) return;
+    if (!Number.isFinite(rk) || !Number.isFinite(sc)) return;
+    byGroupDetail.get(g).set(title, { rank: rk, match: sc });
+  });
+
+  const titleSet = new Set();
+  byGroupDetail.forEach((m) => m.forEach((_, t) => titleSet.add(t)));
+  const titles = [...titleSet];
+
+  titles.sort((a, b) => {
+    const d = rankSpreadStd(b, groups, byGroupDetail) - rankSpreadStd(a, groups, byGroupDetail);
+    if (Math.abs(d) > 1e-9) return d;
+    return String(a).localeCompare(String(b));
+  });
+
+  const flatMatches = [];
+  titles.forEach((t) => {
+    groups.forEach((g) => {
+      const cell = byGroupDetail.get(g).get(t);
+      if (cell) flatMatches.push(cell.match);
+    });
+  });
+  const uniqueMatches = [...new Set(flatMatches.map((x) => Math.round(x * 10000) / 10000))].sort((a, b) => a - b);
+
+  const rootAttr = (document.documentElement.getAttribute("data-data-root") || "").replace(/\/$/, "");
+  const careersHref = rootAttr ? `${rootAttr}/careers.html` : "careers.html";
+  const allOccHref = rootAttr ? `${rootAttr}/all-occupations.html` : "all-occupations.html";
+  const tiersHref = rootAttr ? `${rootAttr}/opportunity-tiers.html` : "opportunity-tiers.html";
+
+  const divergent = titles.filter((t) => rankMinMaxSpan(t, groups, byGroupDetail) >= 1);
+  const strongDivergent = titles.filter((t) => rankMinMaxSpan(t, groups, byGroupDetail) >= 4);
+
+  const sample = titles.slice(0, 8).map((t) => ({
+    occupation: t,
+    byGroup: Object.fromEntries(
+      groups.map((g) => {
+        const c = byGroupDetail.get(g).get(t);
+        return [g, c ? { rank: c.rank, match: c.match } : null];
+      })
+    )
+  }));
+
+  if (captionEl) {
+    captionEl.innerHTML = `<p class="muted" style="margin:0;"><strong>Story in the numbers:</strong> If every neighborhood deserved the same ordering, each row would be one solid color band. In this file, <strong>${divergent.length}</strong> of <strong>${titles.length}</strong> occupations move at least one rank between groups, and <strong>${strongDivergent.length}</strong> swing by four ranks or more—that is what we mean by <strong>not identical</strong>: same job universe, different <em>lineup</em> because Model 2 is group-conditioned. <code>match_score</code> only has <strong>${uniqueMatches.length}</strong> tight tiers (${uniqueMatches.map((x) => x.toFixed(3)).join(", ")}), so the heatmap highlights <strong>rank</strong>, not fake precision. Explore: <a href="${tiersHref}">Opportunity tiers</a> · <a href="${allOccHref}">All occupations</a> · <a href="${careersHref}">Career Paths</a>.</p>`;
+  }
+
+  if (debugPre) {
+    debugPre.textContent = JSON.stringify({
+      csvPathsTried: paths,
+      rowCount: raw.length,
+      uniqueShortlistTitles: titles.length,
+      occupationsWithRankSpreadGte1: divergent.length,
+      occupationsWithRankSpreadGte4: strongDivergent.length,
+      distinctMatchScoreTiers: uniqueMatches,
+      vizChoice: "context_rank_heatmap_only",
+      sampleRows: sample
+    }, null, 2);
+  }
+
+  if (!mount) return;
+
+  const thead = `<thead><tr><th class="row-head" scope="col">Occupation</th>${groups.map((g) => `<th scope="col">${escapeHtmlText(g)}<br /><span class="muted" style="font-weight:500;font-size:.78rem;">list rank</span></th>`).join("")}</tr></thead>`;
+
+  const tbody = titles.map((t) => {
+    const cells = groups.map((g) => {
+      const c = byGroupDetail.get(g).get(t);
+      if (!c) {
+        return `<td class="context-rank-cell na" title="Not in this group’s top-15 export">—</td>`;
+      }
+      const st = contextRankHeatStyle(c.rank);
+      const tip = escapeHtmlAttr(`${g}: rank ${c.rank} of 15 · match_score ${c.match.toFixed(4)}`);
+      return `<td class="context-rank-cell" style="background:${st.background};color:${st.color}" title="${tip}"><span class="context-rank-num">#${c.rank}</span></td>`;
+    }).join("");
+    return `<tr><th class="row-head" scope="row" title="${escapeHtmlAttr(t)}">${escapeHtmlText(truncateTitle(t, 52))}</th>${cells}</tr>`;
+  }).join("");
+
+  mount.innerHTML = `
+    <div class="context-rank-viz-head">
+      <h3 class="model2-subhead" style="margin:0 0 .35rem;">How the lineup shifts when neighborhood context changes</h3>
+      <p class="muted" style="margin:0 0 .65rem;font-size:.9rem;">Each <strong>row</strong> is one occupation; each <strong>column</strong> is how that job ranks in <em>that</em> opportunity group’s bundled top-fifteen. They are <strong>not identical</strong> because Model 2 re-sorts the same candidates per group—tract context changes which paths surface first (and some cells are blank when a job does not make that group’s cut). <strong>Darker teal</strong> = closer to #1 for that column; <strong>lighter violet</strong> = lower on that list. Read left-to-right across a row to see the reordering story.</p>
+      <div class="context-rank-legend" aria-hidden="true">
+        <span class="muted" style="font-size:.82rem;">Stronger match / higher list priority</span>
+        <span class="context-rank-legend-bar"></span>
+        <span class="muted" style="font-size:.82rem;">Weaker on this group’s list</span>
+      </div>
+    </div>
+    <div class="heatmap-scroll">
+      <table class="heatmap-table context-rank-matrix">${thead}<tbody>${tbody}</tbody></table>
+    </div>
+  `;
+}
+
 async function initYouthClusterProfileChart() {
   const canvas = document.getElementById("youthClusterProfileChart");
   const cap = document.getElementById("youthClusterProfileCaption");
@@ -1344,10 +1826,15 @@ async function initCareersPage() {
     jobsLoadedFrom = "fallback";
   }
   const jobs = (jobsRaw.length ? jobsRaw : DEFAULT_JOBS).map((j) => ({
+    onetsoc_code: String(j.onetsoc_code || j.onetsoc || "").trim(),
     title: j.title || j.occupation || j.job_title || "",
     risk_label: j.risk_label || "Low Risk",
     risk_score: j.risk_score || "0",
-    job_zone: j.job_zone || ""
+    job_zone: j.job_zone || "",
+    routine_cognitive_tasks: j.routine_cognitive_tasks,
+    manual_tasks: j.manual_tasks,
+    social_tasks: j.social_tasks,
+    nonroutine_cognitive_tasks: j.nonroutine_cognitive_tasks
   })).filter((j) => j.title);
 
   if (needsSyntheticRecommendations(recommendationsByGroup, recSourceNote) && jobs.length >= 10) {
@@ -1440,7 +1927,7 @@ async function initCareersPage() {
     if (!q) {
       const starters = jobs.slice(0, 8);
       jobList.innerHTML = starters.map((j) => `<button class="pill">${j.title}</button>`).join("");
-      riskResults.innerHTML = starters.slice(0, 3).map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`).join("");
+      riskResults.innerHTML = starters.slice(0, 3).map((j) => formatCareerRiskResultCard(j)).join("");
       return;
     }
     const filtered = jobs.filter((j) => {
@@ -1452,14 +1939,14 @@ async function initCareersPage() {
     if (!filtered.length && q) {
       const low = jobs.filter((j) => String(j.risk_label).includes("Low")).slice(0, 3);
       jobList.innerHTML = `<p class="muted">No exact match — here are similar careers:</p>`;
-      riskResults.innerHTML = low.map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`).join("");
+      riskResults.innerHTML = low.map((j) => formatCareerRiskResultCard(j)).join("");
       return;
     }
     jobList.innerHTML = filtered.slice(0, 10).map((j) => `<button class="pill">${j.title}</button>`).join("");
-    riskResults.innerHTML = filtered.slice(0, 5).map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`).join("");
+    riskResults.innerHTML = filtered.slice(0, 5).map((j) => formatCareerRiskResultCard(j)).join("");
     [...jobList.querySelectorAll(".pill")].forEach((pill, idx) => pill.addEventListener("click", () => {
       const j = filtered[idx];
-      riskResults.innerHTML = `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`;
+      riskResults.innerHTML = formatCareerRiskResultCard(j);
     }));
   };
   renderJobList("");
@@ -1488,13 +1975,28 @@ async function initCareersPage() {
       ? `<div class="card" style="grid-column:1/-1"><p><strong>No matches for selected interests.</strong></p><p class="muted">Clear some interest pills or try a different ZIP, then click <strong>Find My Path</strong> again.</p></div>`
       : chosen.map((r) => {
         const pctScore = Math.round(Number(r.match_score) * 100);
+        const profile = findJobProfileForRec(jobs, r);
+        const jobForExplain = profile
+          ? {
+            ...profile,
+            risk_label: r.risk_label || profile.risk_label,
+            risk_score: r.risk_score !== undefined && r.risk_score !== "" ? r.risk_score : profile.risk_score,
+            job_zone: r.job_zone !== undefined && r.job_zone !== "" ? r.job_zone : profile.job_zone
+          }
+          : {
+            title: r.title,
+            risk_label: r.risk_label,
+            risk_score: r.risk_score,
+            job_zone: r.job_zone
+          };
         return `
         <div class="card">
-          <h3>${r.title}</h3>
-          <p><span class="badge-risk ${riskClass(r.risk_label)}">${r.risk_label}</span></p>
-          <p class="muted">Job Zone: ${r.job_zone}</p>
+          <h3>${escapeHtmlText(r.title)}</h3>
+          <p><span class="badge-risk ${riskClass(r.risk_label)}">${escapeHtmlText(String(r.risk_label || ""))}</span></p>
+          <p class="muted">Job Zone: ${escapeHtmlText(String(r.job_zone ?? ""))}</p>
           <p class="muted">Match Score: ${pctScore}%</p>
           <div class="progress"><span style="width:${pctScore}%"></span></div>
+          ${riskTransparencyHtml(jobForExplain)}
         </div>
       `;
       }).join("");
@@ -1557,6 +2059,398 @@ async function initCareersPage() {
   if (pathRecMeta) pathRecMeta.classList.add("hide");
 }
 
+const TIER_REC_FILES = {
+  "Very Disadvantaged": "career_recommendations_Very_Disadvantaged.csv",
+  Disadvantaged: "career_recommendations_Disadvantaged.csv",
+  "Moderate Opportunity": "career_recommendations_Moderate_Opportunity.csv",
+  "Higher Opportunity": "career_recommendations_Higher_Opportunity.csv"
+};
+
+const TIER_PROFILE_FEATURES = [
+  { key: "pov20", label: "Poverty (tract avg)", format: "pct" },
+  { key: "mob_up", label: "Upward mobility", format: "decimal" },
+  { key: "inc20", label: "Median income (tract)", format: "money" },
+  { key: "opp_gap", label: "Opportunity gap", format: "decimal" }
+];
+
+function riskLabelBucketForTier(lab) {
+  const s = String(lab);
+  if (s.includes("Moderate")) return "moderate";
+  if (s.includes("High")) return "high";
+  if (s.includes("Low")) return "low";
+  return "other";
+}
+
+function buildTierProfileBarsHTML(groupName, profByGroup, allGroups) {
+  const row = profByGroup.get(groupName);
+  if (!row) return "";
+  const rowsHtml = TIER_PROFILE_FEATURES.map((feat) => {
+    const vals = allGroups.map((g) => Number(profByGroup.get(g)?.[feat.key])).filter((x) => Number.isFinite(x));
+    if (!vals.length) return "";
+    const min = Math.min(...vals);
+    const max = Math.max(...vals);
+    const span = max - min || 1;
+    const v = Number(row[feat.key]);
+    if (!Number.isFinite(v)) return "";
+    const w = ((v - min) / span) * 100;
+    let display;
+    if (feat.format === "money") display = money(v);
+    else if (feat.format === "pct") display = `${(v * 100).toFixed(1)}%`;
+    else display = v.toFixed(3);
+    return `<div class="tier-prof-row"><span>${feat.label}</span><div class="tier-prof-track"><span style="width:${w.toFixed(1)}%"></span></div><span class="tier-prof-val">${display}</span></div>`;
+  }).filter(Boolean).join("");
+  if (!rowsHtml) return "";
+  return `<div class="tier-prof-block"><h4>Tract features (cluster means) — where this tier sits vs the other three</h4><p class="muted" style="margin:0 0 .5rem;font-size:.82rem;">Bars show relative position only (lowest group → 0%, highest → 100%) for each row. Source: <code>model2_cluster_profiles_mean.csv</code>.</p>${rowsHtml}</div>`;
+}
+
+async function loadTierRecommendationRows(groupName) {
+  const file = TIER_REC_FILES[groupName];
+  let rows = await loadCSVFirst([`data/${file}`, file]);
+  if (!rows.length) {
+    const raw = await loadCSVFirst(careerRecByGroupCsvPaths());
+    rows = raw.filter((r) => String(r.youth_group || "").trim() === groupName);
+  }
+  return rows
+    .map((r, i) => ({
+      rank: Number(r.rank) || i + 1,
+      title: String(r.title || r.occupation || "").trim(),
+      onetsoc_code: String(r.onetsoc_code || "").trim(),
+      job_zone: r.job_zone ?? "",
+      risk_score: r.risk_score ?? "",
+      risk_label: String(r.risk_label || "").trim(),
+      match_score: Number(r.match_score) || 0
+    }))
+    .filter((r) => r.title);
+}
+
+function tierOpportunityNarrative(groupName, oppRow, recs) {
+  const pr = Number(oppRow?.poverty_rate);
+  const mob = Number(oppRow?.mobility_score);
+  const inc = Number(oppRow?.median_income);
+  const n = recs.length;
+  const lowN = recs.filter((r) => riskLabelBucketForTier(r.risk_label) === "low").length;
+  const zones = recs.map((r) => Number(r.job_zone)).filter(Number.isFinite);
+  const avgZ = zones.length ? zones.reduce((a, b) => a + b, 0) / zones.length : 0;
+  const pStr = Number.isFinite(pr) ? `${(pr * 100).toFixed(0)}%` : "—";
+  const mobStr = Number.isFinite(mob) ? mob.toFixed(2) : "—";
+  const incStr = Number.isFinite(inc) ? money(inc) : "—";
+  return `<p class="muted" style="margin:0 0 .65rem;"><strong>Neighborhood context (${groupName}):</strong> Typical tracts in this cluster average about <strong>${pStr}</strong> poverty, upward mobility index <strong>${mobStr}</strong>, and median income near <strong>${incStr}</strong> in our platform summary (<code>opportunity_groups.csv</code>). That describes <em>place</em>, not a person and not a job title.</p><p class="muted" style="margin:0;"><strong>Why these occupations appear here:</strong> Model 2 ranks roles for each tier using accessibility, Model 1 risk, and match weights. In this export, <strong>${lowN}</strong> of <strong>${n}</strong> listed picks are Low automation-risk (Model 1); average job zone ≈ <strong>${avgZ.toFixed(1)}</strong>. Compare tiers below—ordering and mix change even when many jobs repeat across lists.</p>`;
+}
+
+async function initOpportunityTiersPage() {
+  const mount = document.getElementById("opportunityTiersMount");
+  if (!mount) return;
+
+  const groups = [...YOUTH_GROUP_ORDER];
+  const oppRows = await loadCSVFirst(["data/opportunity_groups.csv", "opportunity_groups.csv"]);
+  const oppByGroup = new Map();
+  oppRows.forEach((r) => {
+    const g = String(r.group || "").trim();
+    if (g) oppByGroup.set(g, r);
+  });
+
+  let profRows = await loadCSVFirst(clusterProfileCsvPaths());
+  if (!profRows.length) profRows = CLUSTER_PROFILE_FALLBACK;
+  const profByGroup = new Map();
+  profRows.forEach((r) => {
+    const g = String(r.youth_group || "").trim();
+    if (g) profByGroup.set(g, r);
+  });
+
+  const byGroupRecs = {};
+  await Promise.all(groups.map(async (g) => {
+    byGroupRecs[g] = await loadTierRecommendationRows(g);
+  }));
+
+  const jumps = groups.map((g) => {
+    const slug = g.toLowerCase().replace(/\s+/g, "-");
+    return `<a href="#tier-${slug}">${g}</a>`;
+  }).join("");
+
+  const statusEl = document.getElementById("opportunityTiersStatus");
+  if (statusEl) {
+    const totalRec = groups.reduce((s, g) => s + (byGroupRecs[g]?.length || 0), 0);
+    statusEl.textContent = totalRec
+      ? `Loaded ${totalRec} recommendation rows across ${groups.length} tiers (serve over HTTP if counts are zero).`
+      : "No recommendation CSVs loaded — use a local server from the repo root.";
+  }
+
+  const sections = groups.map((g, gi) => {
+    const slug = g.toLowerCase().replace(/\s+/g, "-");
+    const opp = oppByGroup.get(g) || {};
+    const recs = byGroupRecs[g] || [];
+    const earn = pickNumber(opp.sc_earn10_mean, 0);
+    const cost = pickNumber(opp.sc_cost_mean, 0);
+    const pub = pickNumber(opp.sc_np_pub_mean, 0);
+    const profHtml = buildTierProfileBarsHTML(g, profByGroup, groups);
+    const nar = tierOpportunityNarrative(g, opp, recs);
+
+    const tableRows = recs.map((r) => {
+      const cls = riskClass(r.risk_label);
+      const lab = cls
+        ? `<span class="badge-risk ${cls}">${escapeHtmlText(r.risk_label)}</span>`
+        : escapeHtmlText(r.risk_label);
+      return `<tr>
+        <td>${r.rank}</td>
+        <td>${escapeHtmlText(r.title)}</td>
+        <td><code>${escapeHtmlText(r.onetsoc_code) || "—"}</code></td>
+        <td>${escapeHtmlText(String(r.job_zone))}</td>
+        <td>${escapeHtmlText(String(r.risk_score))}</td>
+        <td>${lab}</td>
+        <td>${Number.isFinite(r.match_score) ? r.match_score.toFixed(4) : "—"}</td>
+      </tr>`;
+    }).join("");
+
+    return `
+    <section class="section card tier-section" id="tier-${slug}">
+      <h2 class="chart-title">${escapeHtmlText(g)}</h2>
+      ${nar}
+      <div class="tier-context-grid">
+        <div><strong>Poverty (tract)</strong>${Number.isFinite(Number(opp.poverty_rate)) ? `${(Number(opp.poverty_rate) * 100).toFixed(0)}% avg` : "—"}</div>
+        <div><strong>Mobility index</strong>${Number.isFinite(Number(opp.mobility_score)) ? Number(opp.mobility_score).toFixed(2) : "—"}</div>
+        <div><strong>Median income</strong>${Number.isFinite(Number(opp.median_income)) ? money(opp.median_income) : "—"}</div>
+        <div><strong>Avg education cost</strong>${cost ? money(cost) : "—"}</div>
+        <div><strong>Avg 10-yr earnings</strong>${earn ? money(earn) : "—"}</div>
+        <div><strong>Public net price</strong>${pub ? money(pub) : "—"}</div>
+      </div>
+      ${profHtml}
+      <div class="tier-charts-grid">
+        <div class="tier-chart-panel">
+          <h4>Risk label mix in this tier’s picks</h4>
+          <canvas id="tierRiskLabelChart_${gi}" aria-label="Bar chart of low moderate high counts"></canvas>
+        </div>
+        <div class="tier-chart-panel">
+          <h4>Model 1 risk score (0–4) in this tier’s picks</h4>
+          <canvas id="tierRiskScoreChart_${gi}" aria-label="Bar chart of risk score counts"></canvas>
+        </div>
+      </div>
+      <h3 style="margin:1rem 0 .5rem;font-size:1rem;">Occupations in this tier’s ranked list</h3>
+      <p class="muted" style="margin:0 0 .5rem;font-size:.88rem;">These are the jobs Model 2 returns for this neighborhood context in the bundled CSVs—not “all jobs that belong to this tier.”</p>
+      <div class="tier-occ-table-wrap">
+        <table class="tier-occ-table">
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Title</th>
+              <th scope="col">O*NET</th>
+              <th scope="col">Zone</th>
+              <th scope="col">Risk score</th>
+              <th scope="col">Risk label</th>
+              <th scope="col">Match</th>
+            </tr>
+          </thead>
+          <tbody>${tableRows || `<tr><td colspan="7" class="muted">No rows loaded.</td></tr>`}</tbody>
+        </table>
+      </div>
+    </section>`;
+  }).join("");
+
+  mount.innerHTML = `<nav class="tier-jump" aria-label="Jump to tier">${jumps}</nav>${sections}`;
+
+  if (typeof Chart === "undefined") return;
+
+  groups.forEach((g, gi) => {
+    const recs = byGroupRecs[g] || [];
+    let low = 0;
+    let mod = 0;
+    let hi = 0;
+    recs.forEach((r) => {
+      const b = riskLabelBucketForTier(r.risk_label);
+      if (b === "low") low += 1;
+      else if (b === "moderate") mod += 1;
+      else if (b === "high") hi += 1;
+    });
+    const c0 = document.getElementById(`tierRiskLabelChart_${gi}`);
+    if (c0 && recs.length) {
+      c0._tierCh?.destroy?.();
+      c0._tierCh = new Chart(c0.getContext("2d"), {
+        type: "bar",
+        data: {
+          labels: ["Low", "Moderate", "High"],
+          datasets: [{
+            label: "Picks in tier",
+            data: [low, mod, hi],
+            backgroundColor: [
+              "rgba(16, 185, 129, 0.75)",
+              "rgba(245, 158, 11, 0.78)",
+              "rgba(239, 68, 68, 0.78)"
+            ],
+            borderColor: [
+              "rgba(16, 185, 129, 1)",
+              "rgba(245, 158, 11, 1)",
+              "rgba(239, 68, 68, 1)"
+            ],
+            borderWidth: 1,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label(c) {
+                  return `${c.parsed.y} occupation(s)`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, color: "#9ca3af" },
+              grid: { color: "rgba(148, 163, 184, 0.15)" }
+            },
+            x: {
+              ticks: { color: "#9ca3af" },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    const scoreCounts = [0, 0, 0, 0, 0];
+    recs.forEach((r) => {
+      const s = Number(r.risk_score);
+      if (Number.isFinite(s) && s >= 0 && s <= 4) scoreCounts[s] += 1;
+    });
+    const c1 = document.getElementById(`tierRiskScoreChart_${gi}`);
+    if (c1 && recs.length) {
+      c1._tierCh2?.destroy?.();
+      c1._tierCh2 = new Chart(c1.getContext("2d"), {
+        type: "bar",
+        data: {
+          labels: ["0", "1", "2", "3", "4"],
+          datasets: [{
+            label: "Count",
+            data: scoreCounts,
+            backgroundColor: "rgba(6, 182, 212, 0.65)",
+            borderColor: "rgba(6, 182, 212, 1)",
+            borderWidth: 1,
+            borderRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label(c) {
+                  return `${c.parsed.y} pick(s) at score ${c.label}`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, color: "#9ca3af" },
+              grid: { color: "rgba(148, 163, 184, 0.15)" }
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Model 1 risk score",
+                color: "#94a3b8",
+                font: { size: 11 }
+              },
+              ticks: { color: "#9ca3af" },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+  });
+}
+
+async function initAllOccupationsDirectoryPage() {
+  const mount = document.getElementById("allOccupationsMount");
+  const statusEl = document.getElementById("allOccStatus");
+  if (!mount) return;
+
+  const searchEl = document.getElementById("allOccSearch");
+  const riskEl = document.getElementById("allOccRiskFilter");
+  const tbody = document.getElementById("allOccTbody");
+
+  const rowsRaw = await loadCSVFirst([
+    "data/job_df_full_occupations.csv",
+    "job_df_full_occupations.csv",
+    "data/occupation_risk_round2.csv",
+    "occupation_risk_round2.csv",
+    "data/jobs.csv",
+    "jobs.csv"
+  ]);
+
+  const normalized = rowsRaw
+    .map((r) => ({
+      code: String(r.onetsoc_code || "").trim(),
+      title: String(r.title || r.occupation || r.job_title || "").trim(),
+      zone: r.job_zone ?? "",
+      score: r.risk_score ?? "",
+      label: String(r.risk_label || "").trim() || "—"
+    }))
+    .filter((r) => r.title);
+
+  if (statusEl) {
+    if (!normalized.length) {
+      statusEl.textContent = "Could not load occupation list. Serve the site over HTTP (e.g. python3 -m http.server) so data/job_df_full_occupations.csv can load.";
+      if (tbody) tbody.innerHTML = "";
+      return;
+    }
+    statusEl.textContent = `Showing ${normalized.length.toLocaleString()} occupations (Model 1 risk labels). Search and filter below.`;
+  }
+
+  function riskMatches(label, filterVal) {
+    if (!filterVal) return true;
+    const L = String(label).toLowerCase();
+    if (filterVal === "low") return L.includes("low");
+    if (filterVal === "moderate") return L.includes("moderate");
+    if (filterVal === "high") return L.includes("high");
+    return true;
+  }
+
+  function render() {
+    const q = (searchEl?.value || "").trim().toLowerCase();
+    const rf = riskEl?.value || "";
+    let list = normalized.filter((r) => riskMatches(r.label, rf));
+    if (q) {
+      list = list.filter((r) => {
+        const t = r.title.toLowerCase();
+        const c = r.code.toLowerCase();
+        return t.includes(q) || c.includes(q) || q.split(/\s+/).every((w) => t.includes(w));
+      });
+    }
+    if (!tbody) return;
+    tbody.innerHTML = list.map((r) => {
+      const cls = riskClass(r.label);
+      const labCell = cls
+        ? `<span class="badge-risk ${cls}">${escapeHtmlText(r.label)}</span>`
+        : escapeHtmlText(r.label);
+      return `<tr>
+        <td><code>${escapeHtmlText(r.code) || "—"}</code></td>
+        <td>${escapeHtmlText(r.title)}</td>
+        <td>${escapeHtmlText(String(r.zone))}</td>
+        <td>${escapeHtmlText(String(r.score))}</td>
+        <td>${labCell}</td>
+      </tr>`;
+    }).join("");
+    const countFoot = document.getElementById("allOccCountFoot");
+    if (countFoot) {
+      countFoot.textContent = `${list.length.toLocaleString()} row${list.length === 1 ? "" : "s"} match your filters (of ${normalized.length.toLocaleString()} total).`;
+    }
+  }
+
+  searchEl?.addEventListener("input", render);
+  riskEl?.addEventListener("change", render);
+  render();
+}
+
 async function init() {
   await hydrateDataFromCSVs();
   initNav();
@@ -1567,9 +2461,13 @@ async function init() {
   initMapPage();
   initEducationPage();
   await initCareersPage();
+  await initAllOccupationsDirectoryPage();
+  await initOpportunityTiersPage();
   try {
     await initDataStoryImputationChart();
     await initYouthClusterProfileChart();
+    await initOccupationRiskDistChart();
+    await initCareerMatchHeatmap();
   } catch (err) {
     console.error("Data Story charts:", err);
   }

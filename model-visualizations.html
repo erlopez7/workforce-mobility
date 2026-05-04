@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model visualizations (debug) | WorkForce</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">↗ WorkForce</a>
+      <button id="menuBtn" class="menu-btn" aria-label="Open menu">☰</button>
+      <div id="navLinks" class="nav-links">
+        <a href="map.html">Mobility Map</a>
+        <a href="education.html">Education Explorer</a>
+        <a href="careers.html">Career Paths</a>
+        <a href="data/data-story.html">Data Story</a>
+        <a href="resources.html">Resources</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="section">
+      <h1>Model visualizations</h1>
+      <p class="muted">Compact view for checking charts and CSV wiring. Serve from repo root (<code>python3 -m http.server</code>) so <code>fetch</code> can load files under <code>data/</code>. Debug panels are open by default here.</p>
+      <p><a class="btn" href="data/data-story.html">← Full Data Story</a></p>
+    </section>
+
+    <section class="section card">
+      <h2 class="chart-title">Steer with your eyes open: most jobs are not the same kind of “safe” when work gets automated</h2>
+      <p class="muted">Rule-based automation-style risk from O*NET tasks + job zone; bars = counts per label from <code>data/occupation_risk_distribution.csv</code>. See the full Data Story for Low / Moderate / High definitions and how to use them for decisions.</p>
+      <div class="chart-panel chart-panel--fixed chart-panel--risk-bar">
+        <canvas id="occupationRiskDistChart" aria-label="Count of occupations by Low, Moderate, or High automation-style risk"></canvas>
+      </div>
+      <div id="occupationRiskDistCaption" class="chart-summary muted"></div>
+      <details class="viz-debug" id="occupationRiskDistDebug" open>
+        <summary>Debug: load path, counts, totals</summary>
+        <pre id="occupationRiskDistDebugPre"></pre>
+      </details>
+    </section>
+
+    <section class="section card">
+      <h2 class="chart-title">Model 2 — Why lists differ by neighborhood (rank heatmap)</h2>
+      <p class="muted"><code>data/career_recommendations_by_group.csv</code> — see Data Story for the full narrative.</p>
+      <div class="chart-panel chart-panel--heatmap career-match-viz-wrap">
+        <div id="careerMatchHeatmapMount"></div>
+      </div>
+      <div id="careerMatchHeatmapCaption" class="chart-summary muted"></div>
+      <details class="viz-debug" id="careerMatchHeatmapDebug" open>
+        <summary>Debug: matrix shape, score range, sample rows</summary>
+        <pre id="careerMatchHeatmapDebugPre"></pre>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>WorkForce — model visualization debug page</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="data/data-story.html">Data Story</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

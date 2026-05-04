@@ -7,9 +7,9 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a class="active" href="careers.html">Career Paths</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
+  <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a class="active" href="careers.html">Career Paths</a><a href="all-occupations.html">All occupations</a><a href="opportunity-tiers.html">Opportunity tiers</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div></div></nav>
   <main class="container">
-    <section class="section"><h1>Is Your Career AI-Safe?</h1><p class="muted">Search any job and see its automation risk score — based on O*NET-aligned roles.</p></section>
+    <section class="section"><h1>Is Your Career AI-Safe?</h1><p class="muted">Search any job and see its automation risk score — based on O*NET-aligned roles.</p><p class="muted">Want the full table? <a href="all-occupations.html">Browse all 1,016 occupations with risk labels →</a> · <a href="opportunity-tiers.html">Per-tier recommended lists &amp; tract “why” charts →</a> · <a href="data/data-story.html#opportunity-groups">How opportunity groups differ →</a></p></section>
     <section class="section card">
       <div class="grid-2">
         <div>
@@ -23,7 +23,10 @@
           <div id="commonJobsList" class="pill-group"></div>
         </aside>
       </div>
-      <details><summary>Risk Model Explainer</summary><p>Our model scores each occupation based on routine work, decision complexity, human interaction, and training level.</p></details>
+      <details class="metric-help"><summary>Risk Model Explainer</summary>
+        <p><strong>What goes into the label.</strong> Model&nbsp;1 blends O*NET-style <strong>task shares</strong>—how much typical work looks like <strong>routine cognitive</strong> tasks (repeatable, rule-based desk work), <strong>non-routine judgment</strong> (planning, novel problems), <strong>social or interpersonal</strong> coordination, and <strong>hands-on or physical</strong> duties—with <strong>Job Zone</strong> (usual preparation depth). The score is a planning lens on automation-style exposure, not a grade on you as a person.</p>
+        <p class="muted" style="margin-bottom:0;">Under each job result we spell out that mix in plain language when the full occupation file loads. If you only see score + zone, open the site over HTTP so <code>data/job_df_full_occupations.csv</code> can load.</p>
+      </details>
       <p class="muted">Of 1,016 occupations analyzed: 446 Low Risk | 314 Moderate Risk | 256 High Risk</p>
     </section>
     <section class="section"><h2>Personalized Career Recommendations</h2><p class="muted">Enter your ZIP code. We assign an opportunity group using the same ZIP-prefix rule as the AI advisor, then show ranked career picks for that group. Results appear below after you click Find My Path.</p></section>

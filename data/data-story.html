@@ -15,6 +15,8 @@
         <a href="../map.html">Mobility Map</a>
         <a href="../education.html">Education Explorer</a>
         <a href="../careers.html">Career Paths</a>
+        <a href="../all-occupations.html">All occupations</a>
+        <a href="../opportunity-tiers.html">Opportunity tiers</a>
         <a class="active" href="data-story.html">Data Story</a>
         <a href="../resources.html">Resources</a>
       </div>
@@ -68,12 +70,138 @@
       </div>
     </section>
 
+    <section class="section card">
+      <h2 class="chart-title">Steer with your eyes open: most jobs are not the same kind of “safe” when work gets automated</h2>
+      <p class="muted">WorkForce scores <strong>every</strong> O*NET occupation in our universe (1,016 roles) using a transparent, rule-based model from task data: routine vs. nonroutine cognitive work, social and manual tasks, and job zone. The chart below shows <strong>how many occupations land in each risk band</strong>. That matters for you because labels are a planning lens—not a verdict on your worth—so you can compare paths, pair training, and ask better questions in <a href="../careers.html">Career Paths</a> or the <a href="../chatbot.html">AI Advisor</a>.</p>
+
+      <div class="grid-3" style="margin-top:1.25rem;">
+        <article class="card">
+          <h3><span class="badge-risk risk-low">Low</span> automation-style risk</h3>
+          <p class="muted" style="margin:0;">Roles that lean on <strong>judgment, nonroutine thinking, social interaction, and/or higher job zones</strong> in our task mix. In this model they are relatively <strong>less exposed</strong> to work that is easy to substitute with software or streamlined processes—often a stronger starting point when you want <strong>staying power</strong> as tools and hiring change.</p>
+        </article>
+        <article class="card">
+          <h3><span class="badge-risk risk-moderate">Moderate</span> automation-style risk</h3>
+          <p class="muted" style="margin:0;">A <strong>mixed</strong> profile: some tasks could be compressed by tools or workflow change, alongside work that is harder to codify. Reasonable paths if you pair the role with a plan—<strong>transferable skills</strong>, a clear next-step occupation, or credentials that open adjacent doors.</p>
+        </article>
+        <article class="card">
+          <h3><span class="badge-risk risk-high">High</span> automation-style risk</h3>
+          <p class="muted" style="margin:0;">In our scoring, these occupations sit toward the <strong>more routinizable or substitutable</strong> end of the task ladder. That is <strong>not</strong> “do not do this job”—many people use these roles as <strong>on-ramps</strong>. It <em>does</em> mean: know the tradeoff, budget time to <strong>level up or pivot</strong>, and use the platform to spot lower-exposure neighbors you can grow into.</p>
+        </article>
+      </div>
+
+      <p class="muted" style="margin-top:1.1rem;"><strong>Reading the bars:</strong> Each bar is how many occupations earned that label after the full scoring run. A wide footprint across all three bands shows the real economy is mixed—and why personalized recommendations (Model 2) sit on top of this foundation instead of a one-size-fits-all job list.</p>
+
+      <div class="chart-panel chart-panel--fixed chart-panel--risk-bar">
+        <canvas id="occupationRiskDistChart" aria-label="Count of occupations by Low, Moderate, or High automation-style risk"></canvas>
+      </div>
+      <div id="occupationRiskDistCaption" class="chart-summary muted"></div>
+      <div class="chart-insight">
+        <strong>For decisions:</strong> Use Low / Moderate / High to <strong>compare options side by side</strong>, not to rank people. Prefer <strong>Low</strong> when you want the model’s read on longer-run task resilience; treat <strong>High</strong> as a signal to plan the <strong>next credential or adjacent role</strong>; use <strong>Moderate</strong> when you are balancing speed-to-work with a backup skill. Labels come from public O*NET task structure in our rules—your coach, program, or local labor market still matter.
+      </div>
+      <details class="viz-debug" id="occupationRiskDistDebug">
+        <summary>Debug: load path, counts, totals</summary>
+        <pre id="occupationRiskDistDebugPre"></pre>
+      </details>
+    </section>
+
+    <section class="section card" id="opportunity-groups">
+      <h2 class="chart-title">What “disadvantaged” and “advantaged” mean here — and how the four groups differ</h2>
+      <p class="muted">People often read these labels as judgments about a student. In WorkForce they are <strong>not</strong> personal grades. They summarize <strong>typical neighborhood conditions</strong> (census tract averages) after we cluster 73,202 tracts on poverty, upward mobility estimates, median income, and opportunity gap—using KNN-imputed values where mobility was missing. Your ZIP (or tract, in a full deployment) is a shortcut to “which neighborhood bucket looks most like mine for planning tools,” not “who I am.”</p>
+
+      <div class="grid-2" style="margin-top:1rem;">
+        <article class="card">
+          <h3>“Disadvantaged” side (harder average conditions)</h3>
+          <p class="muted" style="margin:0;"><strong>Very Disadvantaged</strong> and <strong>Disadvantaged</strong> are the two groups with <strong>higher poverty</strong> and <strong>lower upward-mobility signals</strong> in our summary table than the two opportunity groups. <strong>Very Disadvantaged</strong> is the more extreme of the two on poverty and mobility.</p>
+        </article>
+        <article class="card">
+          <h3>“More opportunity” side (stronger average conditions)</h3>
+          <p class="muted" style="margin:0;"><strong>Moderate Opportunity</strong> and <strong>Higher Opportunity</strong> are the two groups with <strong>lower poverty</strong> and <strong>higher incomes</strong> in the platform rollup. <strong>Higher Opportunity</strong> also has the <strong>highest mobility score</strong> (0.51 vs 0.41 for the middle two).</p>
+        </article>
+      </div>
+
+      <p class="muted" style="margin-top:1rem;"><strong>Why “Disadvantaged” and “Moderate Opportunity” both show 0.41 mobility:</strong> In this public summary row, average upward mobility is the same for those two labels, but they are <strong>not duplicates</strong>. Poverty and median income differ a lot (see the table). The cluster model separates tracts using the <strong>full feature mix</strong>; the table highlights a few averages so you can compare bands without reading the full methodology.</p>
+
+      <p class="muted"><strong>Jobs vs neighborhoods:</strong> Automation <strong>risk labels apply to occupations</strong> (the same 1,016 jobs exist for everyone). <strong>Opportunity groups apply to place context</strong>—they change education ROI defaults and which short ranked list we surface in the demo CSV, not the underlying job-risk math.</p>
+
+      <h3 style="margin-top:1.5rem;">Side-by-side averages (platform summary)</h3>
+      <p class="muted">Source: <code>data/opportunity_groups.csv</code> — tract-weighted-style group means as used in Education Explorer. Dollar figures are rounded.</p>
+      <div style="overflow-x:auto;">
+        <table class="opportunity-compare-table">
+          <thead>
+            <tr>
+              <th scope="col">Group</th>
+              <th scope="col">Poverty rate (tract avg)</th>
+              <th scope="col">Mobility score</th>
+              <th scope="col">Median income (tract)</th>
+              <th scope="col">In one sentence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Very Disadvantaged</strong></td>
+              <td>33%</td>
+              <td>0.34</td>
+              <td>$40,805</td>
+              <td>Highest poverty, lowest mobility signal in this table—planning assumes tighter margins and more need for low-debt paths.</td>
+            </tr>
+            <tr>
+              <td><strong>Disadvantaged</strong></td>
+              <td>13%</td>
+              <td>0.41</td>
+              <td>$71,329</td>
+              <td>Still labeled disadvantaged because averages sit below the opportunity bands, but materially better than “Very” on poverty and income.</td>
+            </tr>
+            <tr>
+              <td><strong>Moderate Opportunity</strong></td>
+              <td>10%</td>
+              <td>0.41</td>
+              <td>$83,864</td>
+              <td>Similar mobility number to Disadvantaged here, but lower poverty and higher median income—different neighborhood profile.</td>
+            </tr>
+            <tr>
+              <td><strong>Higher Opportunity</strong></td>
+              <td>5%</td>
+              <td>0.51</td>
+              <td>$140,836</td>
+              <td>Strongest averages on every column we show—still not a guarantee for any one person.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart-insight" style="margin-top:1rem;">
+        <strong>Demo ZIP rule:</strong> This site uses a simple ZIP-prefix mapping for the advisor and Career Paths so you can test flows without uploading addresses. A real rollout should map a student to a tract (or use school/district context) instead. The <strong>group definitions above</strong> are what the labels mean; the ZIP trick is only plumbing for the prototype.
+      </div>
+      <p class="muted" style="margin-top:.75rem;">Browse every occupation with a risk label (full Model 1 list): <a href="../all-occupations.html">All occupations →</a> · <strong>Per-tier</strong> tract context + charts + occupation lists: <a href="../opportunity-tiers.html">Opportunity tiers →</a></p>
+    </section>
+
     <section class="section">
-      <h2>Model 2 Used in Final Platform — Youth Opportunity Grouping + Career Match</h2>
+      <h2>Model 2 — Neighborhood-aware career ranking</h2>
       <div class="grid-2">
         <article class="card"><h3>Method</h3><p>K-Means clustering on full tract dataset (73,202) with KNN imputation for missing mobility values.</p><p>Groups: Very Disadvantaged, Disadvantaged, Moderate Opportunity, Higher Opportunity.</p></article>
         <article class="card"><h3>Output + Result</h3><p>Group-aware recommendation ranking with safety + accessibility weighting.</p><p>Group mobility ordering used in platform: <strong>0.34 → 0.41 → 0.41 → 0.51</strong>.</p></article>
       </div>
+    </section>
+
+    <section class="section card">
+      <h2 class="chart-title">Why one career shortlist cannot fit every neighborhood</h2>
+      <p class="muted">WorkForce does <strong>not</strong> give every ZIP the same ranked jobs on purpose. Opportunity groups summarize <strong>different average neighborhood conditions</strong> (poverty, mobility signals, income, education cost context). Model 2 still uses the <strong>same</strong> occupation definitions and Model 1 automation-risk scores everywhere—but it <strong>re-ranks</strong> candidates for each group using accessibility, risk, and match weights tuned to that context. So the lists are <strong>not identical</strong> for three straightforward reasons: (1) <strong>inputs differ</strong>—each column is a different tract “profile,” not the same student; (2) <strong>ordering differs</strong>—a job that is a strong early pick for one context may slide for another when tradeoffs shift; (3) <strong>membership differs</strong>—some roles only appear in certain groups’ top-fifteen exports (see the dashes). The heatmap makes that visible: same row (job), different colors across columns (priority by group).</p>
+      <aside class="callout" aria-label="What list rank means and a concrete example">
+        <p><strong>What the cell number is (and what it is not).</strong> There is no separate “opportunity rank” score for a job. The <strong>column</strong> is the neighborhood opportunity <em>group</em> (Very Disadvantaged, Disadvantaged, Moderate, Higher). The <strong>number in the cell</strong> is only that job’s <strong>position on that group’s Model&nbsp;2 shortlist</strong>: <strong>1</strong> = first suggestion for that group, <strong>15</strong> = fifteenth. It is <em>not</em> a national ranking of “how good the opportunity is” in the abstract—it is “where this job landed when we sorted the list for tracts like this.”</p>
+        <p><strong>Why those positions change across columns.</strong> The model blends automation risk, training accessibility (job zone), and match-to-context. For disadvantaged-area profiles, lower job-zone roles (supervision, landscaping, childcare) often rise to the top of the export; for moderate/higher profiles, the same pipeline can prioritize different mixes (e.g. more job-zone-3 tech and operations roles). Same occupations, same risk labels from Model&nbsp;1—different <em>sort order</em> and sometimes different top-15 membership.</p>
+        <p><strong>Example from the bundled recommendations file.</strong> <em>Web Developers</em> does <strong>not</strong> appear in the Very Disadvantaged or Disadvantaged top-15 at all (those cells are “—”), but it is <strong>#4</strong> for both Moderate Opportunity and Higher Opportunity. <em>Hydroelectric Production Managers</em> is <strong>#5</strong> for Very Disadvantaged and Disadvantaged, yet <strong>#1</strong> for Moderate and Higher. <em>Landscaping and Groundskeeping Workers</em> is <strong>#3</strong> for Very Disadvantaged and Disadvantaged but is <strong>not</strong> in the Moderate/Higher top-15 here—so one neighborhood context’s “near the top” job can be absent from another’s shortlist entirely.</p>
+      </aside>
+      <div class="chart-panel chart-panel--heatmap career-match-viz-wrap">
+        <div id="careerMatchHeatmapMount"></div>
+      </div>
+      <div id="careerMatchHeatmapCaption" class="chart-summary muted"></div>
+      <div class="chart-insight">
+        <strong>Reading the heatmap:</strong> Teal = close to #1 for <em>that</em> group’s list; lighter violet = further down. A dash = not in that group’s top-15 here—another sign lists are not copy-paste. Rows are sorted so jobs whose ranks disagree the most across groups rise to the top—<strong>the story is in the horizontal stripe pattern</strong>, not in tiny <code>match_score</code> decimals. Deeper per-tier tract stats: <a href="../opportunity-tiers.html">Opportunity tiers</a>.
+      </div>
+      <details class="viz-debug" id="careerMatchHeatmapDebug">
+        <summary>Debug: rank spread counts, match tiers, sample rows</summary>
+        <pre id="careerMatchHeatmapDebugPre"></pre>
+      </details>
     </section>
 
     <section class="section card">

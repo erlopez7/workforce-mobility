@@ -23,7 +23,10 @@
           <div id="commonJobsList" class="pill-group"></div>
         </aside>
       </div>
-      <details><summary>Risk Model Explainer</summary><p>Our model scores each occupation based on routine work, decision complexity, human interaction, and training level.</p></details>
+      <details class="metric-help"><summary>Risk Model Explainer</summary>
+        <p><strong>What goes into the label.</strong> Model&nbsp;1 blends O*NET-style <strong>task shares</strong>—how much typical work looks like <strong>routine cognitive</strong> tasks (repeatable, rule-based desk work), <strong>non-routine judgment</strong> (planning, novel problems), <strong>social or interpersonal</strong> coordination, and <strong>hands-on or physical</strong> duties—with <strong>Job Zone</strong> (usual preparation depth). The score is a planning lens on automation-style exposure, not a grade on you as a person.</p>
+        <p class="muted" style="margin-bottom:0;">Under each job result we spell out that mix in plain language when the full occupation file loads. If you only see score + zone, open the site over HTTP so <code>data/job_df_full_occupations.csv</code> can load.</p>
+      </details>
       <p class="muted">Of 1,016 occupations analyzed: 446 Low Risk | 314 Moderate Risk | 256 High Risk</p>
     </section>
     <section id="mapStateContext" class="section card hide" aria-live="polite"></section>

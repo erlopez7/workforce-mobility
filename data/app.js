@@ -180,6 +180,8 @@ const REC_GROUP_KEYS = ["Very Disadvantaged", "Disadvantaged", "Moderate Opportu
 function normalizeRecRow(r) {
   return {
     title: String(r.title || r.occupation || "").trim(),
+    onetsoc_code: String(r.onetsoc_code || r.onetsoc || "").trim(),
+    risk_score: r.risk_score ?? "",
     risk_label: r.risk_label || "Low Risk",
     job_zone: r.job_zone ?? "",
     match_score: r.match_score ?? "0"
@@ -238,6 +240,8 @@ function syntheticRecsFromJobs(jobs, groupKey) {
   }
   return picked.map((j, idx) => ({
     title: j.title,
+    onetsoc_code: j.onetsoc_code || "",
+    risk_score: j.risk_score ?? "",
     risk_label: j.risk_label || "Low Risk",
     job_zone: j.job_zone ?? "",
     match_score: String(Math.max(0.55, 0.9 - idx * 0.01))
@@ -371,6 +375,112 @@ function riskClass(label) {
   if (String(label).includes("Low")) return "risk-low";
   if (String(label).includes("Moderate")) return "risk-moderate";
   return "risk-high";
+}
+
+function escapeHtmlText(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function riskLabelBucketForTier(lab) {
+  const s = String(lab);
+  if (s.includes("Moderate")) return "moderate";
+  if (s.includes("High")) return "high";
+  if (s.includes("Low")) return "low";
+  return "other";
+}
+
+function parseTaskShare01(v) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return NaN;
+  return Math.min(1, Math.max(0, n));
+}
+
+function normalizeOccTitle(s) {
+  return String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function findJobProfileForRec(jobs, rec) {
+  if (!jobs || !rec) return null;
+  const code = String(rec.onetsoc_code || rec.onetsoc || "").trim();
+  if (code) {
+    const byCode = jobs.find((j) => String(j.onetsoc_code || "").trim() === code);
+    if (byCode) return byCode;
+  }
+  const target = normalizeOccTitle(rec.title || rec.occupation);
+  if (!target) return null;
+  const exact = jobs.find((j) => normalizeOccTitle(j.title) === target);
+  if (exact) return exact;
+  return jobs.find((j) => {
+    const t = String(j.title || "").toLowerCase();
+    return t === target || t.includes(target) || target.includes(t);
+  }) || null;
+}
+
+function riskTransparencyHtml(job) {
+  const label = String(job?.risk_label || "").trim() || "Low Risk";
+  const zone = String(job?.job_zone ?? "").trim();
+  const rs = job?.risk_score !== undefined && job?.risk_score !== null && job?.risk_score !== ""
+    ? String(job.risk_score)
+    : "";
+  const R = parseTaskShare01(job?.routine_cognitive_tasks);
+  const M = parseTaskShare01(job?.manual_tasks);
+  const S = parseTaskShare01(job?.social_tasks);
+  const N = parseTaskShare01(job?.nonroutine_cognitive_tasks);
+  const hasTasks = [R, M, S, N].every((x) => Number.isFinite(x));
+
+  const zPhrase = zone
+    ? ` Typical preparation depth is summarized as <strong>Job Zone ${escapeHtmlText(zone)}</strong>, which the model blends with task style—not a judgment about people.`
+    : " Job Zone (training depth) is part of the score when we have it.";
+
+  if (!hasTasks) {
+    const escLabel = escapeHtmlText(label);
+    const scoreBit = rs ? ` The numeric output is <strong>${escapeHtmlText(rs)}</strong> (higher means more automation-style exposure in our blend).` : "";
+    return `<p class="risk-transparency muted"><strong>Why this label:</strong>${scoreBit} <strong>${escLabel}</strong> is the band.${zPhrase} Line-by-line routine / judgment / social / hands-on text loads with <code>data/job_df_full_occupations.csv</code> (serve the site over HTTP, e.g. <code>python3 -m http.server</code>).</p>`;
+  }
+
+  let core;
+  if (R > N + 0.03) {
+    core = "Routine, structured cognitive tasks outweigh open-ended judgment in the O*NET-style task weights we use for this occupation.";
+    const extras = [];
+    if (S >= 0.12) extras.push("people-facing or coordination work is a meaningful slice");
+    if (M >= 0.12) extras.push("hands-on or physical tasks matter too");
+    if (extras.length) {
+      const a = extras[0];
+      const cap = a.charAt(0).toUpperCase() + a.slice(1);
+      core += ` ${cap}${extras[1] ? `, and ${extras[1]}` : ""}.`;
+    } else {
+      core += " Interpersonal and physical-task shares are relatively small in this weighted snapshot.";
+    }
+  } else if (N > R + 0.03) {
+    core = "Open-ended judgment, planning, or novel problems carry more weight than highly repetitive desk-only routines in our task-style inputs.";
+    if (S >= 0.12) core += " There is also a meaningful interpersonal or social-task component.";
+    if (M >= 0.12) core += " Hands-on or physical tasks show up in the mix too.";
+  } else {
+    core = "Routine and non-routine cognitive work are both material in the blend we import; social, hands-on, and training signals tip the score.";
+  }
+
+  const bucket = riskLabelBucketForTier(label);
+  const escLabel2 = escapeHtmlText(label);
+  let bandSentence;
+  if (bucket === "high") {
+    bandSentence = `Together with training signals, that pattern maps to <strong>${escLabel2}</strong>—higher modeled exposure to automation-style substitution or augmentation than many roles with more protective judgment, variability, or physical context. It is not a verdict on any individual worker.`;
+  } else if (bucket === "moderate") {
+    bandSentence = `That combination lands in <strong>${escLabel2}</strong>: more routine or screen-heavy concentration than many low-risk rows, but not the most repetitive-heavy profiles in our export.`;
+  } else {
+    bandSentence = `That combination lands in <strong>${escLabel2}</strong> in this model—lower modeled automation-style exposure than more routine-dominant occupations on average, not a guarantee about the future.`;
+  }
+
+  return `<p class="risk-transparency muted"><strong>Why this label:</strong> ${core}${zPhrase} ${bandSentence}</p>`;
+}
+
+function formatCareerRiskResultCard(j) {
+  const title = escapeHtmlText(j.title);
+  const lab = escapeHtmlText(String(j.risk_label || ""));
+  const rs = escapeHtmlText(String(j.risk_score ?? ""));
+  return `<div class="card"><h3>${title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${lab}</span><p class="muted">Risk score: ${rs}</p>${riskTransparencyHtml(j)}</div>`;
 }
 
 function initNav() {
@@ -1254,10 +1364,15 @@ async function initCareersPage() {
     jobsLoadedFrom = "fallback";
   }
   const jobs = (jobsRaw.length ? jobsRaw : DEFAULT_JOBS).map((j) => ({
+    onetsoc_code: String(j.onetsoc_code || j.onetsoc || "").trim(),
     title: j.title || j.occupation || j.job_title || "",
     risk_label: j.risk_label || "Low Risk",
     risk_score: j.risk_score || "0",
-    job_zone: j.job_zone || ""
+    job_zone: j.job_zone || "",
+    routine_cognitive_tasks: j.routine_cognitive_tasks,
+    manual_tasks: j.manual_tasks,
+    social_tasks: j.social_tasks,
+    nonroutine_cognitive_tasks: j.nonroutine_cognitive_tasks
   })).filter((j) => j.title);
 
   if (needsSyntheticRecommendations(recommendationsByGroup, recSourceNote) && jobs.length >= 10) {
@@ -1350,7 +1465,7 @@ async function initCareersPage() {
     if (!q) {
       const starters = jobs.slice(0, 8);
       jobList.innerHTML = starters.map((j) => `<button class="pill">${j.title}</button>`).join("");
-      riskResults.innerHTML = starters.slice(0, 3).map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`).join("");
+      riskResults.innerHTML = starters.slice(0, 3).map((j) => formatCareerRiskResultCard(j)).join("");
       return;
     }
     const filtered = jobs.filter((j) => {
@@ -1362,14 +1477,14 @@ async function initCareersPage() {
     if (!filtered.length && q) {
       const low = jobs.filter((j) => String(j.risk_label).includes("Low")).slice(0, 3);
       jobList.innerHTML = `<p class="muted">No exact match — here are similar careers:</p>`;
-      riskResults.innerHTML = low.map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`).join("");
+      riskResults.innerHTML = low.map((j) => formatCareerRiskResultCard(j)).join("");
       return;
     }
     jobList.innerHTML = filtered.slice(0, 10).map((j) => `<button class="pill">${j.title}</button>`).join("");
-    riskResults.innerHTML = filtered.slice(0, 5).map((j) => `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`).join("");
+    riskResults.innerHTML = filtered.slice(0, 5).map((j) => formatCareerRiskResultCard(j)).join("");
     [...jobList.querySelectorAll(".pill")].forEach((pill, idx) => pill.addEventListener("click", () => {
       const j = filtered[idx];
-      riskResults.innerHTML = `<div class="card"><h3>${j.title}</h3><span class="badge-risk ${riskClass(j.risk_label)}">${j.risk_label}</span><p class="muted">Risk score: ${j.risk_score}</p></div>`;
+      riskResults.innerHTML = formatCareerRiskResultCard(j);
     }));
   };
   renderJobList("");
@@ -1398,13 +1513,28 @@ async function initCareersPage() {
       ? `<div class="card" style="grid-column:1/-1"><p><strong>No matches for selected interests.</strong></p><p class="muted">Clear some interest pills or try a different ZIP, then click <strong>Find My Path</strong> again.</p></div>`
       : chosen.map((r) => {
         const pctScore = Math.round(Number(r.match_score) * 100);
+        const profile = findJobProfileForRec(jobs, r);
+        const jobForExplain = profile
+          ? {
+            ...profile,
+            risk_label: r.risk_label || profile.risk_label,
+            risk_score: r.risk_score !== undefined && r.risk_score !== "" ? r.risk_score : profile.risk_score,
+            job_zone: r.job_zone !== undefined && r.job_zone !== "" ? r.job_zone : profile.job_zone
+          }
+          : {
+            title: r.title,
+            risk_label: r.risk_label,
+            risk_score: r.risk_score,
+            job_zone: r.job_zone
+          };
         return `
         <div class="card">
-          <h3>${r.title}</h3>
-          <p><span class="badge-risk ${riskClass(r.risk_label)}">${r.risk_label}</span></p>
-          <p class="muted">Job Zone: ${r.job_zone}</p>
+          <h3>${escapeHtmlText(r.title)}</h3>
+          <p><span class="badge-risk ${riskClass(r.risk_label)}">${escapeHtmlText(String(r.risk_label || ""))}</span></p>
+          <p class="muted">Job Zone: ${escapeHtmlText(String(r.job_zone ?? ""))}</p>
           <p class="muted">Match Score: ${pctScore}%</p>
           <div class="progress"><span style="width:${pctScore}%"></span></div>
+          ${riskTransparencyHtml(jobForExplain)}
         </div>
       `;
       }).join("");
