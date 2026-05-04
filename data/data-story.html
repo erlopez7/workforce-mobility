@@ -13,10 +13,10 @@
       <button id="menuBtn" class="menu-btn" aria-label="Open menu">☰</button>
       <div id="navLinks" class="nav-links">
         <a href="chatbot.html">AI Advisor</a>
+        <a class="active" href="data-story.html">Data Story</a>
         <a href="map.html">Mobility Map</a>
         <a href="education.html">Education Explorer</a>
         <a href="careers.html">Career Paths</a>
-        <a class="active" href="data-story.html">Data Story</a>
         <a href="resources.html">Resources</a>
       </div>
     </div>
@@ -102,13 +102,14 @@
 
     <section class="section card">
       <h2 class="chart-title">Youth opportunity clustering — group profiles</h2>
-      <p class="muted">Mean tract features by <code>youth_group</code> from <code>model2_cluster_profiles_mean.csv</code>. Each axis is scaled 0–100 across the four groups (lowest group mean → 0, highest → 100) so poverty, mobility, income, and opportunity gap are comparable on one chart. Hover a point for raw values.</p>
-      <div class="chart-panel chart-panel--radar">
-        <canvas id="youthClusterProfileChart" aria-label="Radar chart of cluster means by opportunity group"></canvas>
+      <p class="muted">Mean tract features by <code>youth_group</code> from <code>model2_cluster_profiles_mean.csv</code>. The table shows real averages; the chart uses the same 0–100 “within each row” scale so you can compare groups without reading a radar.</p>
+      <div id="youthClusterProfileTableWrap" class="missingness-table-wrap" style="margin:0.75rem 0 0;"></div>
+      <div class="chart-panel chart-panel--hbar">
+        <canvas id="youthClusterProfileChart" aria-label="Bar chart comparing opportunity groups by measure"></canvas>
       </div>
       <div id="youthClusterProfileCaption" class="chart-summary muted"></div>
       <div class="chart-insight">
-        <strong>Note:</strong> Values are normalized to a 0–100 scale so income, poverty, mobility, and opportunity gap can be compared fairly in one group profile chart.
+        <strong>How to read the chart:</strong> Each row is one measure. For that row only, the group with the lowest average is 0 and the highest is 100 — so you are comparing the four groups on equal footing, not mixing dollars with rates.
       </div>
     </section>
 
@@ -137,11 +138,11 @@
       <div class="footer-links">
         <a href="index.html">Home</a>
         <a href="chatbot.html">AI Advisor</a>
+        <a href="data-story.html">Data Story</a>
         <a href="map.html">Mobility Map</a>
         <a href="education.html">Education Explorer</a>
         <a href="careers.html">Career Paths</a>
         <a href="resources.html">Resources</a>
-        <a href="data-story.html">Data Story</a>
       </div>
     </div>
   </footer>
