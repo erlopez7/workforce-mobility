@@ -9,7 +9,7 @@
 <body>
   <nav class="navbar"><div class="container nav-inner"><a class="brand" href="index.html">↗ WorkForce</a><button id="menuBtn" class="menu-btn">☰</button><div id="navLinks" class="nav-links"><a href="chatbot.html">AI Advisor</a><a href="data-story.html">Data Story</a><a href="map.html">Mobility Map</a><a class="active" href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="resources.html">Resources</a></div></div></nav>
   <main class="container">
-    <section class="section"><h1>Education Outcome Explorer</h1><p class="muted">Compare average education costs and earnings outcomes based on neighborhood opportunity context — not guesswork.</p></section>
+    <section class="section"><h1>Education Outcome Explorer</h1><p class="muted">Compare average education costs and earnings outcomes based on neighborhood opportunity context — not guesswork.</p><p class="muted"><strong>ROI (Return on Investment)</strong> here means how long-run earnings potential compares with out-of-pocket education cost. It is a planning signal, not a guarantee.</p></section>
     <section class="section pill-group">
       <button class="pill active" data-group="Very Disadvantaged">Very Disadvantaged</button>
       <button class="pill" data-group="Disadvantaged">Disadvantaged</button>
@@ -22,14 +22,21 @@
       <canvas id="roiChart" height="120"></canvas>
       <p id="eduChartSummary" class="muted chart-summary"></p>
     </section>
+    <section class="section card">
+      <h2 class="chart-title">Public vs private cost and earnings comparison</h2>
+      <canvas id="eduCompareChart" height="120"></canvas>
+      <p class="muted chart-summary">This chart shows all opportunity groups side-by-side so students can compare affordability (public/private net price) against 10-year earnings outcomes in one view.</p>
+    </section>
     <section class="section callout"><p>Public college is significantly more affordable for students in every opportunity group. The average public net price ($9,985–$10,830) is less than a quarter of the average total cost — making community college and public university transfers the highest ROI (Return on Investment) pathway for most low-income students.</p></section>
     <section class="section grid-3">
       <article class="card"><h3>Avoid Debt Traps</h3><p class="muted">High-cost private schools without strong earnings outcomes can lock students into decades of debt.</p></article>
       <article class="card"><h3>Transfer Paths Work</h3><p class="muted">Community college transfer routes often provide the strongest return for disadvantaged students.</p></article>
       <article class="card"><h3>Fast Skills Matter</h3><p class="muted">Healthcare, IT, and trade certificates can lead to strong wages with shorter training timelines.</p></article>
     </section>
-    <section class="section">
-      <p class="muted">Next: <a href="chatbot.html">AI Advisor</a> for a personalized path · <a href="data-story.html">Data Story</a> for methods · <a href="careers.html">Career Paths</a> for job risk · <a href="map.html">Mobility Map</a> for neighborhood context.</p>
+    <section class="section next-step-bar">
+      <h3>Next step</h3>
+      <p>After comparing affordability and ROI, open Data Story to see the four final model visuals and methods behind the platform.</p>
+      <a class="btn primary" href="data-story.html">Next: Data Story →</a>
     </section>
   </main>
   <footer class="footer">

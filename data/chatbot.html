@@ -6,13 +6,13 @@
   <main class="container">
     <section class="section"><h1>Your Personal Career Advisor</h1><p class="muted">Answer a few questions and get a personalized pathway — built from real workforce and education data.</p></section>
     <section class="section chat-shell">
-      <div id="chatApiStatus" class="status-pill"><span class="status-dot"></span><span>AI Advisor ready — add ZIP, education level, budget, and interests. Checking backend…</span></div>
+      <div id="chatApiStatus" class="status-pill"><span class="status-dot"></span><span>AI Advisor ready — enter your ZIP code, education level, budget, career interests, and concerns to begin.</span></div>
       <div id="chatSuggestions" class="pill-group">
-        <button class="pill" data-prompt="What careers are safe from AI automation?">What careers are safe from AI automation?</button>
-        <button class="pill" data-prompt="I live in a low-income area — what's my best path?">I live in a low-income area — what's my best path?</button>
-        <button class="pill" data-prompt="What jobs pay well without a 4-year degree?">What jobs pay well without a 4-year degree?</button>
-        <button class="pill" data-prompt="Compare community college vs university ROI (Return on Investment)">Compare community college vs university ROI (Return on Investment)</button>
-        <button class="pill" data-prompt="I'm interested in healthcare — where do I start?">I'm interested in healthcare — where do I start?</button>
+        <button class="pill" data-prompt="I am in ZIP 60619, completed high school, low budget, interested in healthcare, worried about AI risk. What should I do first?">Demo prompt: ZIP + budget + interest + AI concern</button>
+        <button class="pill" data-prompt="Compare 2-year transfer path vs 4-year path for my ZIP. Which has better ROI and lower debt risk?">Demo prompt: Compare education paths</button>
+        <button class="pill" data-prompt="Give me 3 careers with lower AI risk, what training they need, and one action step this week.">Demo prompt: 3 careers + next steps</button>
+        <button class="pill" data-prompt="Explain my opportunity group in plain English and what page I should open next.">Demo prompt: Explain opportunity group</button>
+        <button class="pill" data-prompt="Create a 4-week plan: FAFSA, training options, career shortlist, and support resources.">Demo prompt: 4-week action plan</button>
       </div>
       <div id="chatLog" class="chat-wrap"></div>
       <div id="chatHelper" class="chat-helper">
@@ -26,7 +26,7 @@
         </ul>
       </div>
       <div class="chat-input-row"><input id="chatInput" placeholder="I'm from ZIP 90001 in LA, finished high school, can't afford much, interested in healthcare or tech — what's my best path?" /><button id="sendBtn" class="btn primary">Send</button></div>
-      <p class="muted" style="margin-top:1rem;">Next: <a href="data-story.html">Data Story</a> · <a href="map.html">Mobility Map</a> · <a href="careers.html">Career Paths</a></p>
+      <section class="next-step-bar" style="margin-top:1rem;"><h3>Next step</h3><p>Use your ZIP-based guidance here, then validate location context in the map.</p><a class="btn primary" href="map.html">Next: Mobility Map →</a></section>
     </section>
   </main>
   <footer class="footer">

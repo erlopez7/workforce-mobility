@@ -437,6 +437,41 @@ async function hydrateDataFromCSVs() {
 
 function money(v) { return `$${Math.round(Number(v)).toLocaleString()}`; }
 function pct(v) { return `${(Number(v) * 100).toFixed(0)}%`; }
+
+/** Same-origin page href when the active page lives under /data/ vs repo root. */
+function appPageHref(filename) {
+  const p = window.location.pathname || "";
+  return /\/data\//.test(p) ? filename : `data/${filename}`;
+}
+
+function jobZoneTrainingPhrase(z) {
+  const n = Number(z);
+  if (!Number.isFinite(n)) return "See Job Zone on the card — it summarizes usual preparation depth (O*NET Job Zones).";
+  if (n <= 1) return "Job Zone 1: often brief on-the-job training.";
+  if (n <= 2) return "Job Zone 2: usually high school plus some training or experience.";
+  if (n === 3) return "Job Zone 3: often associate-level training, apprenticeship, or certificate path.";
+  if (n === 4) return "Job Zone 4: typically bachelor’s-level preparation.";
+  return "Job Zone 5: often extensive preparation or graduate training.";
+}
+
+function recRecommendationWhyHtml(groupName, r) {
+  const g = escapeHtmlText(groupName);
+  const m = Number(r.match_score);
+  let tier = "a contextual match";
+  if (Number.isFinite(m)) {
+    if (m >= 0.885) tier = "a very strong contextual match in this export";
+    else if (m >= 0.82) tier = "a strong match for this group’s ranked list";
+    else tier = "a supported pick from this group’s ranked list";
+  }
+  return `<p class="muted rec-why"><strong>Why it’s recommended:</strong> Model 2 ranks occupations for the <strong>${g}</strong> neighborhood profile (accessibility + Model 1 risk + match). This row shows ${tier}—a planning idea, not a hiring guarantee.</p>`;
+}
+
+function recNextStepLinksHtml() {
+  const r = appPageHref("resources.html");
+  const e = appPageHref("education.html");
+  const c = appPageHref("chatbot.html");
+  return `<p class="muted rec-next" style="margin-top:.5rem;"><strong>Next steps:</strong> <a href="https://studentaid.gov/apply-for-aid/fafsa" target="_blank" rel="noopener">FAFSA</a> · <a href="${r}">Resources</a> · <a href="${e}">Education Explorer (ROI)</a> · <a href="${c}">AI Advisor</a> for a personalized plan.</p>`;
+}
 function mobilityColor(v) {
   if (v >= 0.45) return "#22c55e";
   if (v >= 0.4) return "#3b82f6";
@@ -614,12 +649,13 @@ async function testGeminiConnection() {
 function setApiStatus(el, ok) {
   if (!el) return;
   el.classList.remove("ok", "err");
+  const ready = "AI Advisor ready — enter your ZIP code, education level, budget, career interests, and concerns to begin.";
   if (ok) {
     el.classList.add("ok");
-    el.innerHTML = `<span class="status-dot"></span><span>AI connection ready</span>`;
+    el.innerHTML = `<span class="status-dot"></span><span>${ready} <em style="opacity:.88;font-style:normal;font-size:.92em;">Live AI is connected.</em></span>`;
   } else {
     el.classList.add("err");
-    el.innerHTML = `<span class="status-dot"></span><span>AI connection issue (configure proxy/key)</span>`;
+    el.innerHTML = `<span class="status-dot"></span><span>${ready} <em style="opacity:.88;font-style:normal;font-size:.92em;">Demo tip: configure API keys for full replies — use the sample prompts to walk through the flow.</em></span>`;
   }
 }
 
@@ -664,7 +700,7 @@ function attachChatBehavior({ input, sendBtn, log, suggestionSelector, helperTog
   };
   if (statusEl) {
     statusEl.classList.remove("ok", "err");
-    statusEl.innerHTML = `<span class="status-dot"></span><span>AI Advisor ready — add ZIP, education level, budget, and interests. Checking backend…</span>`;
+    statusEl.innerHTML = `<span class="status-dot"></span><span>AI Advisor ready — enter your ZIP code, education level, budget, career interests, and concerns to begin.</span>`;
   }
   testGeminiConnection().then((res) => setApiStatus(statusEl, res.ok));
   sendBtn.addEventListener("click", send);
@@ -722,16 +758,20 @@ async function initMapPage() {
     if (!st) return;
     const group = mobilityGroup(Number(st.mobility));
     const groupColor = mobilityColor(Number(st.mobility));
+    const mb = appPageHref("careers.html");
+    const ed = appPageHref("education.html");
+    const ds = appPageHref("data-story.html");
     details.innerHTML = `
-      <h3>${st.name} Key Data</h3>
-      <p>━━━━━━━━━━━━━━━━━━━━</p>
-      <p>🏷️ Opportunity group: <span style="display:inline-block;padding:2px 8px;border-radius:999px;background:${groupColor};color:#fff;font-weight:700;">${group}</span></p>
-      <p>📍 Tract count: ${Number(st.tracts).toLocaleString()}</p>
-      <p>📈 Avg mobility score: ${Number(st.mobility).toFixed(2)}</p>
-      <p>💸 Avg poverty rate: ${pct(st.poverty)}</p>
-      <p>💰 Avg income: ${money(st.income)}</p>
-      <p>⚖️ Avg opportunity gap: ${Number(st.opp_gap).toFixed(2)}</p>
-      <p>🔴 Disadvantaged share: ${pct(st.disadvantaged_share)}</p>
+      <h3>${st.name} — plain-language readout</h3>
+      <p class="muted" style="margin:0 0 .6rem;">These are <strong>state averages</strong> built from neighborhood (tract) data — useful context, not a verdict on any one person.</p>
+      <p>🏷️ <strong>Typical opportunity band:</strong> <span style="display:inline-block;padding:2px 8px;border-radius:999px;background:${groupColor};color:#fff;font-weight:700;">${group}</span> (from average upward mobility in this state)</p>
+      <p>📍 <strong>Neighborhoods in this view:</strong> ${Number(st.tracts).toLocaleString()} census tracts</p>
+      <p>📈 <strong>Upward mobility (index):</strong> ${Number(st.mobility).toFixed(2)} on a 0–1 scale — higher means stronger typical connections between growing up here and better adult outcomes in our summary data.</p>
+      <p>💸 <strong>Poverty rate:</strong> ${pct(st.poverty)} of people in these tracts below the poverty line on average — a stress indicator for budgets and support needs.</p>
+      <p>💰 <strong>Median income:</strong> ${money(st.income)} — typical tract-level middle income in the merge we use.</p>
+      <p>⚖️ <strong>Opportunity gap:</strong> ${Number(st.opp_gap).toFixed(2)} — summarizes how wide outcomes can be between higher- and lower-opportunity areas in this bundle (larger often means steeper inequality of place).</p>
+      <p>🔴 <strong>Disadvantaged tract share:</strong> ${pct(st.disadvantaged_share)} — share of tracts labeled disadvantaged or very disadvantaged in this rollup.</p>
+      <p class="muted" style="margin:.75rem 0 0;"><strong>What to do next:</strong> Compare careers for this context → <a href="${mb}">Career Paths</a> · See education costs vs earnings by opportunity group → <a href="${ed}">Education Explorer</a> · Read how we cluster neighborhoods → <a href="${ds}#model-youth-cluster">Data Story</a>.</p>
     `;
     document.querySelectorAll(".state-path").forEach((el) => el.classList.remove("active"));
     const path = document.querySelector(`[data-abbr="${abbr}"]`);
@@ -896,9 +936,10 @@ async function initDataStoryImputationChart() {
     const fetchNote = usedFallback
       ? " <strong>Note:</strong> Showing bundled figures (CSV fetch failed — use a local server like <code>python -m http.server</code> to load <code>data/tract_key_fields_missingness.csv</code> live)."
       : "";
+    const knnPlain = "Some neighborhoods were missing upward mobility and related fields. Instead of dropping those tracts, we used k-nearest neighbors (KNN) to fill gaps using values from similar tracts. That kept the full 73,202-tract grid usable for clustering and prevented the model from breaking on nulls. Filled values are estimates—transparently labeled in our pipeline—not new ground-truth surveys.";
     const intro = n
-      ? `Tract modeling frame: N=${Number(n).toLocaleString()} census tracts. Red bars are missing share before imputation. After KNN, the clustering feature matrix has no nulls in these columns (see table).${fetchNote}`
-      : `Red bars: missing share before imputation. After KNN values are in the table.${fetchNote}`;
+      ? `${knnPlain} <strong>Detail:</strong> Tract modeling frame N=${Number(n).toLocaleString()}. Red bars show missing share before imputation; after KNN the modeling columns used here have 0% missing in this export (see table).${fetchNote}`
+      : `${knnPlain} Red bars: missing share before imputation. After KNN, values appear in the table.${fetchNote}`;
     const tableRows = order
       .map((label, i) => {
         const b = beforeData[i].toFixed(2);
@@ -1684,6 +1725,7 @@ function initEducationPage() {
   const chartSummary = document.getElementById("eduChartSummary");
 
   let chart;
+  let compareChart;
   const renderCards = async () => {
     const rowsRaw = await loadCSVFirst(["data/youth_group_summary.csv", "youth_group_summary.csv"]);
     const rows = normalizeYouthSummaryRows(rowsRaw);
@@ -1750,6 +1792,8 @@ function initEducationPage() {
       return {
         youth_group: group,
         sc_np_pub_mean: pickNumber(r.sc_np_pub_mean, g.pub),
+        sc_np_priv_mean: pickNumber(r.sc_np_priv_mean, g.priv),
+        sc_cost_mean: pickNumber(r.sc_cost_mean, g.cost),
         sc_earn10_mean: pickNumber(r.sc_earn10_mean, g.earn10)
       };
     });
@@ -1808,12 +1852,75 @@ function initEducationPage() {
       });
     }
 
+    const ctx2 = document.getElementById("eduCompareChart");
+    if (ctx2 && window.Chart) {
+      if (compareChart) compareChart.destroy();
+      compareChart = new Chart(ctx2.getContext("2d"), {
+        type: "bar",
+        data: {
+          labels: chartRows.map((r) => r.youth_group),
+          datasets: [
+            {
+              label: "Avg public net price",
+              data: chartRows.map((r) => Number(r.sc_np_pub_mean || 0)),
+              backgroundColor: "rgba(59, 130, 246, 0.75)",
+              borderRadius: 4
+            },
+            {
+              label: "Avg private net price",
+              data: chartRows.map((r) => Number(r.sc_np_priv_mean || 0)),
+              backgroundColor: "rgba(236, 72, 153, 0.72)",
+              borderRadius: 4
+            },
+            {
+              label: "Avg 10-year earnings",
+              data: chartRows.map((r) => Number(r.sc_earn10_mean || 0)),
+              backgroundColor: "rgba(16, 185, 129, 0.75)",
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: "#f9fafb" } },
+            title: {
+              display: true,
+              text: "Public vs private net price and earnings — all opportunity groups",
+              color: "#f9fafb",
+              font: { size: 16, weight: "700" }
+            },
+            tooltip: {
+              callbacks: {
+                label(c) {
+                  return `${c.dataset.label}: ${money(c.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { color: "#9ca3af", callback: (v) => `$${Math.round(v / 1000)}k` },
+              title: { display: true, text: "Dollars (averages)", color: "#cbd5e1" }
+            },
+            x: {
+              ticks: { color: "#9ca3af", maxRotation: 22 },
+              title: { display: true, text: "Opportunity group", color: "#cbd5e1" }
+            }
+          }
+        }
+      });
+    }
+
     if (chartSummary) {
       const selected = chartRows[activeIdx] || {};
       const summaryPubNet = pickNumber(selected.sc_np_pub_mean, fallback?.pub);
       const summaryEarn10 = pickNumber(selected.sc_earn10_mean, fallback?.earn10);
+      const summaryPriv = pickNumber(selected.sc_np_priv_mean, fallback?.priv);
       const ratio = summaryPubNet > 0 ? (summaryEarn10 / summaryPubNet) : 0;
-      chartSummary.textContent = `Why this highlight matters: ${activeGroup} is the group we are focusing on for decision-making. In this group, average public net price is ${money(summaryPubNet)} while average 10-year earnings are ${money(summaryEarn10)} (${ratio.toFixed(1)}x higher). The purple bar marks this priority group so the audience can quickly see the cost-to-outcome gap.`;
+      const pubRoiLabel = ratio >= 1 ? `${ratio.toFixed(1)}× (earnings vs public net price)` : "—";
+      chartSummary.textContent = `ROI (Return on Investment) here means “how much might typical long-run earnings compare to what school costs out of pocket?” For ${activeGroup}, average public net price is ${money(summaryPubNet)}, private net price about ${money(summaryPriv)}, and average 10-year earnings about ${money(summaryEarn10)} — roughly ${pubRoiLabel}. Bars for the selected group are highlighted.`;
     }
   };
 
@@ -2039,11 +2146,14 @@ async function initCareersPage() {
         return `
         <div class="card">
           <h3>${escapeHtmlText(r.title)}</h3>
+          <p class="muted"><strong>Your opportunity group:</strong> ${escapeHtmlText(group)}</p>
           <p><span class="badge-risk ${riskClass(r.risk_label)}">${escapeHtmlText(String(r.risk_label || ""))}</span></p>
-          <p class="muted">Job Zone: ${escapeHtmlText(String(r.job_zone ?? ""))}</p>
-          <p class="muted">Match Score: ${pctScore}%</p>
+          <p class="muted"><strong>Typical training:</strong> ${escapeHtmlText(jobZoneTrainingPhrase(r.job_zone))}</p>
+          <p class="muted">Match score (Model 2): ${pctScore}%</p>
           <div class="progress"><span style="width:${pctScore}%"></span></div>
+          ${recRecommendationWhyHtml(group, r)}
           ${riskTransparencyHtml(jobForExplain)}
+          ${recNextStepLinksHtml()}
         </div>
       `;
       }).join("");
@@ -2060,12 +2170,15 @@ async function initCareersPage() {
 
     const row = youthSummaryRows.find((x) => x.youth_group === group);
     const d = row || GROUP_DATA[group] || GROUP_DATA["Moderate Opportunity"];
+    const grpLabel = escapeHtmlText(group);
     roiContext.innerHTML = `
       <div class="card fade-in">
-        <h3>Education ROI (Return on Investment) Context</h3>
-        <p>Average Education Cost: ${money(d.sc_cost_mean || d.cost)}</p>
-        <p>Average Earnings After 10 Years: ${money(d.sc_earn10_mean || d.earn10)}</p>
-        <p>Public Net Price: ${money(d.sc_np_pub_mean || d.pub)} | Private Net Price: ${money(d.sc_np_priv_mean || d.priv)}</p>
+        <h3>Your neighborhood context: ${grpLabel}</h3>
+        <p class="muted">Recommendations above are ranked for this opportunity group (tract-scale context — not a personal label).</p>
+        <p>Average education cost (group): ${money(d.sc_cost_mean || d.cost)}</p>
+        <p>Average earnings after 10 years: ${money(d.sc_earn10_mean || d.earn10)}</p>
+        <p>Public net price: ${money(d.sc_np_pub_mean || d.pub)} | Private net price: ${money(d.sc_np_priv_mean || d.priv)}</p>
+        <p class="muted" style="margin-top:.65rem;"><strong>Next:</strong> <a href="${appPageHref("education.html")}">Education Explorer</a> for ROI visuals · <a href="${appPageHref("resources.html")}">Resources</a> for aid and programs.</p>
       </div>
     `;
   };

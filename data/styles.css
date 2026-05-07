@@ -744,6 +744,49 @@ input, select, textarea {
   word-break: break-word;
 }
 
+
+
+.journey-flow {
+  display: grid;
+  gap: .7rem;
+  margin-top: .75rem;
+}
+.journey-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .75rem;
+  align-items: start;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: .7rem .8rem;
+  background: #0f1a31;
+}
+.journey-step:hover { background: #13233f; }
+.journey-step p { margin: .25rem 0 0; }
+
+.next-step-bar {
+  border: 1px solid rgba(6,182,212,.35);
+  border-radius: 12px;
+  background: linear-gradient(120deg, rgba(6,182,212,.12), rgba(139,92,246,.12));
+  padding: 1rem;
+}
+.next-step-bar h3 { margin: 0 0 .35rem; }
+.next-step-bar p { margin: 0 0 .75rem; color: #cbd8ee; }
+
+.map-how {
+  margin-top: .7rem;
+  border-top: 1px solid var(--border);
+  padding-top: .65rem;
+}
+.map-how h4 { margin: 0 0 .45rem; font-size: .95rem; }
+.map-how ul { margin: 0 0 .45rem; padding-left: 1rem; color: #c7d5ef; }
+.map-how li { margin: .25rem 0; }
+
+.resource-section h2 { margin-bottom: .6rem; }
+.resource-section .resource-grid { margin-top: .4rem; }
+.rec-why, .rec-next { font-size: .88rem; line-height: 1.45; }
 @media (max-width: 900px) {
   .menu-btn { display: inline-block; }
   .nav-links {

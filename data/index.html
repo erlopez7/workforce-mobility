@@ -12,7 +12,7 @@
       <a class="brand" href="index.html">↗ WorkForce</a>
       <button id="menuBtn" class="menu-btn" aria-label="Open menu">☰</button>
       <div id="navLinks" class="nav-links">
-        <a href="chatbot.html">AI Advisor</a><a href="data-story.html">Data Story</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="resources.html">Resources</a>
+        <a href="chatbot.html">AI Advisor</a><a href="map.html">Mobility Map</a><a href="careers.html">Career Paths</a><a href="education.html">Education Explorer</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a>
       </div>
     </div>
   </nav>
@@ -49,12 +49,15 @@
     </section>
 
     <section class="section">
-      <h2>How It Works</h2>
-      <div class="grid-2">
-        <div class="step"><span class="step-num">1</span><p>Enter your ZIP code or location</p></div>
-        <div class="step"><span class="step-num">2</span><p>See your neighborhood opportunity context</p></div>
-        <div class="step"><span class="step-num">3</span><p>Explore career paths matched to your situation</p></div>
-        <div class="step"><span class="step-num">4</span><p>Get education ROI (Return on Investment) and real resources</p></div>
+      <h2>Student Journey Through the Platform</h2>
+      <p class="muted">Follow this order during the demo and for first-time users. Each step answers: what am I seeing, and what should I do next?</p>
+      <div class="journey-flow">
+        <a class="journey-step" href="chatbot.html"><span class="step-num">1</span><div><strong>AI Advisor</strong><p class="muted">Start with student context (ZIP, education level, budget, interests, concerns).</p></div></a>
+        <a class="journey-step" href="map.html"><span class="step-num">2</span><div><strong>Mobility Map</strong><p class="muted">See neighborhood opportunity context in plain language.</p></div></a>
+        <a class="journey-step" href="careers.html"><span class="step-num">3</span><div><strong>Career Paths</strong><p class="muted">Review AI-risk transparency and location-aware recommendations.</p></div></a>
+        <a class="journey-step" href="education.html"><span class="step-num">4</span><div><strong>Education Explorer</strong><p class="muted">Compare public/private cost, outcomes, and ROI by group.</p></div></a>
+        <a class="journey-step" href="data-story.html"><span class="step-num">5</span><div><strong>Data Story</strong><p class="muted">See model proof, missing-data handling, clustering, and ranking outputs.</p></div></a>
+        <a class="journey-step" href="resources.html"><span class="step-num">6</span><div><strong>Resources</strong><p class="muted">Move from insight to action with aid, training, and support links.</p></div></a>
       </div>
     </section>
 
@@ -67,12 +70,18 @@
       <h2>Mission</h2>
       <p class="muted">To empower underserved communities with data-driven guidance, resources, and support systems that help individuals choose education pathways that lead to economic mobility.</p>
     </section>
+
+    <section class="section next-step-bar">
+      <h3>Next step</h3>
+      <p>Start the guided flow in the AI Advisor, then move page-by-page through map, careers, education, and data proof.</p>
+      <a class="btn primary" href="chatbot.html">Next: AI Advisor →</a>
+    </section>
   </main>
 
   <footer class="footer">
     <div class="container">
       <p>WorkForce — Pathways to Mobility<br />A nonprofit data platform for economic mobility<br />Data sources: Opportunity Insights | College Scorecard | BLS OES | O*NET | NHGIS<br />This platform provides guidance only. Results vary by individual circumstance.</p>
-      <div class="footer-links"><a href="index.html">Home</a><a href="chatbot.html">AI Advisor</a><a href="data-story.html">Data Story</a><a href="map.html">Mobility Map</a><a href="education.html">Education Explorer</a><a href="careers.html">Career Paths</a><a href="resources.html">Resources</a></div>
+      <div class="footer-links"><a href="index.html">Home</a><a href="chatbot.html">AI Advisor</a><a href="map.html">Mobility Map</a><a href="careers.html">Career Paths</a><a href="education.html">Education Explorer</a><a href="data-story.html">Data Story</a><a href="resources.html">Resources</a></div>
     </div>
   </footer>
   <button id="floatingChatBtn" class="floating-chat-btn" aria-label="Open advisor chat">💬</button>
@@ -82,7 +91,7 @@
       <button id="closeWidget" class="btn" style="padding:.2rem .45rem;">✕</button>
     </div>
     <p class="muted" style="margin:.5rem 0 0;">Tell us your ZIP, education level, budget, and interests for the best results!</p>
-    <div id="widgetApiStatus" class="status-pill"><span class="status-dot"></span><span>AI Advisor ready — add ZIP, education level, budget, and interests. Checking backend…</span></div>
+    <div id="widgetApiStatus" class="status-pill"><span class="status-dot"></span><span>AI Advisor ready — enter your ZIP code, education level, budget, career interests, and concerns to begin.</span></div>
     <div id="widgetLog" class="chat-widget-log"></div>
     <div class="chat-input-row">
       <input id="widgetInput" placeholder="I'm from ZIP 90001 in LA, finished high school..." />

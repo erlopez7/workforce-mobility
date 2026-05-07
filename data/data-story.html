@@ -42,11 +42,11 @@
     </section>
 
     <section class="section card" id="four-model-outputs">
-      <h2>Four proof points (what we built)</h2>
+      <h2>Final Model Visuals (what we built)</h2>
       <p class="muted">These four outputs power the map, careers view, recommendations, and AI advisor context.</p>
       <div class="grid-2">
         <article class="card"><h3>1) Full job risk scoring</h3><p class="muted">1,016 O*NET occupations with interpretable Low / Moderate / High labels from task structure and job zone.</p><p><a href="#model-job-risk">Technical details ↓</a></p></article>
-        <article class="card"><h3>2) KNN mobility imputation</h3><p class="muted">Missing neighborhood mobility fields are filled with k-nearest neighbors so clustering runs on the full 73,202-tract grid.</p><p><a href="#model-youth-cluster">Technical details ↓</a></p></article>
+        <article class="card"><h3>2) Imputed mobility handling (KNN)</h3><p class="muted">Some neighborhoods were missing mobility values. We estimated missing values using similar tracts so clustering can run on the full 73,202-tract grid.</p><p><a href="#model-youth-cluster">Technical details ↓</a></p></article>
         <article class="card"><h3>3) Youth opportunity clustering</h3><p class="muted">K-Means splits tracts into four opportunity groups used everywhere the site references your neighborhood context.</p><p><a href="#model-youth-cluster">Technical details ↓</a></p></article>
         <article class="card"><h3>4) Personalized career ranking</h3><p class="muted">ZIP maps to a group, then ranked recommendations (with optional interest filters) align with the same risk labels as job search.</p><p><a href="careers.html">Try Career Paths →</a></p></article>
       </div>
@@ -218,6 +218,7 @@
 
     <section class="section card">
       <h2 class="chart-title">Imputed mobility — missingness before vs after KNN</h2>
+      <p class="muted">Plain-English: some neighborhoods were missing mobility values. Instead of dropping those places, KNN uses similar neighborhoods to estimate the missing field. That keeps the full dataset usable, and estimated values are clearly labeled as estimates.</p>
       <p class="muted">KMeans uses tract-level <code>pov20</code>, <code>mob_up</code>, <code>inc20</code>, and <code>opp_gap</code>. Raw merges left many tracts without upward mobility; KNN imputation fills those features so clustering and downstream UI logic do not drop rows or fail on nulls.</p>
       <div class="chart-panel chart-panel--fixed">
         <canvas id="tractMissingnessChart" aria-label="Bar chart of missing values before KNN"></canvas>
@@ -259,6 +260,7 @@
       <p>✗ We do not guarantee exact salary outcomes</p>
       <p>✗ Individual results vary — this is guidance, not a guarantee</p>
     </section>
+  <section class="section next-step-bar"><h3>Next step</h3><p>You have seen model proof. Move to Resources to take action with aid, training, and support links.</p><a class="btn primary" href="resources.html">Next: Resources →</a></section>
   </main>
   <footer class="footer">
     <div class="container">
